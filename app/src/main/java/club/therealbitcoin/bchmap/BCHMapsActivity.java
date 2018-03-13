@@ -27,17 +27,18 @@ import org.json.JSONObject;
 
 import java.util.Collections;
 
+//@EActivity(R.layout.activity_bchmaps)
 public class BCHMapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
+    public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23bch";
     private GoogleMap mMap;
-    private static final String TAG = "bhjvjhsdv";
+    private static final String TAG = "TAG23h9s";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bchmaps);
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -71,10 +72,6 @@ public class BCHMapsActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -98,31 +95,40 @@ public class BCHMapsActivity extends FragmentActivity implements OnMapReadyCallb
             // Show rationale and request permission.
         }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        new WebService("https://coinmap.org/api/v1/venues/?query=%23bch", new OnTaskDoneListener() {
+        callWebservice();
+    }
+
+    private void callWebservice() {
+        new WebService(COINMAP_ORG_VENUES_QUERY, new OnTaskDoneListener() {
+            LatLng latLng;
             @Override
             public void onTaskDone(String responseData) {
                 try {
                     Log.d(TAG, "responseData: " + responseData);
-                    JSONArray venues = new JSONObject(responseData).getJSONArray("venues");
+                    JSONArray venues = parseResults(responseData);
 
                     for (int x=0; x<venues.length();x++) {
-                        JSONObject venue = venues.getJSONObject(x);
-                        Log.d(TAG, "onTaskDone: " + venue);
-                        double lat = venue.getDouble("lat");
-                        double lon = venue.getDouble("lon");
-                        addMarker(lat,lon);
+                        parseMarker(venues, x);
                     }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
                     e.printStackTrace();
 
                 }
+            }
+
+            private void parseMarker(JSONArray venues, int x) throws JSONException {
+                JSONObject venue = venues.getJSONObject(x);
+                Log.d(TAG, "onTaskDone: " + venue);
+                latLng = new LatLng(venue.getDouble("lat"),venue.getDouble("lon"));
+                addMarker(latLng, venue.getString("name"));
+            }
+
+            private JSONArray parseResults(String responseData) throws JSONException {
+                return new JSONObject(responseData).getJSONArray("venues");
             }
 
             @Override
@@ -132,10 +138,8 @@ public class BCHMapsActivity extends FragmentActivity implements OnMapReadyCallb
         }).execute();
     }
 
-    public void addMarker(double lat, double lon) {
-        LatLng latLng = new LatLng(lat, lon);
-        mMap.addMarker(new MarkerOptions().position(latLng).title("blabla"));
-
+    private void addMarker(LatLng latLng, String text) {
+        mMap.addMarker(new MarkerOptions().position(latLng).title(text));
     }
 
     @Override

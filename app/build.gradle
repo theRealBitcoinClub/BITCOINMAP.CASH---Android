@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+//def AAVersion = '4.4.0'
 
 android {
     compileSdkVersion 27
@@ -18,7 +19,30 @@ android {
     }
 }
 
+
 dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+//For testing RecyclerView
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'design'
+        exclude module: 'recyclerview-v7'
+    }
+
+    //annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+    //implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    //compile 'com.squareup:otto:1.3.8'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
