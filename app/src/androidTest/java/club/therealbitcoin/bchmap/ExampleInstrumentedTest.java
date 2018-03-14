@@ -2,11 +2,15 @@ package club.therealbitcoin.bchmap;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.*;
 
 /**
@@ -23,4 +27,15 @@ public class ExampleInstrumentedTest {
 
         assertEquals("club.therealbitcoin.bchmap", appContext.getPackageName());
     }
+
+    //@Test
+    //public void yaya() throws Exception {
+    //    ViewInteraction bla = getObject();
+    //    assertNotNull(bla);
+    //    assertNull(bla);
+    //}
+
+    //private ViewInteraction getObject() {
+    //   return onView(withText("Sign-in"));
+    //}
 }
