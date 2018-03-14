@@ -4,13 +4,9 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,18 +16,14 @@ import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Collections;
 
 //@EActivity(R.layout.activity_bchmaps)
 public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
@@ -118,10 +110,13 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             public void onTaskDone(String responseData) {
                 try {
                     Log.d(TAG, "responseData: " + responseData);
-                    JSONArray venues = parseResults(responseData);
+                    JSONArray venues = WebService.parseVenues(responseData);
 
                     for (int x=0; x<venues.length();x++) {
-                        parseMarker(venues, x);
+                        JSONObject venue = venues.getJSONObject(x);
+                        Log.d(TAG, "venue: " + venue);
+                        latLng = WebService.parseMarker(venue);
+                        addMarker(latLng, venue.getString("name"));
                     }
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -132,16 +127,6 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
                 }
             }
 
-            private void parseMarker(JSONArray venues, int x) throws JSONException {
-                JSONObject venue = venues.getJSONObject(x);
-                Log.d(TAG, "onTaskDone: " + venue);
-                latLng = new LatLng(venue.getDouble("lat"),venue.getDouble("lon"));
-                addMarker(latLng, venue.getString("name"));
-            }
-
-            private JSONArray parseResults(String responseData) throws JSONException {
-                return new JSONObject(responseData).getJSONArray("venues");
-            }
 
             @Override
             public void onError() {

@@ -2,6 +2,12 @@ package club.therealbitcoin.bchmap;
 
 import android.os.AsyncTask;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +22,12 @@ public class WebService extends AsyncTask<String, Void, String> {
     public WebService(String url, OnTaskDoneListener onTaskDoneListener) {
         this.urlStr = url;
         this.onTaskDoneListener = onTaskDoneListener;
+    }
+
+    public static LatLng parseMarker(JSONObject venue) throws JSONException {
+        double lat = venue.getDouble("lat");
+        double lon = venue.getDouble("lon");
+        return new LatLng(lat,lon);
     }
 
     @Override
@@ -62,4 +74,8 @@ public class WebService extends AsyncTask<String, Void, String> {
         } else
             onTaskDoneListener.onError();
     }
+
+         public static JSONArray parseVenues(String responseData) throws JSONException {
+            return new JSONObject(responseData).getJSONArray("venues");
+        }
 }
