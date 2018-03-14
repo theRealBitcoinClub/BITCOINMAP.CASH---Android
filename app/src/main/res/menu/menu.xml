@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/rating"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_rating"
         android:icon="@drawable/ic_action_favorite_border"
         android:title="@string/rating"
-        android:showAsAction="ifRoom" />
-    <item android:id="@+id/add_place"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/menu_add_place"
         android:icon="@drawable/ic_action_add_location"
         android:title="@string/add_place"/>
-    <item android:id="@+id/contact"
+    <item android:id="@+id/menu_contact"
         android:icon="@drawable/ic_action_help_outline"
         android:title="@string/contact" />
-    <item android:id="@+id/settings"
+    <item android:id="@+id/menu_settings"
         android:icon="@drawable/ic_action_settings"
         android:title="@string/settings"/>
 </menu>
