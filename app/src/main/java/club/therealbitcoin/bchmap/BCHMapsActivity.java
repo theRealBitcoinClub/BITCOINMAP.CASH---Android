@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -130,6 +131,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
             @Override
             public void onError() {
+                Toast.makeText(this,R.string.error_con_webservice,Toast.LENGTH_LONG);
                 Log.e(TAG,"errrrror");
             }
         }).execute();
