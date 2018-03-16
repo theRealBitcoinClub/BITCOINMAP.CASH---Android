@@ -19,6 +19,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -41,6 +43,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
+        tb.setLogo(R.drawable.ic_action_bitcoin);
+        tb.setLogoDescription(getResources().getString(R.string.logo_desc));
         //ActionBar ab = getSupportActionBar();
         //ab.setDisplayUseLogoEnabled(true);
         //ab.setDisplayShowTitleEnabled(false);
@@ -117,9 +121,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
                         JSONObject venue = venues.getJSONObject(x);
                         Log.d(TAG, "venue: " + venue);
                         latLng = WebService.parseMarker(venue);
-                        addMarker(latLng, venue.getString("name"));
+                        addMarker( latLng, venue.getString("name"));
                     }
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
@@ -131,7 +135,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
             @Override
             public void onError() {
-                Toast.makeText(this,R.string.error_con_webservice,Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),R.string.error_con_webservice,Toast.LENGTH_LONG);
                 Log.e(TAG,"errrrror");
             }
         }).execute();
@@ -161,7 +165,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void addMarker(LatLng latLng, String text) {
-        mMap.addMarker(new MarkerOptions().position(latLng).title(text));
+        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bitcoin);
+        mMap.addMarker(new MarkerOptions().position(latLng).title(text).alpha(0.9f).icon(ic));
     }
 
     @Override
