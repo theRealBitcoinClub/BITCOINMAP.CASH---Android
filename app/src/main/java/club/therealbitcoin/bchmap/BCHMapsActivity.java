@@ -107,7 +107,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.map_style));
+                        this, R.raw.map_style_dark));
 
         callWebservice();
     }
