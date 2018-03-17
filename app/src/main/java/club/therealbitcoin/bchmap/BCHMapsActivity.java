@@ -109,25 +109,38 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
                 MapStyleOptions.loadRawResourceStyle(
                         this, R.raw.map_style_dark));
 
-        callWebservice();
+
+        String places = getResources().openRawResource(R.raw.places).toString();
+
+        try {
+            addVenuesToMapAndMoveCamera(new JSONArray(places));
+        } catch (JSONException e) {
+            callWebservice();
+            e.printStackTrace();
+        }
+    }
+
+    void addVenuesToMapAndMoveCamera(JSONArray venues) throws JSONException {
+        LatLng latLng = null;
+        for (int x=0; x<venues.length();x++) {
+            JSONObject venue = venues.getJSONObject(x);
+            Log.d(TAG, "venue: " + venue);
+            latLng = WebService.parseLatLng(venue);
+            addMarker( latLng, venue.getString("name"));
+        }
+        if (latLng != null)
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     private void callWebservice() {
         new WebService(COINMAP_ORG_VENUES_QUERY, new OnTaskDoneListener() {
-            LatLng latLng;
             @Override
             public void onTaskDone(String responseData) {
                 try {
                     Log.d(TAG, "responseData: " + responseData);
                     JSONArray venues = WebService.parseVenues(responseData);
 
-                    for (int x=0; x<venues.length();x++) {
-                        JSONObject venue = venues.getJSONObject(x);
-                        Log.d(TAG, "venue: " + venue);
-                        latLng = WebService.parseMarker(venue);
-                        addMarker( latLng, venue.getString("name"));
-                    }
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    addVenuesToMapAndMoveCamera(venues);
 
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
@@ -135,6 +148,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
                 }
             }
+
+
 
 
             @Override

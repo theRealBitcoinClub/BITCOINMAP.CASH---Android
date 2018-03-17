@@ -24,7 +24,7 @@ public class WebService extends AsyncTask<String, Void, String> {
         this.onTaskDoneListener = onTaskDoneListener;
     }
 
-    public static LatLng parseMarker(JSONObject venue) throws JSONException {
+    public static LatLng parseLatLng(JSONObject venue) throws JSONException {
         double lat = venue.getDouble("lat");
         double lon = venue.getDouble("lon");
         return new LatLng(lat,lon);
