@@ -33,7 +33,7 @@ import org.json.JSONObject;
 public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
-    public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23bch";
+    public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
     private GoogleMap mMap;
     private static final String TAG = "TAG23h9s";
 
