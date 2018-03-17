@@ -22,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -91,8 +92,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         Log.d(TAG, "onMapReady: ");
-        googleMap.setIndoorEnabled(false);
-        googleMap.setBuildingsEnabled(false);
+        mMap.setIndoorEnabled(false);
+        mMap.setBuildingsEnabled(false);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -104,6 +105,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             // Show rationale and request permission.
         }
 
+        mMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.map_style));
 
         callWebservice();
     }
@@ -166,7 +170,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
     private void addMarker(LatLng latLng, String text) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bitcoin);
-        mMap.addMarker(new MarkerOptions().position(latLng).title(text).alpha(0.9f).icon(ic));
+        mMap.addMarker(new MarkerOptions().position(latLng).title(text).alpha(1f).icon(ic).draggable(false).snippet("snipp"));
     }
 
     @Override
