@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 //@EActivity(R.layout.activity_bchmaps)
-public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
@@ -96,6 +97,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         Log.d(TAG, "onMapReady: ");
         mMap.setIndoorEnabled(false);
         mMap.setBuildingsEnabled(false);
+        mMap.setOnMarkerClickListener(this);
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -109,10 +112,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.map_style_dark));
-
-
-
+                        this, R.raw.map_style_classic));
 
         try {
             Log.d(TAG,"ssssss");
@@ -216,5 +216,12 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMyLocationClick(@NonNull Location location) {
         Log.d(TAG,location.toString());
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.d(TAG,"markerclick:" + marker.getTitle());
+        Log.d(TAG,"markdfdsfdsfdsdfserclick:" + marker.getTitle());
+        return false;
     }
 }
