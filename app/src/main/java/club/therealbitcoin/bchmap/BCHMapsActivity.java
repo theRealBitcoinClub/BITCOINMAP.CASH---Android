@@ -29,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 //@EActivity(R.layout.activity_bchmaps)
 public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
@@ -110,15 +112,21 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
                         this, R.raw.map_style_dark));
 
 
-        String places = getResources().openRawResource(R.raw.places).toString();
+
 
         try {
+            Log.d(TAG,"ssssss");
+            String places = WebService.readJsonFromInputStream(getResources().openRawResource(R.raw.places));
+            Log.d(TAG,places);
             addVenuesToMapAndMoveCamera(new JSONArray(places));
-        } catch (JSONException e) {
+
+        } catch (Exception e) {
             callWebservice();
             e.printStackTrace();
         }
     }
+
+
 
     void addVenuesToMapAndMoveCamera(JSONArray venues) throws JSONException {
         LatLng latLng = null;
