@@ -19,6 +19,8 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.Venue;
+
 public class WebService extends AsyncTask<String, Void, String> {
 
     private OnTaskDoneListener onTaskDoneListener;
@@ -30,8 +32,8 @@ public class WebService extends AsyncTask<String, Void, String> {
     }
 
     public static LatLng parseLatLng(JSONObject venue) throws JSONException {
-        double lat = venue.getDouble("lat");
-        double lon = venue.getDouble("lon");
+        double lat = venue.getDouble(Venue.lat.toString());
+        double lon = venue.getDouble(Venue.lon.toString());
         return new LatLng(lat,lon);
     }
 
