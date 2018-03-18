@@ -97,6 +97,7 @@ public class WebService extends AsyncTask<String, Void, String> {
     }
 
          public static JSONArray parseVenues(String responseData) throws JSONException {
-            return new JSONObject(responseData).getJSONArray("venues");
+            //return new JSONObject(responseData).getJSONArray("venues");
+             return new JSONArray(responseData);
         }
 }

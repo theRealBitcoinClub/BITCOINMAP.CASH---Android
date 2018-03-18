@@ -40,6 +40,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
+    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places.json";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
 
@@ -119,12 +120,13 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         try {
             Log.d(TAG,"ssssss");
-            String places = WebService.readJsonFromInputStream(getResources().openRawResource(R.raw.places));
-            Log.d(TAG,places);
-            addVenuesToMapAndMoveCamera(new JSONArray(places));
+            //String places = WebService.readJsonFromInputStream(getResources().openRawResource(R.raw.places));
+            //Log.d(TAG,places);
+            //addVenuesToMapAndMoveCamera(new JSONArray(places));
+
+            callWebservice();
 
         } catch (Exception e) {
-            callWebservice();
             e.printStackTrace();
         }
     }
@@ -144,7 +146,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void callWebservice() {
-        new WebService(COINMAP_ORG_VENUES_QUERY, new OnTaskDoneListener() {
+        new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String responseData) {
                 try {
@@ -152,11 +154,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
                     JSONArray venues = WebService.parseVenues(responseData);
 
                     addVenuesToMapAndMoveCamera(venues);
-
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
                     e.printStackTrace();
-
                 }
             }
 
