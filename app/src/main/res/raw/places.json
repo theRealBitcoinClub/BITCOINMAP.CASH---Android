@@ -1,3 +1,5 @@
-[{"placesId":"ChIJEUo5JceipBIRlw3IsieB6Sg", "lat":"41.406599", "lon":"2.1621726","name":"The Real Bitcoin Club", "type":"ATM"}
-,{"placesId":"ChIJqQmtTryipBIRe3u-XKQxkmw", "lat":"41.4038493","lon":"2.1583495","name":"La Besneta","type":"Food"}
-,{"placesId":"ChIJXSD0a9uipBIRwD4vX_u1enY", "lat":"41.4067273","lon":"2.1738323","name":"Molsa Sagrada Familia","type":"Super"}]
+[{"placesId":"ChIJEUo5JceipBIRlw3IsieB6Sg", "lat":"41.406599", "lon":"2.1621726","name":"The Real Bitcoin Club", "type":"0"}
+,{"placesId":"ChIJqQmtTryipBIRe3u-XKQxkmw", "lat":"41.4038493","lon":"2.1583495","name":"La Besneta","type":"1"}
+,{"placesId":"ChIJXSD0a9uipBIRwD4vX_u1enY", "lat":"41.4067273","lon":"2.1738323","name":"Molsa Sagrada Familia","type":"2"}
+,{"placesId":"ChIJY_ZMtr6ipBIRVC0WRH76Txc", "lat":"41.4027627","lon":"2.1578416","name":"Cara B","type":"3"}
+,{"placesId":"ChIJh2A7VL2ipBIRIxR3Ylnot50", "lat":"41.4006381","lon":"2.1537003","name":"Sincronia Yoga","type":"4"}]

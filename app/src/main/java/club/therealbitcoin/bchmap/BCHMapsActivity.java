@@ -32,6 +32,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.Venue;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
+
 //@EActivity(R.layout.activity_bchmaps)
 public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -134,7 +137,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             JSONObject venue = venues.getJSONObject(x);
             Log.d(TAG, "venue: " + venue);
             latLng = WebService.parseLatLng(venue);
-            addMarker( latLng, venue.getString("name"));
+            addMarker( latLng, venue.getString(Venue.name.toString()), venue.getInt(Venue.type.toString()));
         }
         if (latLng != null)
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -156,9 +159,6 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
                 }
             }
-
-
-
 
             @Override
             public void onError() {
@@ -191,8 +191,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    private void addMarker(LatLng latLng, String text) {
-        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bitcoin);
+    private void addMarker(LatLng latLng, String text, int type) {
+        BitmapDescriptor ic = chooseIcon(type);
         mMap.addMarker(new MarkerOptions().position(latLng).title(text).alpha(1f).icon(ic).draggable(false).snippet("snipp"));
     }
 
@@ -211,6 +211,22 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             Log.e(TAG,Log.getStackTraceString(x));
         }
         return false;
+    }
+
+    private BitmapDescriptor chooseIcon(int type) {
+
+        if (type == VenueType.ATM.getIndex())
+            return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bitcoin);
+        if (type == VenueType.Food.getIndex())
+            return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_food);
+        if (type == VenueType.Super.getIndex())
+            return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_shop);
+        if (type == VenueType.Bar.getIndex())
+            return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bar);
+        if (type == VenueType.Spa.getIndex())
+            return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_spa);
+
+        return null;
     }
 
     @Override
