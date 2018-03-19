@@ -7,14 +7,25 @@ public class Venue {
     int iconRes;
     int type;
     String placesId;
-    String directionsUrl;
-    String moreInfoUrl;
+    public static String DIRECTIONS = "http://therealbitcoin.club/";
+    int reviews;
+    double stars;
 
-    public Venue(String name, int iconRes, int type, String placesId) {
+    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras) {
         this.name = name;
         this.iconRes = iconRes;
         this.type = type;
         this.placesId = placesId;
+        this.stars = stras;
+        this.reviews = rev;
+    }
+
+    public int getReviews() {
+        return reviews;
+    }
+
+    public double getStars() {
+        return stars;
     }
 
     public String getName() {
@@ -33,13 +44,6 @@ public class Venue {
         return placesId;
     }
 
-    public String getDirectionsUrl() {
-        return directionsUrl;
-    }
-
-    public String getMoreInfoUrl() {
-        return moreInfoUrl;
-    }
 
     @Override
     public String toString() {
@@ -48,8 +52,6 @@ public class Venue {
                 ", iconRes=" + iconRes +
                 ", type=" + type +
                 ", placesId='" + placesId + '\'' +
-                ", directionsUrl='" + directionsUrl + '\'' +
-                ", moreInfoUrl='" + moreInfoUrl + '\'' +
                 '}';
     }
 }

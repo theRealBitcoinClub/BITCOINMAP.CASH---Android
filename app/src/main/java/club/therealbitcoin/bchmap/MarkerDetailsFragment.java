@@ -3,6 +3,8 @@ package club.therealbitcoin.bchmap;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -13,44 +15,42 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
 public class MarkerDetailsFragment extends DialogFragment {
 
 	public static final String PLACES_ID = "placesId";
-	public static final String TYPE = "msg";
+	public static final String MSG = "msg";
 	public static final String TITLE = "title";
 	public static final String ICON_RES = "iconRes";
 	private static final String TAG = "TRBCDialog";
-	int iconResource;
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+	private static final String TYPE = "type";
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Log.d(TAG,"dfdsf");
-		Log.d(TAG,"bun" + getArguments());
+		final Bundle args = getArguments();
+		Log.d(TAG,"bun" + args);
+		String venueType = getString(getTranslatedType(args.getInt(TYPE)));
 		return new AlertDialog.Builder(getActivity())
-				// Set Dialog Icon
-				.setIcon(getArguments().getInt(ICON_RES))
-				// Set Dialog Title
-				.setTitle(getArguments().getString(TITLE))
-				// Set Dialog Message
-				.setMessage(getTranslatedType(getArguments().getInt(TYPE)))
- 
-				// Positive button
-				.setPositiveButton("Route", new DialogInterface.OnClickListener() {
+				.setIcon(args.getInt(ICON_RES))
+				.setTitle(args.getString(TITLE))
+				.setMessage(venueType + args.getString(MSG))
+				// RIGHT button
+				.setPositiveButton(getActivity().getString(R.string.share), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						// Do something else
+						Intent share = new Intent(Intent.ACTION_SEND);
+						share.setType("text/plain");
+						share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
+						startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
 					}
 				})
- 
-				// Negative Button
-				.setNegativeButton("More", new DialogInterface.OnClickListener() {
+				// LEFT Button
+				.setNegativeButton(getActivity().getString(R.string.info), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,	int which) {
-						// Do something else
+						Intent i = new Intent(Intent.ACTION_VIEW,
+								Uri.parse(Venue.DIRECTIONS+ args.getString(PLACES_ID)));
+						startActivity(i);
 					}
 				}).create();
 	}
 
-	private int getTranslatedType(int type) {
+	private static int getTranslatedType(int type) {
 		if (VenueType.ATM.getIndex() == type)
 			return R.string.type_atm;
 
@@ -69,13 +69,14 @@ public class MarkerDetailsFragment extends DialogFragment {
 		return -1;
 	}
 
-	public static MarkerDetailsFragment newInstance(int iconRes, String title, int type, String placesId) {
+	public static MarkerDetailsFragment newInstance(int iconRes, String title, int type, String placesId, double stars, int reviews) {
 		MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
 
 		Bundle args = new Bundle();
 		args.putInt(ICON_RES, iconRes);
 		args.putString(TITLE, title);
 		args.putInt(TYPE, type);
+		args.putString(MSG, ", " + stars + " (" + reviews + ")");
 		args.putString(PLACES_ID, placesId);
 		myFragment.setArguments(args);
 
@@ -84,6 +85,6 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 	public static MarkerDetailsFragment newInstance(Venue v) {
 		Log.d(TAG,v.toString());
-		return newInstance(v.iconRes,v.name,v.type,v.placesId);
+		return newInstance(v.iconRes,v.name,v.type,v.placesId, v.stars, v.reviews);
 	}
 }

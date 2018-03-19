@@ -161,7 +161,10 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
             int type = venue.getInt(VenueJson.type.toString());
             String placesId = venue.getString(VenueJson.placesId.toString());
-            venuesMap.put(placesId, new Venue(venue.getString(VenueJson.name.toString()), getIconResource(type), type, placesId));
+            String name = venue.getString(VenueJson.name.toString());
+            double stars = venue.getDouble(VenueJson.score.toString());
+            int rev = venue.getInt(VenueJson.reviews.toString());
+            venuesMap.put(placesId, new Venue(name, getIconResource(type), type, placesId, rev, stars));
             addMarker(latLng, type, placesId);
         }
         if (latLng != null)

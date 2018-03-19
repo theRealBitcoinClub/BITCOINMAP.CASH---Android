@@ -9,9 +9,13 @@
     <string name="logo_desc">logo_description</string>
     <string name="switch_style">Style</string>
     <string name="toast_add_place">To add a place, please send an E-Mail to feliz@trbc.io</string>
-    <string name="type_atm">Crypto Trader</string>
+    <string name="type_atm">ATM/Teller</string>
     <string name="type_food">Restaurant</string>
     <string name="type_super">Supermarket</string>
-    <string name="type_bar">Bar / Club</string>
-    <string name="type_spa">Spa / Wellness</string>
+    <string name="type_bar">Bar/Club</string>
+    <string name="type_spa">Spa/Wellness</string>
+    <string name="recommendation">Check out this app now, follow this link</string>
+    <string name="share">Share</string>
+    <string name="info">Info</string>
+    <string name="thank_you">Thank You!</string>
 </resources>
