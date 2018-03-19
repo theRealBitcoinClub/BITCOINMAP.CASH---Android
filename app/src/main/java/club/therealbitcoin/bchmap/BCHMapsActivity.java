@@ -3,11 +3,9 @@ package club.therealbitcoin.bchmap;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,15 +31,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
 
-//@EActivity(R.layout.activity_bchmaps)
 public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
@@ -107,24 +102,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
         Log.d(TAG, "onMapReady: ");
-        mMap.setIndoorEnabled(false);
-        mMap.setBuildingsEnabled(false);
-        mMap.setOnMarkerClickListener(this);
-
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            Log.d(TAG, "setMyLocationEnabled: true ");
-        } else {
-            Log.d(TAG, "setMyLocationEnabled false: ");
-            getPermissions();
-        }
-
+        configureMap(googleMap);
+        getPermissionAccessFineLocation();
         setMapStyle(mapStyles[0]);
 
         try {
@@ -133,6 +113,30 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getPermissionAccessFineLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            Log.d(TAG, "setMyLocationEnabled: true ");
+        } else {
+            Log.d(TAG, "setMyLocationEnabled false: ");
+            getPermissions();
+        }
+    }
+
+    private void configureMap(GoogleMap googleMap) {
+        mMap = googleMap;
+        addMapListener();
+        mMap.setIndoorEnabled(false);
+        mMap.setBuildingsEnabled(false);
+    }
+
+    private void addMapListener() {
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
+        mMap.setOnMarkerClickListener(this);
     }
 
     private void setMapStyle(int x) {
@@ -161,14 +165,18 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
             int type = venue.getInt(VenueJson.type.toString());
             String placesId = venue.getString(VenueJson.placesId.toString());
-            String name = venue.getString(VenueJson.name.toString());
-            double stars = venue.getDouble(VenueJson.score.toString());
-            int rev = venue.getInt(VenueJson.reviews.toString());
-            venuesMap.put(placesId, new Venue(name, getIconResource(type), type, placesId, rev, stars));
+            addVenueToCache(venue, type, placesId);
             addMarker(latLng, type, placesId);
         }
         if (latLng != null)
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+    }
+
+    private void addVenueToCache(JSONObject venue, int type, String placesId) throws JSONException {
+        String name = venue.getString(VenueJson.name.toString());
+        double stars = venue.getDouble(VenueJson.score.toString());
+        int rev = venue.getInt(VenueJson.reviews.toString());
+        venuesMap.put(placesId, new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars));
     }
 
     private void callWebservice() {
@@ -222,7 +230,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void addMarker(LatLng latLng, int type, String markerId) {
-        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(getIconResource(type));
+        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(VenueType.getIconResource(type));
         mMap.addMarker(new MarkerOptions().position(latLng).alpha(1f).icon(ic).draggable(false).snippet(markerId));
     }
 
@@ -243,20 +251,6 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         return false;
     }
 
-    public static int getIconResource(int type) {
-        if (type == VenueType.ATM.getIndex())
-            return R.drawable.ic_map_bitcoin;
-        if (type == VenueType.Food.getIndex())
-            return R.drawable.ic_map_food;
-        if (type == VenueType.Super.getIndex())
-            return R.drawable.ic_map_shop;
-        if (type == VenueType.Bar.getIndex())
-            return R.drawable.ic_map_bar;
-        if (type == VenueType.Spa.getIndex())
-            return R.drawable.ic_map_spa;
-
-        return -1;
-    }
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
