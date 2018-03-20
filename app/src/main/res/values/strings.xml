@@ -20,5 +20,5 @@
     <string name="thank_you">Thank You!</string>
     <string name="toolbar">TRBC.io</string>
     <string name="visibility_bitcoin">ATM/Teller</string>
-    <string name="filter">Set Filter</string>
+    <string name="filter">Choose Filter</string>
 </resources>
