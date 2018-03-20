@@ -217,6 +217,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switchCheck(item);
+
         switch (item.getItemId()) {
             case R.id.menu_rating:
                 return true;
@@ -241,6 +243,13 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void switchCheck(MenuItem item) {
+        if (item.isCheckable() && item.isChecked())
+            item.setChecked(false);
+        else
+            item.setChecked(true);
     }
 
     private void switchVisibility(List<Marker> markers) {
