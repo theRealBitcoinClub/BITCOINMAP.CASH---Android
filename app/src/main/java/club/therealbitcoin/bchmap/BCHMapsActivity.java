@@ -31,7 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueJson;
@@ -48,22 +50,32 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
     private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
     private FragmentManager fm;
+    private Map<String, Marker> markerMap;
+    private Map<Integer,ArrayList<Marker>> markersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bchmaps);
+        initMarkersList();
 
         fm = getSupportFragmentManager();
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setLogo(R.drawable.ic_action_bitcoin);
         getSupportActionBar().setTitle(R.string.toolbar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void initMarkersList() {
+        markerMap = new HashMap<String,Marker>();
+        markersList = new HashMap<Integer,ArrayList<Marker>>();
+        for (int i=0; i<5; i++) {
+            markersList.put(i, new ArrayList<Marker>());
+        }
     }
 
     @Override
@@ -157,7 +169,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             int type = venue.getInt(VenueJson.type.toString());
             String placesId = venue.getString(VenueJson.placesId.toString());
             addVenueToCache(venue, type, placesId);
-            addMarker(latLng, type, placesId);
+            Marker marker = addMarker(latLng, type, placesId);
+            markersList.get(type).add(marker);
+            markerMap.put(placesId, marker);
         }
         if (latLng != null)
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -203,14 +217,14 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_contact:
-                return true;
-            case R.id.menu_add_place:
-                Toast.makeText(this, R.string.toast_add_place, Toast.LENGTH_LONG);
-                return true;
             case R.id.menu_rating:
-                return true;
-            case R.id.menu_settings:
+                List<Marker> markers = markersList.get(0);
+                for (Marker m: markers) {
+                    if (m.isVisible())
+                        m.setVisible(false);
+                    else
+                        m.setVisible(true);
+                }
                 return true;
             case R.id.menu_switch:
                 switchMapStyle();
@@ -220,9 +234,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    private void addMarker(LatLng latLng, int type, String markerId) {
+    private Marker addMarker(LatLng latLng, int type, String markerId) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(VenueType.getIconResource(type));
-        mMap.addMarker(new MarkerOptions().position(latLng).alpha(1f).icon(ic).draggable(false).snippet(markerId));
+        return mMap.addMarker(new MarkerOptions().position(latLng).alpha(1f).icon(ic).draggable(false).snippet(markerId));
     }
 
     @Override
