@@ -58,13 +58,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        tb.setLogo(R.drawable.ic_action_bitcoin);
-        tb.setLogoDescription(getResources().getString(R.string.logo_desc));
-        //ActionBar ab = getSupportActionBar();
-        //ab.setDisplayUseLogoEnabled(true);
-        //ab.setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setLogo(R.drawable.ic_action_bitcoin);
+        getSupportActionBar().setTitle(R.string.toolbar);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
