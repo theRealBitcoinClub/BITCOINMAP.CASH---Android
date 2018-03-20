@@ -2,8 +2,11 @@ package club.therealbitcoin.bchmap;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -68,7 +72,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle(R.string.toolbar);
+        getSupportActionBar().setTitle("Web:" + getString(R.string.toolbar));
 
         SupportMapFragment mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
@@ -79,6 +83,24 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        initTitleTouchListener();
+    }
+
+    private void initTitleTouchListener() {
+        try {
+            final int abTitleId = getResources().getIdentifier("action_bar_title", "id", "android");
+
+            findViewById(abTitleId).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://trbc.io")));
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG,"ERROR: INIT TITLE LISTENER:" + e);
+            e.printStackTrace();
+        }
     }
 
 
