@@ -6,8 +6,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -53,6 +55,9 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private Map<String, Marker> markerMap;
     private Map<Integer,ArrayList<Marker>> markersList;
 
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +70,22 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         setSupportActionBar(tb);
         getSupportActionBar().setTitle(R.string.toolbar);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager, mapFragment);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+
+    private void setupViewPager(ViewPager viewPager, SupportMapFragment mapFragment) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(mapFragment, "ONE");
+        viewPager.setAdapter(adapter);
     }
 
     private void initMarkersList() {
