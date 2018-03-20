@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -62,6 +61,12 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    private int[] tabIcons = {
+            R.drawable.ic_action_map,
+            R.drawable.ic_action_list,
+            R.drawable.ic_action_favorite_border
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +77,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle("Web:" + getString(R.string.toolbar));
+        getSupportActionBar().setTitle(R.string.toolbar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
@@ -84,6 +89,14 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         tabLayout.setupWithViewPager(viewPager);
 
         initTitleTouchListener();
+
+        setupTabIcons();
+    }
+
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     private void initTitleTouchListener() {
