@@ -7,7 +7,7 @@
     <string name="rating">Rating</string>
     <string name="error_con_webservice">Error connecting to the Webservice, please check your signal strength and restart the app</string>
     <string name="logo_desc">logo_description</string>
-    <string name="switch_style">Style</string>
+    <string name="switch_style">Map Theme</string>
     <string name="toast_add_place">To add a place, please send an E-Mail to feliz@trbc.io</string>
     <string name="type_atm">ATM/Teller</string>
     <string name="type_food">Restaurant</string>
@@ -19,4 +19,6 @@
     <string name="info">Info</string>
     <string name="thank_you">Thank You!</string>
     <string name="toolbar">TRBC.io</string>
+    <string name="visibility_bitcoin">ATM/Teller</string>
+    <string name="filter">Set Filter</string>
 </resources>

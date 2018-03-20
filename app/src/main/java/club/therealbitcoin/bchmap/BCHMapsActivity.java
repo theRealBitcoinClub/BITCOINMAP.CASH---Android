@@ -177,6 +177,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
+
     private void addVenueToCache(JSONObject venue, int type, String placesId) throws JSONException {
         String name = venue.getString(VenueJson.name.toString());
         double stars = venue.getDouble(VenueJson.score.toString());
@@ -218,19 +219,36 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_rating:
-                List<Marker> markers = markersList.get(0);
-                for (Marker m: markers) {
-                    if (m.isVisible())
-                        m.setVisible(false);
-                    else
-                        m.setVisible(true);
-                }
+                return true;
+            case R.id.menu_atm:
+                switchVisibility(markersList.get(VenueType.ATM.getIndex()));
+                return true;
+            case R.id.menu_bar:
+                switchVisibility(markersList.get(VenueType.Bar.getIndex()));
+                return true;
+            case R.id.menu_shops:
+                switchVisibility(markersList.get(VenueType.Super.getIndex()));
+                return true;
+            case R.id.menu_spa:
+                switchVisibility(markersList.get(VenueType.Spa.getIndex()));
+                return true;
+            case R.id.menu_food:
+                switchVisibility(markersList.get(VenueType.Food.getIndex()));
                 return true;
             case R.id.menu_switch:
                 switchMapStyle();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void switchVisibility(List<Marker> markers) {
+        for (Marker m: markers) {
+            if (m.isVisible())
+                m.setVisible(false);
+            else
+                m.setVisible(true);
         }
     }
 

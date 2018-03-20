@@ -8,7 +8,30 @@
         android:title="@string/rating"
         app:showAsAction="ifRoom" />
     <item android:id="@+id/menu_switch"
-        android:icon="@drawable/ic_map_bar"
         android:title="@string/switch_style"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
+    <item
+        android:icon="@drawable/ic_action_settings"
+        android:title="@string/filter"
+        android:id="@+id/empty">
+
+        <menu>
+            <item android:id="@+id/menu_atm"
+                android:icon="@drawable/ic_map_bitcoin"
+                android:title="@string/type_atm"/>
+            <item android:id="@+id/menu_food"
+                android:icon="@drawable/ic_map_food"
+                android:title="@string/type_food"/>
+            <item android:id="@+id/menu_bar"
+                android:icon="@drawable/ic_map_bar"
+                android:title="@string/type_bar"/>
+            <item android:id="@+id/menu_shops"
+                android:icon="@drawable/ic_map_shop"
+                android:title="@string/type_super"/>
+            <item android:id="@+id/menu_spa"
+                android:icon="@drawable/ic_map_spa"
+                android:title="@string/type_spa"/>
+
+        </menu>
+    </item>
 </menu>
