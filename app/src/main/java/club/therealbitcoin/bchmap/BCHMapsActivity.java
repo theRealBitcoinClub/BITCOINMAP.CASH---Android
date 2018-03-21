@@ -246,7 +246,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
             lastCoordinates = v.getCoordinates();
             Log.d(TAG, "venue: " + v);
-            Marker marker = addMarker(lastCoordinates, v.type, v.placesId);
+            Marker marker = addMarker(v);
             markersList.get(v.type).add(marker);
             markerMap.put(v.placesId, marker);
         }
@@ -335,9 +335,11 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    private Marker addMarker(LatLng latLng, int type, String markerId) {
-        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(VenueType.getIconResource(type));
-        return mMap.addMarker(new MarkerOptions().position(latLng).alpha(1f).icon(ic).draggable(false).snippet(markerId));
+    private Marker addMarker(Venue v) {
+        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(VenueType.getIconResource(v.type));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
+        marker.setTag(v);
+        return marker;
     }
 
     @Override
@@ -366,10 +368,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d(TAG,"markerclick:" + marker.getId());
-        Log.d(TAG,"markdfdsfdsfdsdfserclick:" + marker.getSnippet());
-
-        Venue v = VenueFacade.getInstance().findVenueById(marker.getSnippet());
-        MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
+        MarkerDetailsFragment.newInstance((Venue) marker.getTag()).show(fm,"MARKERDIALOG");
         return false;
     }
 }
