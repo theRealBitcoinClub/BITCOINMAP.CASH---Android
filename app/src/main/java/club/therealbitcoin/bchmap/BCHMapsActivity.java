@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
@@ -53,7 +54,6 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private static final String TAG = "TRBC";
     private int currentMapStyle = 0;
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
-    private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
     private FragmentManager fm;
     private Map<String, Marker> markerMap;
     private Map<Integer,ArrayList<Marker>> markersList;
@@ -66,31 +66,39 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             R.drawable.ic_action_list,
             R.drawable.ic_action_favorite_border
     };
+    private SupportMapFragment mapFragment;
+    private Toolbar tb;
+    private boolean isMapReady = false;
+    private PopupListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate");
         setContentView(R.layout.activity_bchmaps);
         initMarkersList();
+        findViewsById();
 
         fm = getSupportFragmentManager();
 
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
         getSupportActionBar().setTitle(R.string.toolbar);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
+        mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager, mapFragment);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        //initTitleTouchListener();
 
-        initTitleTouchListener();
+        callWebservice();
+        Log.d(TAG,"FINISH ON CREATE");
+    }
 
-        setupTabIcons();
+    private void findViewsById() {
+        tb = (Toolbar) findViewById(R.id.toolbar);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
 
     private void initTitleTouchListener() {
@@ -111,10 +119,14 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-    private void setupViewPager(ViewPager viewPager, SupportMapFragment mapFragment) {
+    private void setupViewPager(ViewPager viewPager) {
+        Log.d(TAG,"VIEWPAGER");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(mapFragment,null);
-        adapter.addFragment(PopupListFragment.newInstance(),null);
+        adapter.addFragment(mapFragment,"BLA");
+        Log.d(TAG,"FRAGMENT");
+        listFragment = PopupListFragment.newInstance();
+        adapter.addFragment(listFragment,"BLUB");
+        Log.d(TAG,"ALL ADDED");
         viewPager.setAdapter(adapter);
     }
 
@@ -159,16 +171,33 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        isMapReady = true;
         Log.d(TAG, "onMapReady: ");
         configureMap(googleMap);
         getPermissionAccessFineLocation();
         setMapStyle(mapStyles[0]);
+        setupTabIcons();
+
 
         try {
             Log.d(TAG,"ssssss");
-            callWebservice();
+            if (markerMap.isEmpty()) {
+                addVenuesToMapAndMoveCamera();
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        initListFragment();
+    }
+
+    private void initListFragment() {
+        try {
+            if (listFragment != null)
+                listFragment.initAdapter();
+            else
+                ((PopupListFragment) fm.getFragments().get(0)).initAdapter();
+        } catch (Exception e) {
+            Log.e(TAG,"BOOOOOOM");
         }
     }
 
@@ -212,23 +241,27 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
 
 
-    void addVenuesToMapAndMoveCamera(JSONArray venues) throws JSONException {
-        venuesMap = new HashMap<String, Venue>();
-        LatLng latLng = null;
+    void addVenuesToMapAndMoveCamera() throws JSONException {
+        LatLng lastCoordinates = null;
+        for (Venue v: VenueCache.getInstance().getVenuesList()) {
+            lastCoordinates = v.getCoordinates();
+            Log.d(TAG, "venue: " + v);
+            Marker marker = addMarker(lastCoordinates, v.type, v.placesId);
+            markersList.get(v.type).add(marker);
+            markerMap.put(v.placesId, marker);
+        }
+        if (lastCoordinates != null)
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(lastCoordinates));
+    }
+
+    void initializeVenuesCache(JSONArray venues) throws JSONException {
         for (int x=0; x<venues.length();x++) {
             JSONObject venue = venues.getJSONObject(x);
-            Log.d(TAG, "venue: " + venue);
-            latLng = WebService.parseLatLng(venue);
 
             int type = venue.getInt(VenueJson.type.toString());
             String placesId = venue.getString(VenueJson.placesId.toString());
             addVenueToCache(venue, type, placesId);
-            Marker marker = addMarker(latLng, type, placesId);
-            markersList.get(type).add(marker);
-            markerMap.put(placesId, marker);
         }
-        if (latLng != null)
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
 
@@ -236,7 +269,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         String name = venue.getString(VenueJson.name.toString());
         double stars = venue.getDouble(VenueJson.score.toString());
         int rev = venue.getInt(VenueJson.reviews.toString());
-        venuesMap.put(placesId, new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars));
+        LatLng latLng = WebService.parseLatLng(venue);
+        VenueCache.getInstance().addVenue(new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng));
     }
 
     private void callWebservice() {
@@ -244,10 +278,11 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onTaskDone(String responseData) {
                 try {
-                    Log.d(TAG, "responseData: " + responseData);
                     JSONArray venues = WebService.parseVenues(responseData);
-
-                    addVenuesToMapAndMoveCamera(venues);
+                    initializeVenuesCache(venues);
+                    Log.d(TAG, "responseData: " + responseData);
+                    if(isMapReady)
+                        addVenuesToMapAndMoveCamera();
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
                     e.printStackTrace();
@@ -348,7 +383,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         Log.d(TAG,"markerclick:" + marker.getId());
         Log.d(TAG,"markdfdsfdsfdsdfserclick:" + marker.getSnippet());
 
-        Venue v = venuesMap.get(marker.getSnippet());
+        Venue v = VenueCache.getInstance().findVenueById(marker.getSnippet());
         MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
         return false;
     }

@@ -3,6 +3,8 @@ package club.therealbitcoin.bchmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
 
@@ -14,14 +16,20 @@ public class Venue implements Parcelable{
     public static String DIRECTIONS = "http://therealbitcoin.club/";
     int reviews;
     double stars;
+    LatLng coordinates;
 
-    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras) {
+    public LatLng getCoordinates() {
+        return coordinates;
+    }
+
+    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord) {
         this.name = name;
         this.iconRes = iconRes;
         this.type = type;
         this.placesId = placesId;
         this.stars = stras;
         this.reviews = rev;
+        this.coordinates = cord;
     }
 
     protected Venue(Parcel in) {

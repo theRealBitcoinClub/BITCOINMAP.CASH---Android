@@ -26,7 +26,6 @@ package club.therealbitcoin.bchmap;
         import android.widget.ListView;
         import android.widget.Toast;
 
-        import java.util.ArrayList;
         import java.util.List;
 
 /**
@@ -41,7 +40,6 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     public static PopupListFragment newInstance() {
 
         Bundle args = new Bundle();
-        //args.putParcelableArrayList(BUNDLE, venues);
         PopupListFragment fragment = new PopupListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -51,15 +49,11 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /*ArrayList<Venue> list = getArguments().getParcelableArrayList(BUNDLE);
+        initAdapter();
+    }
 
-        ArrayList<String> titleList = new ArrayList<String>();
-        for (Venue v: list) {
-            titleList.add(v.getName());
-        }
-
-        // Set the ListAdapter
-        setListAdapter(new PopupAdapter(titleList));*/
+    public void initAdapter() {
+        setListAdapter(new PopupAdapter(VenueCache.getInstance().getVenueTitles()));
     }
 
     @Override
@@ -120,8 +114,8 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
      */
     class PopupAdapter extends ArrayAdapter<String> {
 
-        PopupAdapter(ArrayList<String> items) {
-            super(getActivity(), R.layout.list_item, android.R.id.text1, items);
+        PopupAdapter(List<String> venues) {
+            super(getActivity(), R.layout.list_item, android.R.id.text1, venues);
         }
 
         @Override
@@ -131,13 +125,13 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
 
             // BEGIN_INCLUDE(button_popup)
             // Retrieve the popup button from the inflated view
-            //View popupButton = view.findViewById(R.id.button_popup);
+            View popupButton = view.findViewById(R.id.button_popup);
 
             // Set the item as the button's tag so it can be retrieved later
-            //popupButton.setTag(getItem(position));
+            popupButton.setTag(getItem(position));
 
             // Set the fragment instance as the OnClickListener
-            //popupButton.setOnClickListener(PopupListFragment.this);
+            popupButton.setOnClickListener(PopupListFragment.this);
             // END_INCLUDE(button_popup)
 
             // Finally return the view to be displayed
