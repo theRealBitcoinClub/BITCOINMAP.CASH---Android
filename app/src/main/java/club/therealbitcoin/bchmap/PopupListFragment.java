@@ -19,6 +19,7 @@ package club.therealbitcoin.bchmap;
         import android.os.Bundle;
         import android.support.v4.app.ListFragment;
         import android.support.v7.widget.PopupMenu;
+        import android.util.Log;
         import android.view.MenuItem;
         import android.view.View;
         import android.view.ViewGroup;
@@ -26,7 +27,11 @@ package club.therealbitcoin.bchmap;
         import android.widget.ListView;
         import android.widget.Toast;
 
+        import java.io.IOException;
         import java.util.List;
+
+        import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+        import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
 /**
  * This ListFragment displays a list of cheeses, with a clickable view on each item whichs displays
@@ -38,7 +43,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     private static final String BUNDLE = "bvdsfedss";
 
     public static PopupListFragment newInstance() {
-
+        Log.d("TRBC","PopupListFragment, newInstance");
         Bundle args = new Bundle();
         PopupListFragment fragment = new PopupListFragment();
         fragment.setArguments(args);
@@ -53,7 +58,8 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     }
 
     public void initAdapter() {
-        setListAdapter(new PopupAdapter(VenueCache.getInstance().getVenueTitles()));
+        Log.d("TRBC","PopupListFragment, initAdapter");
+        setListAdapter(new PopupAdapter(VenueFacade.getInstance().getVenueTitles()));
     }
 
     @Override
@@ -66,6 +72,12 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
 
     @Override
     public void onClick(final View view) {
+        try {
+            VenueFacade.getInstance().addFavoriteVenue((Venue) view.getTag(), getContext(), true);
+        } catch (IOException e) {
+            Log.e("TRBC","ERROR ADD FAVORITE ONCLICK");
+            e.printStackTrace();
+        }
         // We need to post a Runnable to show the popup to make sure that the PopupMenu is
         // correctly positioned. The reason being that the view may change position before the
         // PopupMenu is shown.
@@ -122,6 +134,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         public View getView(int position, View convertView, ViewGroup container) {
             // Let ArrayAdapter inflate the layout and set the text
             View view = super.getView(position, convertView, container);
+            Log.d("TRBC","PopupListFragment, getView" + position);
 
             // BEGIN_INCLUDE(button_popup)
             // Retrieve the popup button from the inflated view

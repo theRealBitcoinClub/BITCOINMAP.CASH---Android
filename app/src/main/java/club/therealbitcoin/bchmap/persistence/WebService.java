@@ -1,4 +1,4 @@
-package club.therealbitcoin.bchmap;
+package club.therealbitcoin.bchmap.persistence;
 
 import android.os.AsyncTask;
 
@@ -14,12 +14,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueJson;
+import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 
 public class WebService extends AsyncTask<String, Void, String> {
 
@@ -98,8 +101,15 @@ public class WebService extends AsyncTask<String, Void, String> {
             onTaskDoneListener.onError();
     }
 
-         public static JSONArray parseVenues(String responseData) throws JSONException {
-            //return new JSONObject(responseData).getJSONArray("venues");
-             return new JSONArray(responseData);
+         public static List<Venue> parseVenues(String responseData) throws JSONException {
+             //Log.d("TRBC","parseVenues" + responseData);
+             JSONArray jsonArray = new JSONArray(responseData);
+             List<Venue> venues = new ArrayList<Venue>();
+
+             for (int i=0; i<jsonArray.length(); i++) {
+                 venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
+             }
+
+             return venues;
         }
 }

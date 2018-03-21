@@ -32,18 +32,18 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueJson;
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
+import club.therealbitcoin.bchmap.persistence.VenueFacade;
+import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -243,7 +243,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
     void addVenuesToMapAndMoveCamera() throws JSONException {
         LatLng lastCoordinates = null;
-        for (Venue v: VenueCache.getInstance().getVenuesList()) {
+        for (Venue v: VenueFacade.getInstance().getVenuesList()) {
             lastCoordinates = v.getCoordinates();
             Log.d(TAG, "venue: " + v);
             Marker marker = addMarker(lastCoordinates, v.type, v.placesId);
@@ -254,32 +254,17 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             mMap.animateCamera(CameraUpdateFactory.newLatLng(lastCoordinates));
     }
 
-    void initializeVenuesCache(JSONArray venues) throws JSONException {
-        for (int x=0; x<venues.length();x++) {
-            JSONObject venue = venues.getJSONObject(x);
-
-            int type = venue.getInt(VenueJson.type.toString());
-            String placesId = venue.getString(VenueJson.placesId.toString());
-            addVenueToCache(venue, type, placesId);
-        }
-    }
-
-
-    private void addVenueToCache(JSONObject venue, int type, String placesId) throws JSONException {
-        String name = venue.getString(VenueJson.name.toString());
-        double stars = venue.getDouble(VenueJson.score.toString());
-        int rev = venue.getInt(VenueJson.reviews.toString());
-        LatLng latLng = WebService.parseLatLng(venue);
-        VenueCache.getInstance().addVenue(new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng));
-    }
-
     private void callWebservice() {
         new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String responseData) {
                 try {
-                    JSONArray venues = WebService.parseVenues(responseData);
-                    initializeVenuesCache(venues);
+                    List<Venue> venues = WebService.parseVenues(responseData);
+
+                    for (Venue v: venues) {
+                        VenueFacade.getInstance().addVenue(v);
+                    }
+
                     Log.d(TAG, "responseData: " + responseData);
                     if(isMapReady)
                         addVenuesToMapAndMoveCamera();
@@ -383,7 +368,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         Log.d(TAG,"markerclick:" + marker.getId());
         Log.d(TAG,"markdfdsfdsfdsdfserclick:" + marker.getSnippet());
 
-        Venue v = VenueCache.getInstance().findVenueById(marker.getSnippet());
+        Venue v = VenueFacade.getInstance().findVenueById(marker.getSnippet());
         MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
         return false;
     }

@@ -1,4 +1,4 @@
-package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums;
+package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 
 /**
  * Created by root on 18.03.2018.

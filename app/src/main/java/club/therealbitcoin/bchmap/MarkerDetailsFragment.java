@@ -6,11 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.enums.VenueType;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 
 public class MarkerDetailsFragment extends DialogFragment {
 
