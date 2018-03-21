@@ -178,13 +178,13 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         setMapStyle(mapStyles[0]);
         setupTabIcons();
 
-
         try {
             Log.d(TAG,"ssssss");
             if (markerMap.isEmpty()) {
                 addVenuesToMapAndMoveCamera();
             }
         } catch (Exception e) {
+            Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
         }
         initListFragment();

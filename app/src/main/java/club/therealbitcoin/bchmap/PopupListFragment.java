@@ -53,7 +53,11 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         initAdapter();
     }
 
