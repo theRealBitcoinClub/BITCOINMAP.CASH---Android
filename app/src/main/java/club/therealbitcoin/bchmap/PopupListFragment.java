@@ -67,10 +67,12 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
 
     @Override
     public void onListItemClick(ListView listView, View v, int position, long id) {
-        String item = (String) listView.getItemAtPosition(position);
+        Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
 
+
+        MarkerDetailsFragment.newInstance(venue).show(getFragmentManager(),"MARKERDIALOG");
         // Show a toast if the user clicks on an item
-        Toast.makeText(getActivity(), "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -79,12 +81,12 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         try {
             if (!item.isFavorite(getContext())) {
                 item.setFavorite(true);
-                Toast.makeText(getContext(),R.string.toast_added_favorite,Toast.LENGTH_LONG);
+                Toast.makeText(getContext(),getString(R.string.toast_added_favorite) + item.name,Toast.LENGTH_SHORT).show();
                 VenueFacade.getInstance().addFavoriteVenue(item, getContext(), true);
             }
             else {
                 item.setFavorite(false);
-                Toast.makeText(getContext(),R.string.toast_removed_favorite,Toast.LENGTH_LONG);
+                Toast.makeText(getContext(),getString(R.string.toast_removed_favorite) + item.name,Toast.LENGTH_SHORT).show();
                 VenueFacade.getInstance().removeFavoriteVenue(item);
             }
         } catch (IOException e) {

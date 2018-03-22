@@ -276,7 +276,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
             @Override
             public void onError() {
-                Toast.makeText(BCHMapsActivity.this,R.string.error_con_webservice,Toast.LENGTH_LONG);
+                Toast.makeText(BCHMapsActivity.this,R.string.error_con_webservice,Toast.LENGTH_LONG).show();
                 Log.e(TAG,"errrrror");
             }
         }).execute();
