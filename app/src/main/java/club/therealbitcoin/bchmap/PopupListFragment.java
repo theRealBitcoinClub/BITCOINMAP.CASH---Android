@@ -71,13 +71,16 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     public void initAdapter(boolean onlyFavorites) {
         Log.d("TRBC","PopupListFragment, initAdapter");
 
+        int itemRes;
         ArrayList<String> venueTitles = null;
         if (onlyFavorites) {
+            itemRes = R.layout.list_item_favos;
             venueTitles = VenueFacade.getInstance().getFavoTitles(getContext());
         } else {
+            itemRes = R.layout.list_item;
             venueTitles = VenueFacade.getInstance().getVenueTitles(getContext());
         }
-        setListAdapter(new PopupAdapter(venueTitles));
+        setListAdapter(new PopupAdapter(venueTitles, itemRes));
     }
 
     @Override
@@ -93,18 +96,22 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     @Override
     public void onClick(final View view) {
         final Venue item = (Venue) view.getTag();
-
         Context ctx = getContext();
-        if (!item.isFavorite(ctx)) {
+
+
+        if (showOnlyFavos) {
+            VenueFacade.getInstance().removeFavoriteVenue(item);
+        } else {
+            if (!item.isFavorite(ctx)) {
                 item.setFavorite(true, ctx);
-                Toast.makeText(ctx,getString(R.string.toast_added_favorite) + item.name,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, getString(R.string.toast_added_favorite) + item.name, Toast.LENGTH_SHORT).show();
                 VenueFacade.getInstance().addFavoriteVenue(item, ctx);
-            }
-            else {
+            } else {
                 item.setFavorite(false, ctx);
-                Toast.makeText(ctx,getString(R.string.toast_removed_favorite) + item.name,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + item.name, Toast.LENGTH_SHORT).show();
                 VenueFacade.getInstance().removeFavoriteVenue(item);
             }
+        }
 
         initAdapter(showOnlyFavos);
         // We need to post a Runnable to show the popup to make sure that the PopupMenu is
@@ -159,30 +166,32 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
      */
     class PopupAdapter extends ArrayAdapter<String> {
 
-        PopupAdapter(List<String> venues) {
-            super(getActivity(), R.layout.list_item, android.R.id.text1, venues);
+        PopupAdapter(List<String> venues, int listItemResource) {
+            super(getActivity(), listItemResource, android.R.id.text1, venues);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup container) {
             // Let ArrayAdapter inflate the layout and set the text
             View view = super.getView(position, convertView, container);
-            Log.d("TRBC","PopupListFragment, getView" + position);
+            Log.d("TRBC", "PopupListFragment, getView" + position);
 
             // BEGIN_INCLUDE(button_popup)
             // Retrieve the popup button from the inflated view
-            View button = view.findViewById(R.id.favorite_button);
+            View button = view.findViewById(R.id.list_item_button);
 
             // Set the item as the button's tag so it can be retrieved later
-                Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
+            Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
             button.setTag(venue);
 
+            if (!showOnlyFavos) {
                 if (venue.isFavorite(getContext())) {
                     VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
                     button.setBackgroundResource(R.drawable.ic_action_favorite);
                 } else {
                     button.setBackgroundResource(R.drawable.ic_action_favorite_border);
                 }
+            }
 
 
             // Set the fragment instance as the OnClickListener

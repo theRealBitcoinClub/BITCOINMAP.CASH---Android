@@ -20,6 +20,7 @@ public class VenueFacade {
     public static final String MY_FAVORITES = "myFavorites";
     private ConcurrentHashMap<String, Venue> favoVenueMap = new ConcurrentHashMap<String, Venue>();
     private List<Venue> favorites;
+    private ArrayList<String> titlesFavo = new ArrayList<String>();
 
 
     /*
@@ -56,18 +57,18 @@ public class VenueFacade {
 
     public ArrayList<String> getFavoTitles(Context ctx) {
         if (!hasAddedNewFavo && titles.size() > 0) {
-            return titles;
+            return titlesFavo;
         }
 
         Log.d("TRBC","titlesfavos start");
         for (Venue v: getFavoriteVenues(ctx)
                 ) {
             Log.d("TRBC","favosssssssss" + v.getName());
-            titles.add(v.getName());
+            titlesFavo.add(v.getName());
         }
         Log.d("TRBC","titlesfavos end");
         hasAddedNewFavo = false;
-        return titles;
+        return titlesFavo;
     }
 
     public void addVenue(Venue v) {
@@ -87,7 +88,6 @@ public class VenueFacade {
     public void addFavoriteVenue(Venue v, Context ctx) {
         Log.d("TRBC","addFavoriteVenue persist:");
         favoVenueMap.put(v.placesId,v);
-        v.setFavorite(true,ctx);
         hasAddedNewFavo = true;
     }
 

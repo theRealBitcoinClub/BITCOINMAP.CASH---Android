@@ -32,6 +32,7 @@ public class VenueTest {
         VenueFacade.getInstance().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues(RuntimeEnvironment.application);
         Assert.assertEquals(1, favoriteVenues.size());
+        v.setFavorite(true, RuntimeEnvironment.application);
         boolean favorite = v.isFavorite(RuntimeEnvironment.application);
         Assert.assertEquals(true, favorite);
     }
