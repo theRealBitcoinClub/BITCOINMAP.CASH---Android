@@ -22,4 +22,6 @@
     <string name="visibility_bitcoin">ATM/Teller</string>
     <string name="filter">Choose Filter</string>
     <string name="content_open_popup">blabla</string>
+    <string name="toast_added_favorite">Added to favorites</string>
+    <string name="toast_removed_favorite">Removed favorite</string>
 </resources>

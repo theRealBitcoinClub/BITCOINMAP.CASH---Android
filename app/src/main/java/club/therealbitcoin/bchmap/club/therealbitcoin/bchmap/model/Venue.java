@@ -1,5 +1,6 @@
 package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,6 +9,9 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
+import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class Venue implements Parcelable{
@@ -18,7 +22,30 @@ public class Venue implements Parcelable{
     public static String DIRECTIONS = "http://therealbitcoin.club/";
     public int reviews;
     public double stars;
+    private Boolean isFavorite = null;
     LatLng coordinates;
+
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public Boolean isFavorite(Context ctx) {
+        if (isFavorite == null) {
+            List<Venue> venues = VenueFacade.getInstance().getFavoriteVenues(ctx);
+
+            if (venues.isEmpty())
+                isFavorite = false;
+
+            for (Venue v: venues) {
+                if (v.getPlacesId().equals(placesId))
+                    isFavorite = true;
+                else
+                    isFavorite = false;
+            }
+        }
+
+        return isFavorite;
+    }
 
     public LatLng getCoordinates() {
         return coordinates;
@@ -143,5 +170,34 @@ public class Venue implements Parcelable{
         dest.writeInt(type);
         dest.writeInt(reviews);
         dest.writeDouble(stars);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Venue venue = (Venue) o;
+
+        if (placesId.equals(venue.placesId))
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = name != null ? name.hashCode() : 0;
+        result = 31 * result + iconRes;
+        result = 31 * result + type;
+        result = 31 * result + (placesId != null ? placesId.hashCode() : 0);
+        result = 31 * result + reviews;
+        temp = Double.doubleToLongBits(stars);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (isFavorite != null ? isFavorite.hashCode() : 0);
+        result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
+        return result;
     }
 }

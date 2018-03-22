@@ -20,7 +20,6 @@ package club.therealbitcoin.bchmap;
         import android.support.v4.app.ListFragment;
         import android.support.v7.widget.PopupMenu;
         import android.util.Log;
-        import android.view.MenuItem;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
@@ -76,21 +75,33 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
 
     @Override
     public void onClick(final View view) {
+        final Venue item = (Venue) view.getTag();
         try {
-            VenueFacade.getInstance().addFavoriteVenue((Venue) view.getTag(), getContext(), true);
+            if (!item.isFavorite(getContext())) {
+                item.setFavorite(true);
+                Toast.makeText(getContext(),R.string.toast_added_favorite,Toast.LENGTH_LONG);
+                VenueFacade.getInstance().addFavoriteVenue(item, getContext(), true);
+            }
+            else {
+                item.setFavorite(false);
+                Toast.makeText(getContext(),R.string.toast_removed_favorite,Toast.LENGTH_LONG);
+                VenueFacade.getInstance().removeFavoriteVenue(item);
+            }
         } catch (IOException e) {
             Log.e("TRBC","ERROR ADD FAVORITE ONCLICK");
             e.printStackTrace();
         }
+
+        initAdapter();
         // We need to post a Runnable to show the popup to make sure that the PopupMenu is
         // correctly positioned. The reason being that the view may change position before the
         // PopupMenu is shown.
-        view.post(new Runnable() {
+        /*view.post(new Runnable() {
             @Override
             public void run() {
                 showPopupMenu(view);
             }
-        });
+        });*/
     }
 
     // BEGIN_INCLUDE(show_popup)
@@ -98,7 +109,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         final PopupAdapter adapter = (PopupAdapter) getListAdapter();
 
         // Retrieve the clicked item from view's tag
-        final String item = (String) view.getTag();
+        final Venue item = (Venue) view.getTag();
 
         // Create a PopupMenu, giving it the clicked view for an anchor
         PopupMenu popup = new PopupMenu(getActivity(), view);
@@ -107,13 +118,17 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
 
         // Set a listener so we are notified if a menu item is clicked
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        /*popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.menu_favo:
-                        // Remove the item from the adapter
-                        adapter.remove(item);
+                        try {
+
+                        } catch (IOException e) {
+                            Log.e("TRBC","CCCCCCCCCCC");
+                            e.printStackTrace();
+                        }
                         return true;
                 }
                 return false;
@@ -121,7 +136,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         });
 
         // Finally show the PopupMenu
-        popup.show();
+        popup.show();*/
     }
     // END_INCLUDE(show_popup)
 
@@ -142,13 +157,21 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
 
             // BEGIN_INCLUDE(button_popup)
             // Retrieve the popup button from the inflated view
-            View popupButton = view.findViewById(R.id.button_popup);
+            View button = view.findViewById(R.id.favorite_button);
 
             // Set the item as the button's tag so it can be retrieved later
-            popupButton.setTag(getItem(position));
+                Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
+            button.setTag(venue);
+
+                if (venue.isFavorite(getContext())) {
+                    button.setBackgroundResource(R.drawable.ic_action_favorite);
+                } else {
+                    button.setBackgroundResource(R.drawable.ic_action_favorite_border);
+                }
+
 
             // Set the fragment instance as the OnClickListener
-            popupButton.setOnClickListener(PopupListFragment.this);
+            button.setOnClickListener(PopupListFragment.this);
             // END_INCLUDE(button_popup)
 
             // Finally return the view to be displayed

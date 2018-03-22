@@ -118,4 +118,12 @@ public class VenueFacade {
 
     private VenueFacade() {
     }
+
+    public void removeFavoriteVenue(Venue item) {
+        favoVenueList.remove(item);
+    }
+
+    public Venue findVenueByIndex(int position) {
+        return venuesList.get(position);
+    }
 }

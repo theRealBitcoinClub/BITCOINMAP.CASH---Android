@@ -32,11 +32,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
-        android:id="@+id/button_popup"
+        android:id="@+id/favorite_button"
         android:layout_height="match_parent"
         android:layout_width="56dip"
         android:background="?attr/selectableItemBackground"
-        android:src="@drawable/ic_action_favorite_border"
-        android:contentDescription="@string/content_open_popup"/>
+        android:src="@drawable/ic_action_favorite_border"/>
 
 </LinearLayout>
