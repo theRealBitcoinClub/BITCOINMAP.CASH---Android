@@ -21,27 +21,27 @@ public class VenueFacadeTest {
     @Test
     public void testAddFavorite() throws IOException {
         Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5));
-        VenueFacade.getInstance().addFavoriteVenue(v,RuntimeEnvironment.application,true);
+        VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues(RuntimeEnvironment.application);
-        Assert.assertEquals(favoriteVenues.size(),1);
+        Assert.assertEquals(1, favoriteVenues.size());
     }
 
 
     @Test
     public void testAddMoreFavorites() throws IOException {
         Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5));
-        VenueFacade.getInstance().addFavoriteVenue(v,RuntimeEnvironment.application,true);
+        VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues(RuntimeEnvironment.application);
-        Assert.assertEquals(favoriteVenues.size(),1);
+        Assert.assertEquals(1,favoriteVenues.size());
     }
 
     @Test
     public void testGetVenueTitles() throws IOException {
         Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5));
-        ArrayList<String> venueTitles = VenueFacade.getInstance().getVenueTitles();
-        Assert.assertEquals(venueTitles.size(),0);
+        ArrayList<String> venueTitles = VenueFacade.getInstance().getVenueTitles(RuntimeEnvironment.application);
+        Assert.assertEquals(0,venueTitles.size());
         VenueFacade.getInstance().addVenue(v);
-        venueTitles = VenueFacade.getInstance().getVenueTitles();
-        Assert.assertEquals(venueTitles.size(),1);
+        venueTitles = VenueFacade.getInstance().getVenueTitles(RuntimeEnvironment.application);
+        Assert.assertEquals(1,venueTitles.size());
     }
 }

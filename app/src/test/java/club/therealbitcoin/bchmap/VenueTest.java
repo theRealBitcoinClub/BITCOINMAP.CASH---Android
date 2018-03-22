@@ -6,7 +6,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -30,7 +29,7 @@ public class VenueTest {
     @Test
     public void testIsFavorite() throws IOException {
         Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
-        VenueFacade.getInstance().addFavoriteVenue(v,RuntimeEnvironment.application,true);
+        VenueFacade.getInstance().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues(RuntimeEnvironment.application);
         Assert.assertEquals(1, favoriteVenues.size());
         boolean favorite = v.isFavorite(RuntimeEnvironment.application);
@@ -42,6 +41,7 @@ public class VenueTest {
         Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
         Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
         Assert.assertTrue(v.equals(v2));
+        v.placesId = "dfdsfds";
         Assert.assertFalse(v.equals(v2));
     }
 

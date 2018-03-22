@@ -27,6 +27,7 @@ package club.therealbitcoin.bchmap;
         import android.widget.ListView;
         import android.widget.Toast;
 
+        import java.util.ArrayList;
         import java.util.List;
 
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
@@ -40,10 +41,14 @@ package club.therealbitcoin.bchmap;
 public class PopupListFragment extends ListFragment implements View.OnClickListener {
 
     private static final String BUNDLE = "bvdsfedss";
+    private static String
+            ONLY_FAVOS = "ONLY_FAVOS";
+    private boolean showOnlyFavos;
 
-    public static PopupListFragment newInstance() {
+    public static PopupListFragment newInstance(boolean onlyFavs) {
         Log.d("TRBC","PopupListFragment, newInstance");
         Bundle args = new Bundle();
+        args.putBoolean(ONLY_FAVOS,onlyFavs);
         PopupListFragment fragment = new PopupListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -57,12 +62,22 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        initAdapter();
+        if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
+            showOnlyFavos = true;
+        }
+        initAdapter(showOnlyFavos);
     }
 
-    public void initAdapter() {
+    public void initAdapter(boolean onlyFavorites) {
         Log.d("TRBC","PopupListFragment, initAdapter");
-        setListAdapter(new PopupAdapter(VenueFacade.getInstance().getVenueTitles()));
+
+        ArrayList<String> venueTitles = null;
+        if (onlyFavorites) {
+            venueTitles = VenueFacade.getInstance().getFavoTitles(getContext());
+        } else {
+            venueTitles = VenueFacade.getInstance().getVenueTitles(getContext());
+        }
+        setListAdapter(new PopupAdapter(venueTitles));
     }
 
     @Override
@@ -83,7 +98,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         if (!item.isFavorite(ctx)) {
                 item.setFavorite(true, ctx);
                 Toast.makeText(ctx,getString(R.string.toast_added_favorite) + item.name,Toast.LENGTH_SHORT).show();
-                VenueFacade.getInstance().addFavoriteVenue(item);
+                VenueFacade.getInstance().addFavoriteVenue(item, ctx);
             }
             else {
                 item.setFavorite(false, ctx);
@@ -91,7 +106,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
                 VenueFacade.getInstance().removeFavoriteVenue(item);
             }
 
-        initAdapter();
+        initAdapter(showOnlyFavos);
         // We need to post a Runnable to show the popup to make sure that the PopupMenu is
         // correctly positioned. The reason being that the view may change position before the
         // PopupMenu is shown.
@@ -163,7 +178,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
             button.setTag(venue);
 
                 if (venue.isFavorite(getContext())) {
-                    VenueFacade.getInstance().addFavoriteVenue(venue);
+                    VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
                     button.setBackgroundResource(R.drawable.ic_action_favorite);
                 } else {
                     button.setBackgroundResource(R.drawable.ic_action_favorite_border);

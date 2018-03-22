@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -35,14 +36,15 @@ public class Venue implements Parcelable{
         sharedPref.edit().putString(placesId,null);
     }
 
+    @Nullable
     public Boolean isFavorite(Context ctx) {
-        if (isFavorite == null) {
+        if (isFavorite == null && ctx != null) {
             SharedPreferences sharedPref = ctx.getSharedPreferences(
                     ctx.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             return sharedPref.contains(placesId);
         }
 
-        return isFavorite;
+        return isFavorite != null ? isFavorite : false;
     }
 
     public LatLng getCoordinates() {

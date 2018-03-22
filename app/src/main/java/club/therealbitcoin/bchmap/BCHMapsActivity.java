@@ -70,6 +70,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private Toolbar tb;
     private boolean isMapReady = false;
     private PopupListFragment listFragment;
+    private PopupListFragment favosFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +125,11 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(mapFragment,"BLA");
         Log.d(TAG,"FRAGMENT");
-        listFragment = PopupListFragment.newInstance();
+        listFragment = PopupListFragment.newInstance(false);
         adapter.addFragment(listFragment,"BLUB");
+        Log.d(TAG,"FRAGMENT22");
+        favosFragment = PopupListFragment.newInstance(true);
+        adapter.addFragment(favosFragment,"FAVOS");
         Log.d(TAG,"ALL ADDED");
         viewPager.setAdapter(adapter);
     }
@@ -133,7 +137,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     private void initMarkersList() {
@@ -187,15 +191,16 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
         }
-        initListFragment();
+        initListFragment(1,false);
+        initListFragment(2,true);
     }
 
-    private void initListFragment() {
+    private void initListFragment(int index, boolean onlyFavos) {
         try {
             if (listFragment != null)
-                listFragment.initAdapter();
+                listFragment.initAdapter(false);
             else
-                ((PopupListFragment) fm.getFragments().get(0)).initAdapter();
+                ((PopupListFragment) fm.getFragments().get(index)).initAdapter(onlyFavos);
         } catch (Exception e) {
             Log.e(TAG,"BOOOOOOM");
         }
