@@ -1,6 +1,7 @@
 package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import club.therealbitcoin.bchmap.R;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
@@ -25,23 +27,19 @@ public class Venue implements Parcelable{
     private Boolean isFavorite = null;
     LatLng coordinates;
 
-    public void setFavorite(Boolean favorite) {
+    public void setFavorite(Boolean favorite, Context ctx) {
         isFavorite = favorite;
+
+        SharedPreferences sharedPref = ctx.getSharedPreferences(
+                ctx.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        sharedPref.edit().putString(placesId,null);
     }
 
     public Boolean isFavorite(Context ctx) {
         if (isFavorite == null) {
-            List<Venue> venues = VenueFacade.getInstance().getFavoriteVenues(ctx);
-
-            if (venues.isEmpty())
-                isFavorite = false;
-
-            for (Venue v: venues) {
-                if (v.getPlacesId().equals(placesId))
-                    isFavorite = true;
-                else
-                    isFavorite = false;
-            }
+            SharedPreferences sharedPref = ctx.getSharedPreferences(
+                    ctx.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            return sharedPref.contains(placesId);
         }
 
         return isFavorite;

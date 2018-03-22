@@ -26,6 +26,15 @@ public class VenueFacadeTest {
         Assert.assertEquals(favoriteVenues.size(),1);
     }
 
+
+    @Test
+    public void testAddMoreFavorites() throws IOException {
+        Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5));
+        VenueFacade.getInstance().addFavoriteVenue(v,RuntimeEnvironment.application,true);
+        List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues(RuntimeEnvironment.application);
+        Assert.assertEquals(favoriteVenues.size(),1);
+    }
+
     @Test
     public void testGetVenueTitles() throws IOException {
         Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5));

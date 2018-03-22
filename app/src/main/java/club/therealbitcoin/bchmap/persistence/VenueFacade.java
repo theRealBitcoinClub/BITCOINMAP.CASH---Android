@@ -1,6 +1,7 @@
 package club.therealbitcoin.bchmap.persistence;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -11,9 +12,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import club.therealbitcoin.bchmap.R;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 
 public class VenueFacade {
@@ -21,8 +25,9 @@ public class VenueFacade {
     private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
     private ArrayList<Venue> venuesList = new ArrayList<Venue>();
     private ArrayList<String> titles = new ArrayList<String>();
-    private ArrayList<Venue> favoVenueList = new ArrayList<Venue>();
     public static final String MY_FAVORITES = "myFavorites";
+    private ConcurrentHashMap<String, Venue> favoVenueMap = new ConcurrentHashMap<String, Venue>();
+    private List<Venue> favos;
 
     public static VenueFacade getInstance() {
         return ourInstance;
@@ -57,70 +62,33 @@ public class VenueFacade {
         return venuesMap.get(id);
     }
 
-    public void addFavoriteVenue(Venue v, Context ctx, boolean persist) throws IOException {
-        Log.d("TRBC","addFavoriteVenue persist:" + persist);
-        favoVenueList.add(v);
-        if (persist)
-            persistFavoriteVenues(ctx);
+    boolean hasAddedNew = true;
+
+    public void addFavoriteVenue(Venue v) {
+        Log.d("TRBC","addFavoriteVenue persist:");
+        favoVenueMap.put(v.placesId,v);
+        hasAddedNew = true;
     }
 
     public List<Venue> getFavoriteVenues (Context ctx) {
-        if (favoVenueList.isEmpty()) {
-            try {
-                FileInputStream fileInput = ctx.openFileInput(MY_FAVORITES);
+        if (!hasAddedNew)
+            return favos;
 
-                String data = WebService.readJsonFromInputStream(fileInput);
-                return WebService.parseVenues(data);
-            } catch (FileNotFoundException e) {
-                Log.e("TRBC","file not found favorites");
-                e.printStackTrace();
-            } catch (IOException e) {
-                Log.e("TRBC","IO EXCEPTION favorites");
-                e.printStackTrace();
-            } catch (JSONException e) {
-                Log.e("TRBC","JSON EXCEPTION favorites");
-                e.printStackTrace();
-            }
+        Iterator<Venue> iterator = favoVenueMap.values().iterator();
+        favos = new ArrayList<Venue>();
+
+        while (iterator.hasNext()) {
+            favos.add(iterator.next());
         }
 
-        return favoVenueList;
-    }
-
-    private void persistFavoriteVenues(Context ctx) throws IOException {
-        StringBuilder sb = new StringBuilder("[");
-        boolean isFirstRun = true;
-
-        for (Venue v: favoVenueList) {
-            if (!isFirstRun) {
-                sb.append(",");
-            }
-            sb.append(v.toJson());
-            isFirstRun = false;
-        }
-
-        sb.append("]");
-        saveFavoriteVenues(ctx, sb.toString());
-    }
-
-    private void saveFavoriteVenues(Context ctx, String fileContents) throws IOException {
-        FileOutputStream outputStream = null;
-
-        try {
-            outputStream = ctx.openFileOutput(MY_FAVORITES, Context.MODE_PRIVATE);
-            outputStream.write(fileContents.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (outputStream != null)
-                outputStream.close();
-        }
+        return favos;
     }
 
     private VenueFacade() {
     }
 
     public void removeFavoriteVenue(Venue item) {
-        favoVenueList.remove(item);
+        favoVenueMap.remove(item);
     }
 
     public Venue findVenueByIndex(int position) {

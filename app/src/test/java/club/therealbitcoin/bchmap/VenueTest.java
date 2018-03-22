@@ -38,6 +38,14 @@ public class VenueTest {
     }
 
     @Test
+    public void testEquals() {
+        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
+        Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
+        Assert.assertTrue(v.equals(v2));
+        Assert.assertFalse(v.equals(v2));
+    }
+
+    @Test
     public void createVenue() {
         Venue venue = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
         Assert.assertEquals(testName, venue.name);

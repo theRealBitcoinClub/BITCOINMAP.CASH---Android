@@ -16,6 +16,7 @@ package club.therealbitcoin.bchmap;
  * limitations under the License.
  */
 
+        import android.content.Context;
         import android.os.Bundle;
         import android.support.v4.app.ListFragment;
         import android.support.v7.widget.PopupMenu;
@@ -26,7 +27,6 @@ package club.therealbitcoin.bchmap;
         import android.widget.ListView;
         import android.widget.Toast;
 
-        import java.io.IOException;
         import java.util.List;
 
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
@@ -78,21 +78,18 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     @Override
     public void onClick(final View view) {
         final Venue item = (Venue) view.getTag();
-        try {
-            if (!item.isFavorite(getContext())) {
-                item.setFavorite(true);
-                Toast.makeText(getContext(),getString(R.string.toast_added_favorite) + item.name,Toast.LENGTH_SHORT).show();
-                VenueFacade.getInstance().addFavoriteVenue(item, getContext(), true);
+
+        Context ctx = getContext();
+        if (!item.isFavorite(ctx)) {
+                item.setFavorite(true, ctx);
+                Toast.makeText(ctx,getString(R.string.toast_added_favorite) + item.name,Toast.LENGTH_SHORT).show();
+                VenueFacade.getInstance().addFavoriteVenue(item);
             }
             else {
-                item.setFavorite(false);
-                Toast.makeText(getContext(),getString(R.string.toast_removed_favorite) + item.name,Toast.LENGTH_SHORT).show();
+                item.setFavorite(false, ctx);
+                Toast.makeText(ctx,getString(R.string.toast_removed_favorite) + item.name,Toast.LENGTH_SHORT).show();
                 VenueFacade.getInstance().removeFavoriteVenue(item);
             }
-        } catch (IOException e) {
-            Log.e("TRBC","ERROR ADD FAVORITE ONCLICK");
-            e.printStackTrace();
-        }
 
         initAdapter();
         // We need to post a Runnable to show the popup to make sure that the PopupMenu is
@@ -166,6 +163,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
             button.setTag(venue);
 
                 if (venue.isFavorite(getContext())) {
+                    VenueFacade.getInstance().addFavoriteVenue(venue);
                     button.setBackgroundResource(R.drawable.ic_action_favorite);
                 } else {
                     button.setBackgroundResource(R.drawable.ic_action_favorite_border);
