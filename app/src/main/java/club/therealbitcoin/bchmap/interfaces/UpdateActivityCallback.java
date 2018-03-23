@@ -5,5 +5,7 @@ package club.therealbitcoin.bchmap.interfaces;
  */
 
 public interface UpdateActivityCallback {
-    void updateListViews();
+    void updateBothListViews();
+    void updateFavosList();
+    void updateListView();
 }

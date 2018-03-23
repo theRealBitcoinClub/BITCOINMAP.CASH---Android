@@ -48,6 +48,7 @@ import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class BCHMapsActivity extends AppCompatActivity implements UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
+
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places.json";
@@ -275,10 +276,20 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     }
 
     @Override
-    public void updateListViews() {
+    public void updateBothListViews() {
         Log.d(TAG,"updateListViews");
-        initListFragment(1);
+        updateFavosList();
+        updateListView();
+    }
+
+    @Override
+    public void updateFavosList() {
         initListFragment(2);
+    }
+
+    @Override
+    public void updateListView() {
+        initListFragment(1);
     }
 
     private void callWebservice() {
@@ -296,7 +307,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                     if(isMapReady)
                         addVenuesToMapAndMoveCamera();
 
-                    updateListViews();
+                    updateBothListViews();
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
                     e.printStackTrace();
@@ -399,7 +410,6 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         Log.d(TAG,"markerclick:" + marker.getId());
 
         Venue v = (Venue) marker.getTag();
-        marker.setTag(null);
         MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
         return false;
     }
