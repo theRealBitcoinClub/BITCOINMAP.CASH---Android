@@ -370,6 +370,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                 switchVisibility(markersList.get(VenueType.Food.getIndex()));
                 return true;
             case R.id.menu_switch:
+                viewPager.setCurrentItem(0);
                 switchMapStyle(item);
 
                 if (currentMapStyle == 0) {
