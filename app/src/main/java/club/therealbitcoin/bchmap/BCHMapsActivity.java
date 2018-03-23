@@ -215,7 +215,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             e.printStackTrace();
         }
 
-        mMap.setMinZoomPreference(5.0f);
+        mMap.setMinZoomPreference(10.0f);
     }
 
     private void initListFragment(int index) {
