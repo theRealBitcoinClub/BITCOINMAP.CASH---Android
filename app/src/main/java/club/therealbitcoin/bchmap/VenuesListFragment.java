@@ -81,7 +81,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
 
 
-        MarkerDetailsFragment.newInstance(venue).show(getFragmentManager(),"MARKERDIALOG");
+        MarkerDetailsFragment.newInstance(venue, callback).show(getFragmentManager(),"MARKERDIALOG");
         // Show a toast if the user clicks on an item
         //Toast.makeText(getActivity(), "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
     }

@@ -231,6 +231,8 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             listFragment.initAdapter(false);
         } else if (index == 2 && favosFragment != null) {
             favosFragment.initAdapter(true);
+        } else if (index == 2 && favosFragment == null) {
+            favosFragment =
         }
     }
 
@@ -425,7 +427,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             return false;
         }
 
-        MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
+        MarkerDetailsFragment.newInstance(v, this).show(fm,"MARKERDIALOG");
         return false;
     }
 }
