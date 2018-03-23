@@ -66,7 +66,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     private int[] tabIcons = {
             R.drawable.ic_action_map,
             R.drawable.ic_action_list,
-            R.drawable.ic_action_favorite_border
+            R.drawable.ic_action_favorite_white
     };
     private SupportMapFragment mapFragment;
     private Toolbar tb;
@@ -107,7 +107,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-        //initTitleTouchListener();
+        initTitleTouchListener();
 
         callWebservice();
         Log.d(TAG,"FINISH ON CREATE");
@@ -334,8 +334,6 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         switchCheck(item);
 
         switch (item.getItemId()) {
-            case R.id.menu_rating:
-                return true;
             case R.id.menu_atm:
                 switchVisibility(markersList.get(VenueType.ATM.getIndex()));
                 return true;

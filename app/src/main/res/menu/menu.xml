@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BCHMapsActivity">
-    <item android:id="@+id/menu_rating"
-        android:icon="@drawable/ic_action_star"
+    <!--item android:id="@+id/menu_rating"
+        android:icon="@drawable/ic_action_star_border"
         android:title="@string/rating"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" /-->
     <item android:id="@+id/menu_switch"
         android:title="@string/switch_style"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_action_sun"
+        app:showAsAction="always"/>
     <item
         android:icon="@drawable/ic_action_settings"
         android:title="@string/filter"
