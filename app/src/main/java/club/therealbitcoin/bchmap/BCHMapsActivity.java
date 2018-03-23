@@ -231,9 +231,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             listFragment.initAdapter(false);
         } else if (index == 2 && favosFragment != null) {
             favosFragment.initAdapter(true);
-        } else if (index == 2 && favosFragment == null) {
-            favosFragment =
-        }
+        } 
     }
 
     private void getPermissionAccessFineLocation() {
