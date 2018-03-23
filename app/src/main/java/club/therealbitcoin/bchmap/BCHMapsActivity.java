@@ -71,8 +71,8 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     private SupportMapFragment mapFragment;
     private Toolbar tb;
     private boolean isMapReady = false;
-    private PopupListFragment listFragment;
-    private PopupListFragment favosFragment;
+    private VenuesListFragment listFragment;
+    private VenuesListFragment favosFragment;
 
     @Override
     protected void onStop() {
@@ -142,10 +142,10 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(mapFragment,"BLA");
         Log.d(TAG,"FRAGMENT");
-        listFragment = PopupListFragment.newInstance(false, this);
+        listFragment = VenuesListFragment.newInstance(false, this);
         adapter.addFragment(listFragment,"BLUB");
         Log.d(TAG,"FRAGMENT22");
-        favosFragment = PopupListFragment.newInstance(true, this);
+        favosFragment = VenuesListFragment.newInstance(true, this);
         adapter.addFragment(favosFragment,"FAVOS");
         Log.d(TAG,"ALL ADDED");
         viewPager.setAdapter(adapter);
