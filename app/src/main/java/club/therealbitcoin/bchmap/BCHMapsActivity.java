@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -19,14 +21,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
@@ -263,10 +270,10 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             markersList.get(v.type).add(marker);
             markerMap.put(v.placesId, marker);
         }
-        //moveCameraToLastLocation();
+        moveCameraToLastLocation();
     }
 
-    /*private void moveCameraToLastLocation() {
+    private void moveCameraToLastLocation() {
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnCompleteListener(this, new OnCompleteListener<Location>() {
@@ -274,7 +281,9 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                         public void onComplete(@NonNull Task<Location> task) {
                             if (task.isSuccessful() && task.getResult() != null) {
                                 Location lastCoordinates = task.getResult();
-                                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude())));
+                                LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+                                Log.d(TAG,latLng.latitude + "" + latLng.longitude);
+                                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                             } else {
                                 Log.d(TAG, "getLastLocation:exception", task.getException());
                             }
@@ -283,7 +292,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         } catch (SecurityException e){
             Log.d(TAG,"SECURITYEXCEPTION");
         }
-    }*/
+    }
 
     @Override
     public void updateBothListViews() {

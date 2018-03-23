@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        //multiDexEnabled true
+        multiDexEnabled true
         applicationId "club.therealbitcoin.bchmap"
         minSdkVersion 15
         targetSdkVersion 27
@@ -51,8 +51,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
-    //implementation 'com.google.android.gms:play-services:11.8.0'
-    //implementation 'com.android.support:multidex:1.0.1'
+    implementation 'com.google.android.gms:play-services:11.8.0'
+    implementation 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:design:27.1.0'
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.8"
