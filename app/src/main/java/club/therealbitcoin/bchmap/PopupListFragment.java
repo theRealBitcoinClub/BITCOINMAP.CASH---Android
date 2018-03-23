@@ -17,7 +17,6 @@ package club.therealbitcoin.bchmap;
  */
 
         import android.content.Context;
-        import android.database.DataSetObserver;
         import android.os.Bundle;
         import android.support.v4.app.ListFragment;
         import android.support.v7.widget.PopupMenu;
@@ -88,10 +87,10 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         ArrayList<String> venueTitles = null;
         if (onlyFavorites) {
             itemRes = R.layout.list_item_favos;
-            venueTitles = VenueFacade.getInstance().getFavoTitles(getContext());
+            venueTitles = VenueFacade.getInstance().getFavoTitles();
         } else {
             itemRes = R.layout.list_item;
-            venueTitles = VenueFacade.getInstance().getVenueTitles(getContext());
+            venueTitles = VenueFacade.getInstance().getVenueTitles();
         }
         if (venueTitles != null && getActivity() != null) {
             for (String v: venueTitles
@@ -129,25 +128,25 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
             if (!item.isFavorite(ctx)) {
                 item.setFavorite(true, ctx);
                 Toast.makeText(ctx, getString(R.string.toast_added_favorite) + item.name, Toast.LENGTH_SHORT).show();
-                VenueFacade.getInstance().addFavoriteVenue(item, ctx);
+                VenueFacade.getInstance().addFavoriteVenue(item);
             } else {
                 item.setFavorite(false, ctx);
                 Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + item.name, Toast.LENGTH_SHORT).show();
-                VenueFacade.getInstance().removeFavoriteVenue(item);
-            }
+            VenueFacade.getInstance().removeFavoriteVenue(item);
         }
+    }
 
         callback.updateListViews();
-        // We need to post a Runnable to show the popup to make sure that the PopupMenu is
-        // correctly positioned. The reason being that the view may change position before the
-        // PopupMenu is shown.
+    // We need to post a Runnable to show the popup to make sure that the PopupMenu is
+    // correctly positioned. The reason being that the view may change position before the
+    // PopupMenu is shown.
         /*view.post(new Runnable() {
             @Override
             public void run() {
                 showPopupMenu(view);
             }
         });*/
-    }
+}
 
     // BEGIN_INCLUDE(show_popup)
     private void showPopupMenu(View view) {
@@ -183,51 +182,52 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
         // Finally show the PopupMenu
         popup.show();*/
     }
-    // END_INCLUDE(show_popup)
+// END_INCLUDE(show_popup)
 
-    /**
-     * A simple array adapter that creates a list of cheeses.
-     */
-    class PopupAdapter extends ArrayAdapter<String> {
+/**
+ * A simple array adapter that creates a list of cheeses.
+ */
+class PopupAdapter extends ArrayAdapter<String> {
 
-        PopupAdapter(List<String> venues, int listItemResource, Context ctx) {
-            super(ctx, listItemResource, android.R.id.text1, venues);
+    PopupAdapter(List<String> venues, int listItemResource, Context ctx) {
+        super(ctx, listItemResource, android.R.id.text1, venues);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup container) {
+        // Let ArrayAdapter inflate the layout and set the text
+        View view = super.getView(position, convertView, container);
+        Log.d("TRBC", "PopupListFragment, getView" + showOnlyFavos + position);
+
+        // BEGIN_INCLUDE(button_popup)
+        // Retrieve the popup button from the inflated view
+        View button = view.findViewById(R.id.list_item_button);
+
+        // Set the item as the button's tag so it can be retrieved later
+
+        Venue venue;
+
+        if (!showOnlyFavos) {
+            venue =VenueFacade.getInstance().findVenueByIndex(position);
+        } else {
+            venue =VenueFacade.getInstance().findFavoByIndex(position);
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup container) {
-            // Let ArrayAdapter inflate the layout and set the text
-            View view = super.getView(position, convertView, container);
-            Log.d("TRBC", "PopupListFragment, getView" + showOnlyFavos + position);
+        venue.tempIndex = position;
+        button.setTag(venue);
 
-            // BEGIN_INCLUDE(button_popup)
-            // Retrieve the popup button from the inflated view
-            View button = view.findViewById(R.id.list_item_button);
-
-            // Set the item as the button's tag so it can be retrieved later
-
-            Venue venue;
-
-            if (!showOnlyFavos) {
-                venue =VenueFacade.getInstance().findVenueByIndex(position);
+        if (!showOnlyFavos) {
+            Log.d("TRBC", "showOnlyFavos: " + showOnlyFavos + position);
+            if (venue.isFavorite(getContext())) {
+                button.setBackgroundResource(R.drawable.ic_action_favorite);
             } else {
-                venue =VenueFacade.getInstance().findFavoByIndex(position);
+                button.setBackgroundResource(R.drawable.ic_action_favorite_border);
             }
 
-            button.setTag(venue);
-
-            if (!showOnlyFavos) {
-                Log.d("TRBC", "showOnlyFavos: " + showOnlyFavos + position);
-                if (venue.isFavorite(getContext())) {
-                    button.setBackgroundResource(R.drawable.ic_action_favorite);
-                } else {
-                    button.setBackgroundResource(R.drawable.ic_action_favorite_border);
-                }
-
-            }
+        }
 
 
-            // Set the fragment instance as the OnClickListener
+        // Set the fragment instance as the OnClickListener
             button.setOnClickListener(PopupListFragment.this);
             // END_INCLUDE(button_popup)
 

@@ -398,7 +398,9 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     public boolean onMarkerClick(Marker marker) {
         Log.d(TAG,"markerclick:" + marker.getId());
 
-        MarkerDetailsFragment.newInstance((Venue) marker.getTag()).show(fm,"MARKERDIALOG");
+        Venue v = (Venue) marker.getTag();
+        marker.setTag(null);
+        MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
         return false;
     }
 }

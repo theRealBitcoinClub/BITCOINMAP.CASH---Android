@@ -18,6 +18,7 @@ import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class Venue implements Parcelable{
+    public int tempIndex=-1;
     public String name;
     public int iconRes;
     public int type;

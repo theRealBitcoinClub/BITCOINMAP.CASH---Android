@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 
@@ -18,8 +17,7 @@ public class VenueFacade {
     private ArrayList<Venue> venuesList = new ArrayList<Venue>();
     private ArrayList<String> titles = new ArrayList<String>();
     public static final String MY_FAVORITES = "myFavorites";
-    private ConcurrentHashMap<String, Venue> favoVenueMap = new ConcurrentHashMap<String, Venue>();
-    private List<Venue> favorites;
+    private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
 
     /*
@@ -38,7 +36,7 @@ public class VenueFacade {
         return venuesList;
     }
 
-    public ArrayList<String> getVenueTitles(Context ctx) {
+    public ArrayList<String> getVenueTitles() {
         Log.d("TRBC","getVenueTitles");
         if (!hasAddedNew && titles.size() > 0) {
             return titles;
@@ -56,7 +54,7 @@ public class VenueFacade {
         return titles;
     }
 
-    public ArrayList<String> getFavoTitles(Context ctx) {
+    public ArrayList<String> getFavoTitles() {
         Log.d("TRBC","getFavoTitles");
         if (!hasChangedFavo && titles.size() > 0) {
             return titlesFavo;
@@ -64,7 +62,7 @@ public class VenueFacade {
 
         titlesFavo.clear();
         Log.d("TRBC","titlesfavos start");
-        for (Venue v: getFavoriteVenues(ctx)
+        for (Venue v: getFavoriteVenues()
                 ) {
             Log.d("TRBC","favosssssssss" + v.getName());
             titlesFavo.add(v.getName());
@@ -88,27 +86,14 @@ public class VenueFacade {
     boolean hasAddedNew = true;
     boolean hasChangedFavo = true;
 
-    public void addFavoriteVenue(Venue v, Context ctx) {
+    public void addFavoriteVenue(Venue v) {
         Log.d("TRBC","addFavoriteVenue persist:" + v);
-        favoVenueMap.put(v.placesId,v);
+        favorites.add(v);
         hasChangedFavo = true;
     }
 
-    public List<Venue> getFavoriteVenues (Context ctx) {
+    public List<Venue> getFavoriteVenues () {
         Log.d("TRBC","getFavoriteVenues :");
-        if (!hasChangedFavo)
-            return favorites;
-
-        Iterator<Venue> iterator = favoVenueMap.values().iterator();
-        favorites = new ArrayList<Venue>();
-
-        while (iterator.hasNext()) {
-            Venue next = iterator.next();
-            Log.d("TRBC","getFavoriteVenues :" + next);
-            favorites.add(next);
-        }
-
-        hasChangedFavo = false;
         return favorites;
     }
 
@@ -116,8 +101,8 @@ public class VenueFacade {
     }
 
     public void removeFavoriteVenue(Venue item) {
-        Log.d("TRBC","removeFavoriteVenue :" + item);
-        favoVenueMap.remove(item);
+        Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.tempIndex);
+        favorites.remove(item.tempIndex);
         hasChangedFavo = true;
     }
 
