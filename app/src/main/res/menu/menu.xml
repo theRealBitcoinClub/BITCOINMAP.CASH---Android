@@ -16,7 +16,6 @@
         android:title="@string/filter"
         android:id="@+id/empty">
 
-        <menu>
             <group android:checkableBehavior="all">
                 <item android:id="@+id/menu_atm"
                     android:icon="@drawable/ic_map_bitcoin"
@@ -44,6 +43,5 @@
                     android:checkable="true"
                     android:checked="true"/>
             </group>
-        </menu>
     </item>
 </menu>
