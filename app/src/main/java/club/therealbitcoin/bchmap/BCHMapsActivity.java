@@ -4,10 +4,8 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -21,13 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,7 +42,7 @@ import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
-public class BCHMapsActivity extends AppCompatActivity implements UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
+public class BCHMapsActivity extends AppCompatActivity implements UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
@@ -162,7 +158,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         Log.d(TAG,"initMarkersList");
         markerMap = new HashMap<String,Marker>();
         markersList = new HashMap<Integer,ArrayList<Marker>>();
-        for (int i=0; i<5; i++) {
+        for (int i=0; i<VenueType.values().length; i++) {
             markersList.put(i, new ArrayList<Marker>());
         }
     }
@@ -205,12 +201,14 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         try {
             Log.d(TAG,"ssssss");
             if (markerMap.isEmpty()) {
-                addVenuesToMapAndMoveCamera();
+                addVenueMarkersToMap();
             }
         } catch (Exception e) {
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
         }
+
+        mMap.setMinZoomPreference(5.0f);
     }
 
     private void initListFragment(int index) {
@@ -241,8 +239,6 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     }
 
     private void addMapListener() {
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
         mMap.setOnMarkerClickListener(this);
     }
 
@@ -260,20 +256,34 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         setMapStyle(mapStyles[currentMapStyle]);
     }
 
-
-
-    void addVenuesToMapAndMoveCamera() throws JSONException {
-        LatLng lastCoordinates = null;
+    void addVenueMarkersToMap() throws JSONException {
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
-            lastCoordinates = v.getCoordinates();
             Log.d(TAG, "venue: " + v);
             Marker marker = addMarker(v);
             markersList.get(v.type).add(marker);
             markerMap.put(v.placesId, marker);
         }
-        if (lastCoordinates != null)
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(lastCoordinates));
+        //moveCameraToLastLocation();
     }
+
+    /*private void moveCameraToLastLocation() {
+        try {
+            LocationServices.getFusedLocationProviderClient(this).getLastLocation()
+                    .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                Location lastCoordinates = task.getResult();
+                                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude())));
+                            } else {
+                                Log.d(TAG, "getLastLocation:exception", task.getException());
+                            }
+                        }
+                    });
+        } catch (SecurityException e){
+            Log.d(TAG,"SECURITYEXCEPTION");
+        }
+    }*/
 
     @Override
     public void updateBothListViews() {
@@ -305,7 +315,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
 
                     Log.d(TAG, "responseData: " + responseData);
                     if(isMapReady)
-                        addVenuesToMapAndMoveCamera();
+                        addVenueMarkersToMap();
 
                     updateBothListViews();
                 } catch (JSONException e) {
@@ -378,29 +388,6 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
         return marker;
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        try {
-            Log.d(TAG,"dsfdsfds");
-            if (mMap != null) {
-                //mMap.setMyLocationEnabled(false);
-            }
-            Log.d(TAG,"dsfdsfds2333");
-        } catch (SecurityException e) {
-            e.printStackTrace();
-            Log.e(TAG,Log.getStackTraceString(e));
-        } catch (Exception x) {
-            Log.e(TAG,Log.getStackTraceString(x));
-        }
-        return false;
-    }
-
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        Log.d(TAG,location.toString());
     }
 
     @Override
