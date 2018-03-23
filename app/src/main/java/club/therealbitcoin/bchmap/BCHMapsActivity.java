@@ -42,10 +42,11 @@ import java.util.Map;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
+import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
-public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
+public class BCHMapsActivity extends AppCompatActivity implements UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
@@ -71,6 +72,21 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     private boolean isMapReady = false;
     private PopupListFragment listFragment;
     private PopupListFragment favosFragment;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        listFragment = null;
+        favosFragment = null;
+        mapFragment = null;
+        tb = null;
+        viewPager = null;
+        tabLayout = null;
+        fm = null;
+        markersList = null;
+        markerMap = null;
+        mMap = null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,22 +141,24 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(mapFragment,"BLA");
         Log.d(TAG,"FRAGMENT");
-        listFragment = PopupListFragment.newInstance(false);
+        listFragment = PopupListFragment.newInstance(false, this);
         adapter.addFragment(listFragment,"BLUB");
         Log.d(TAG,"FRAGMENT22");
-        favosFragment = PopupListFragment.newInstance(true);
+        favosFragment = PopupListFragment.newInstance(true, this);
         adapter.addFragment(favosFragment,"FAVOS");
         Log.d(TAG,"ALL ADDED");
         viewPager.setAdapter(adapter);
     }
 
     private void setupTabIcons() {
+        Log.d(TAG,"setupTabIcons");
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     private void initMarkersList() {
+        Log.d(TAG,"initMarkersList");
         markerMap = new HashMap<String,Marker>();
         markersList = new HashMap<Integer,ArrayList<Marker>>();
         for (int i=0; i<5; i++) {
@@ -150,6 +168,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.d(TAG,"onRequestPermissionsResult");
         if (requestCode == MY_LOCATION_REQUEST_CODE) {
             if (permissions.length == 1 &&
                     permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
@@ -191,18 +210,14 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
         }
-        initListFragment(1,false);
-        initListFragment(2,true);
     }
 
-    private void initListFragment(int index, boolean onlyFavos) {
-        try {
-            if (listFragment != null)
-                listFragment.initAdapter(false);
-            else
-                ((PopupListFragment) fm.getFragments().get(index)).initAdapter(onlyFavos);
-        } catch (Exception e) {
-            Log.e(TAG,"BOOOOOOM");
+    private void initListFragment(int index) {
+        Log.d(TAG,"initListFragment index" + index);
+        if (index == 1 && listFragment != null) {
+            listFragment.initAdapter(false);
+        } else if (index == 2 && favosFragment != null) {
+            favosFragment.initAdapter(true);
         }
     }
 
@@ -259,6 +274,13 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
             mMap.animateCamera(CameraUpdateFactory.newLatLng(lastCoordinates));
     }
 
+    @Override
+    public void updateListViews() {
+        Log.d(TAG,"updateListViews");
+        initListFragment(1);
+        initListFragment(2);
+    }
+
     private void callWebservice() {
         new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
@@ -273,6 +295,8 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
                     Log.d(TAG, "responseData: " + responseData);
                     if(isMapReady)
                         addVenuesToMapAndMoveCamera();
+
+                    updateListViews();
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
                     e.printStackTrace();
@@ -373,6 +397,7 @@ public class BCHMapsActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d(TAG,"markerclick:" + marker.getId());
+
         MarkerDetailsFragment.newInstance((Venue) marker.getTag()).show(fm,"MARKERDIALOG");
         return false;
     }

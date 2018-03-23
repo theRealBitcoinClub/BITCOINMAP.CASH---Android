@@ -17,6 +17,7 @@ package club.therealbitcoin.bchmap;
  */
 
         import android.content.Context;
+        import android.database.DataSetObserver;
         import android.os.Bundle;
         import android.support.v4.app.ListFragment;
         import android.support.v7.widget.PopupMenu;
@@ -31,6 +32,7 @@ package club.therealbitcoin.bchmap;
         import java.util.List;
 
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+        import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
         import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
 /**
@@ -43,9 +45,11 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     private static final String BUNDLE = "bvdsfedss";
     private static String
             ONLY_FAVOS = "ONLY_FAVOS";
+    private static UpdateActivityCallback callback;
     private boolean showOnlyFavos;
 
-    public static PopupListFragment newInstance(boolean onlyFavs) {
+    public static PopupListFragment newInstance(boolean onlyFavs, UpdateActivityCallback cb) {
+        PopupListFragment.callback = cb;
         Log.d("TRBC","PopupListFragment, newInstance");
         Bundle args = new Bundle();
         args.putBoolean(ONLY_FAVOS,onlyFavs);
@@ -55,21 +59,30 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        callback = null;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //initAdapter(showOnlyFavos);
+        if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
+            showOnlyFavos = true;
+        }
+        Log.d("TRBC","PopupListFragment, onActivityCreated" + showOnlyFavos);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
-            showOnlyFavos = true;
-        }
-        initAdapter(showOnlyFavos);
+        Log.d("TRBC","PopupListFragment, onResume" + showOnlyFavos);
+        //initAdapter(showOnlyFavos);
     }
 
     public void initAdapter(boolean onlyFavorites) {
-        Log.d("TRBC","PopupListFragment, initAdapter");
+        Log.d("TRBC","PopupListFragment, initAdapter favos:" + onlyFavorites);
 
         int itemRes;
         ArrayList<String> venueTitles = null;
@@ -80,7 +93,16 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
             itemRes = R.layout.list_item;
             venueTitles = VenueFacade.getInstance().getVenueTitles(getContext());
         }
-        setListAdapter(new PopupAdapter(venueTitles, itemRes));
+        if (venueTitles != null && getActivity() != null) {
+            for (String v: venueTitles
+                 ) {
+                Log.d("TRBC","titlessss:" + v);
+            }
+
+
+            setListAdapter(new PopupAdapter(venueTitles, itemRes, getActivity()));
+            Log.d("TRBC","venuetitles size:" + venueTitles.size() + " getListAdapter().getCount();" + getListAdapter().getCount());
+        }
     }
 
     @Override
@@ -96,10 +118,12 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
     @Override
     public void onClick(final View view) {
         final Venue item = (Venue) view.getTag();
+        view.setTag(null);
         Context ctx = getContext();
-
+        Log.d("TRBC","onClick item" + item);
 
         if (showOnlyFavos) {
+            Log.d("TRBC","onClick item" + item);
             VenueFacade.getInstance().removeFavoriteVenue(item);
         } else {
             if (!item.isFavorite(ctx)) {
@@ -113,7 +137,7 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
             }
         }
 
-        initAdapter(showOnlyFavos);
+        callback.updateListViews();
         // We need to post a Runnable to show the popup to make sure that the PopupMenu is
         // correctly positioned. The reason being that the view may change position before the
         // PopupMenu is shown.
@@ -166,31 +190,40 @@ public class PopupListFragment extends ListFragment implements View.OnClickListe
      */
     class PopupAdapter extends ArrayAdapter<String> {
 
-        PopupAdapter(List<String> venues, int listItemResource) {
-            super(getActivity(), listItemResource, android.R.id.text1, venues);
+        PopupAdapter(List<String> venues, int listItemResource, Context ctx) {
+            super(ctx, listItemResource, android.R.id.text1, venues);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup container) {
             // Let ArrayAdapter inflate the layout and set the text
             View view = super.getView(position, convertView, container);
-            Log.d("TRBC", "PopupListFragment, getView" + position);
+            Log.d("TRBC", "PopupListFragment, getView" + showOnlyFavos + position);
 
             // BEGIN_INCLUDE(button_popup)
             // Retrieve the popup button from the inflated view
             View button = view.findViewById(R.id.list_item_button);
 
             // Set the item as the button's tag so it can be retrieved later
-            Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
+
+            Venue venue;
+
+            if (!showOnlyFavos) {
+                venue =VenueFacade.getInstance().findVenueByIndex(position);
+            } else {
+                venue =VenueFacade.getInstance().findFavoByIndex(position);
+            }
+
             button.setTag(venue);
 
             if (!showOnlyFavos) {
+                Log.d("TRBC", "showOnlyFavos: " + showOnlyFavos + position);
                 if (venue.isFavorite(getContext())) {
-                    VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
                     button.setBackgroundResource(R.drawable.ic_action_favorite);
                 } else {
                     button.setBackgroundResource(R.drawable.ic_action_favorite_border);
                 }
+
             }
 
 
