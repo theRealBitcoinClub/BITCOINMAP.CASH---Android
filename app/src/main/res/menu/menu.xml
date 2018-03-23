@@ -9,7 +9,7 @@
         app:showAsAction="always" /-->
     <item android:id="@+id/menu_switch"
         android:title="@string/switch_style"
-        android:icon="@drawable/ic_action_sun"
+        android:icon="@drawable/ic_action_luna"
         app:showAsAction="always"/>
     <item
         android:icon="@drawable/ic_action_settings"

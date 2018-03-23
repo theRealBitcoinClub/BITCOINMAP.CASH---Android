@@ -2,6 +2,7 @@ package club.therealbitcoin.bchmap;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -255,7 +256,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                         this, x));
     }
 
-    private void switchMapStyle(){
+    private void switchMapStyle(MenuItem item){
         currentMapStyle++;
         if (currentMapStyle>=mapStyles.length) {
             currentMapStyle = 0;
@@ -369,7 +370,14 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                 switchVisibility(markersList.get(VenueType.Food.getIndex()));
                 return true;
             case R.id.menu_switch:
-                switchMapStyle();
+                switchMapStyle(item);
+
+                if (currentMapStyle == 0) {
+                    item.setIcon(R.drawable.ic_action_luna);
+                } else {
+                    item.setIcon(R.drawable.ic_action_sun);
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -404,6 +412,12 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         Log.d(TAG,"markerclick:" + marker.getId());
 
         Venue v = (Venue) marker.getTag();
+
+        if (v == null) {
+            Log.d(TAG,"venue:" + v);
+            return false;
+        }
+
         MarkerDetailsFragment.newInstance(v).show(fm,"MARKERDIALOG");
         return false;
     }
