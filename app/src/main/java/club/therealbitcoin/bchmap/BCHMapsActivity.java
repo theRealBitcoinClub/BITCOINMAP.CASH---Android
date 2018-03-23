@@ -78,7 +78,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
 
-    @Override
+    /*@Override
     protected void onStop() {
         super.onStop();
         listFragment = null;
@@ -92,6 +92,12 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         markerMap = null;
         mMap = null;
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        onCreate(null);
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

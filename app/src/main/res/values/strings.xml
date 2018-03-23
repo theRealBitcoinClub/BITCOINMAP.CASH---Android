@@ -25,4 +25,5 @@
     <string name="toast_added_favorite">Added: </string>
     <string name="toast_removed_favorite">Removed: </string>
     <string name="preference_file_key">favoriiiiits</string>
+    <string name="reviews">Reviews:</string>
 </resources>

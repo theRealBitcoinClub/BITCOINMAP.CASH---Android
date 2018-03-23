@@ -46,8 +46,8 @@ public class VenueFacade {
         Log.d("TRBC","titles start");
         for (Venue v: getVenuesList()
              ) {
-            Log.d("TRBC","titlessssss" + v.getName());
-            titles.add(v.getName());
+            Log.d("TRBC","titlessssss" + v.name);
+            titles.add(v.name);
         }
         Log.d("TRBC","titles end");
         hasAddedNew = false;
@@ -64,8 +64,8 @@ public class VenueFacade {
         Log.d("TRBC","titlesfavos start");
         for (Venue v: getFavoriteVenues()
                 ) {
-            Log.d("TRBC","favosssssssss" + v.getName());
-            titlesFavo.add(v.getName());
+            Log.d("TRBC","favosssssssss" + v.name);
+            titlesFavo.add(v.name);
         }
         Log.d("TRBC","titlesfavos end");
         hasChangedFavo = false;

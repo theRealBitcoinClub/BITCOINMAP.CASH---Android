@@ -1,90 +1,102 @@
 package club.therealbitcoin.bchmap;
  
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
 public class MarkerDetailsFragment extends DialogFragment {
 
-	public static final String PLACES_ID = "placesId";
-	public static final String MSG = "msg";
-	public static final String TITLE = "title";
-	public static final String ICON_RES = "iconRes";
+	public static final String PARCEL_ID = "dsjlkfndsjkf";
 	private static final String TAG = "TRBCDialog";
-	private static final String TYPE = "type";
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		Log.d(TAG,"dfdsf");
-		final Bundle args = getArguments();
-		Log.d(TAG,"bun" + args);
-		String venueType = getString(getTranslatedType(args.getInt(TYPE)));
-		return new AlertDialog.Builder(getActivity())
-				.setIcon(args.getInt(ICON_RES))
-				.setTitle(args.getString(TITLE))
-				.setMessage(venueType + args.getString(MSG))
-				// RIGHT button
-				.setPositiveButton(getActivity().getString(R.string.share), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						Intent share = new Intent(Intent.ACTION_SEND);
-						share.setType("text/plain");
-						share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
-						startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
-					}
-				})
-				// LEFT Button
-				.setNegativeButton(getActivity().getString(R.string.info), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,	int which) {
-						Intent i = new Intent(Intent.ACTION_VIEW,
-								Uri.parse(Venue.DIRECTIONS+ args.getString(PLACES_ID)));
-						startActivity(i);
-					}
-				}).create();
+		Log.d(TAG,"onCreateDialog");
+		final Venue venue = getArguments().getParcelable(PARCEL_ID);
+		Log.d(TAG,"v" + venue);
+
+		Dialog dialog = new Dialog(getContext());
+		dialog.setContentView(R.layout.marker_detail_fragment);
+		initClickListener(venue, dialog);
+
+		StringBuilder builder = new StringBuilder(getString(R.string.reviews));
+		builder.append(venue.stars);
+		builder.append(" (");
+		builder.append(venue.reviews);
+		builder.append(")");
+
+		((TextView)dialog.findViewById(R.id.dialog_reviews)).setText(builder.toString());
+		((TextView)dialog.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
+		((TextView)dialog.findViewById(R.id.dialog_header)).setText(venue.name);
+
+		return dialog;
 	}
 
-	private static int getTranslatedType(int type) {
-		if (VenueType.ATM.getIndex() == type)
-			return R.string.type_atm;
+	private void initClickListener(final Venue venue, Dialog dialog) {
+		final View btn_route = dialog.findViewById(R.id.dialog_button_route);
+		btn_route.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchColor(btn_route);
+				openMapsRoute(venue.placesId);
+			}
 
-		if (VenueType.Food.getIndex() == type)
-			return R.string.type_food;
-
-		if (VenueType.Super.getIndex() == type)
-			return R.string.type_super;
-
-		if (VenueType.Bar.getIndex() == type)
-			return R.string.type_bar;
-
-		if (VenueType.Spa.getIndex() == type)
-			return R.string.type_spa;
-
-		return -1;
+		});
+		final View btn_share = dialog.findViewById(R.id.dialog_button_share);
+		btn_share.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchColor(btn_share);
+				shareDeepLink();
+			}
+		});
+		final View btn = dialog.findViewById(R.id.dialog_button_favo);
+		btn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchColor(btn);
+				if (venue.isFavorite(getContext())) {
+					VenueFacade.getInstance().removeFavoriteVenue(venue);
+				} else {
+					VenueFacade.getInstance().addFavoriteVenue(venue);
+				}
+			}
+		});
 	}
 
-	public static MarkerDetailsFragment newInstance(int iconRes, String title, int type, String placesId, double stars, int reviews) {
-		MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
 
-		Bundle args = new Bundle();
-		args.putInt(ICON_RES, iconRes);
-		args.putString(TITLE, title);
-		args.putInt(TYPE, type);
-		args.putString(MSG, ", " + stars + " (" + reviews + ")");
-		args.putString(PLACES_ID, placesId);
-		myFragment.setArguments(args);
+	private void switchColor(View btn) {
+		btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+	}
 
-		return myFragment;
+	private void openMapsRoute(String s) {
+		Intent i = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(Venue.DIRECTIONS+ s));
+		startActivity(i);
+	}
+
+	private void shareDeepLink() {
+		Intent share = new Intent(Intent.ACTION_SEND);
+		share.setType("text/plain");
+		share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
+		startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
 	}
 
 	public static MarkerDetailsFragment newInstance(Venue v) {
-		Log.d(TAG,v.toString());
-		return newInstance(v.iconRes,v.name,v.type,v.placesId, v.stars, v.reviews);
+		MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
+		Bundle args = new Bundle();
+		args.putParcelable(PARCEL_ID, v);
+		myFragment.setArguments(args);
+
+		return myFragment;
 	}
 }

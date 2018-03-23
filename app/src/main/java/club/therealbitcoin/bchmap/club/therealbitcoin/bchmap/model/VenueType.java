@@ -33,4 +33,23 @@ public enum VenueType {
 
         return -1;
     }
+
+    public static int getTranslatedType(int type) {
+        if (VenueType.ATM.getIndex() == type)
+            return R.string.type_atm;
+
+        if (VenueType.Food.getIndex() == type)
+            return R.string.type_food;
+
+        if (VenueType.Super.getIndex() == type)
+            return R.string.type_super;
+
+        if (VenueType.Bar.getIndex() == type)
+            return R.string.type_bar;
+
+        if (VenueType.Spa.getIndex() == type)
+            return R.string.type_spa;
+
+        return -1;
+    }
 }

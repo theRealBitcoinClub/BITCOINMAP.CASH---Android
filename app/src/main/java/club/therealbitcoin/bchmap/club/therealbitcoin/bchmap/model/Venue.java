@@ -17,7 +17,7 @@ import club.therealbitcoin.bchmap.R;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
-public class Venue implements Parcelable{
+public class Venue implements Parcelable {
     public int tempIndex=-1;
     public String name;
     public int iconRes;
@@ -28,6 +28,31 @@ public class Venue implements Parcelable{
     public double stars;
     private Boolean isFavorite = null;
     LatLng coordinates;
+
+    protected Venue(Parcel in) {
+        tempIndex = in.readInt();
+        name = in.readString();
+        iconRes = in.readInt();
+        type = in.readInt();
+        placesId = in.readString();
+        reviews = in.readInt();
+        stars = in.readDouble();
+        byte tmpIsFavorite = in.readByte();
+        isFavorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
+        coordinates = in.readParcelable(LatLng.class.getClassLoader());
+    }
+
+    public static final Creator<Venue> CREATOR = new Creator<Venue>() {
+        @Override
+        public Venue createFromParcel(Parcel in) {
+            return new Venue(in);
+        }
+
+        @Override
+        public Venue[] newArray(int size) {
+            return new Venue[size];
+        }
+    };
 
     public void setFavorite(Boolean favorite, Context ctx) {
         isFavorite = favorite;
@@ -72,51 +97,6 @@ public class Venue implements Parcelable{
         return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng);
     }
 
-    protected Venue(Parcel in) {
-        name = in.readString();
-        iconRes = in.readInt();
-        type = in.readInt();
-        placesId = in.readString();
-        reviews = in.readInt();
-        stars = in.readDouble();
-    }
-
-    public static final Creator<Venue> CREATOR = new Creator<Venue>() {
-        @Override
-        public Venue createFromParcel(Parcel in) {
-            return new Venue(in);
-        }
-
-        @Override
-        public Venue[] newArray(int size) {
-            return new Venue[size];
-        }
-    };
-
-    public int getReviews() {
-        return reviews;
-    }
-
-    public double getStars() {
-        return stars;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getIconRes() {
-        return iconRes;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public String getPlacesId() {
-        return placesId;
-    }
-
     @Override
     public String toString() {
         return "Venue{" +
@@ -158,20 +138,6 @@ public class Venue implements Parcelable{
             sb.append("\",\"");
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(placesId);
-        dest.writeString(name);
-        dest.writeInt(iconRes);
-        dest.writeInt(type);
-        dest.writeInt(reviews);
-        dest.writeDouble(stars);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -200,5 +166,23 @@ public class Venue implements Parcelable{
         result = 31 * result + (isFavorite != null ? isFavorite.hashCode() : 0);
         result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(tempIndex);
+        dest.writeString(name);
+        dest.writeInt(iconRes);
+        dest.writeInt(type);
+        dest.writeString(placesId);
+        dest.writeInt(reviews);
+        dest.writeDouble(stars);
+        dest.writeByte((byte) (isFavorite == null ? 0 : isFavorite ? 1 : 2));
+        dest.writeParcelable(coordinates, flags);
     }
 }
