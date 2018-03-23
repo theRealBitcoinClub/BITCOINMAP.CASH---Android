@@ -29,8 +29,8 @@ public class VenueTest {
     @Test
     public void testIsFavorite() throws IOException {
         Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
-        VenueFacade.getInstance().addFavoriteVenue(v, RuntimeEnvironment.application);
-        List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues(RuntimeEnvironment.application);
+        VenueFacade.getInstance().addFavoriteVenue(v);
+        List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
         Assert.assertEquals(1, favoriteVenues.size());
         v.setFavorite(true, RuntimeEnvironment.application);
         boolean favorite = v.isFavorite(RuntimeEnvironment.application);

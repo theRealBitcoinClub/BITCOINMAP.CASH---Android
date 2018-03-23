@@ -62,6 +62,6 @@ public class WebServiceTest {
     public void testReadJsonFromInputStream() throws IOException, JSONException {
         String s = WebService.readJsonFromInputStream(openFile("places.json"));
         List<Venue> venues = WebService.parseVenues(s);
-        Assert.assertEquals(5, venues.size());
+        Assert.assertEquals(20, venues.size());
     }
 }
