@@ -13,6 +13,7 @@ package club.therealbitcoin.bchmap;
         import java.util.List;
 
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+        import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
         import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
         import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
@@ -129,6 +130,7 @@ class PopupAdapter extends ArrayAdapter<String> {
         Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
 
         View button = view.findViewById(R.id.list_item_button);
+        View icon = view.findViewById(R.id.list_item_icon);
 
         Venue venue;
 
@@ -137,6 +139,9 @@ class PopupAdapter extends ArrayAdapter<String> {
         } else {
             venue =VenueFacade.getInstance().findFavoByIndex(position);
         }
+
+        int iconResource = VenueType.getIconResource(venue.type);
+        icon.setBackgroundResource(iconResource);
 
         venue.tempIndex = position;
         button.setTag(venue);
@@ -148,7 +153,7 @@ class PopupAdapter extends ArrayAdapter<String> {
 
             button.setOnClickListener(VenuesListFragment.this);
             return view;
-        }
+    }
 
 }
     private void updateFavoriteSymbol(View button, Venue venue) {
