@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center"
+        android:textStyle="bold"
+        android:layout_gravity="center"
         android:maxLines="1"
         android:padding="8dp"
         android:text="The Real Bitcoin Club"
@@ -19,7 +21,7 @@
 
     <ImageView
         android:id="@+id/horizontal_rule"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_width="match_parent"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
