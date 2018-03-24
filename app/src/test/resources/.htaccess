@@ -1,0 +1,45 @@
+#AddType application/x-httpd-php .htm .html
+
+Redirect 301 /presentation /presentation-the-real-bitcoin-club-bch-bitcoin-cash-2018-03-03-20-00.pdf
+Redirect 301 /presentation.pdf /presentation-the-real-bitcoin-club-bch-bitcoin-cash-2018-03-03-20-00.pdf
+
+Redirect 301 /silent-bitcoin-diso-btc-bch-barcelona-2018-03-03-18-30.html /silent-bitcoin-diso-btc-bch-barcelona-2018-03-31-20-00.html
+Redirect 301 /bitcoin-cash-bch-poker-barcelona-2018-03-03-20-00.html /bitcoin-cash-bch-poker-barcelona-2018-03-17-20-00.html
+
+Redirect 301 /shop http://therealbitcoin.club/bitcoin-bch-merchandise-shop.html
+Redirect 301 /shop.html http://therealbitcoin.club/bitcoin-bch-merchandise-shop.html
+
+Redirect 301 /contact http://therealbitcoin.club/the-real-bitcoin-club-contact.html
+Redirect 301 /contact.html http://therealbitcoin.club/the-real-bitcoin-club-contact.html
+
+Redirect 301 /team http://therealbitcoin.club/bch-bitcoin-cash-teams.html
+Redirect 301 /team.html http://therealbitcoin.club/bch-bitcoin-cash-teams.html
+Redirect 301 /teams http://therealbitcoin.club/bch-bitcoin-cash-teams.html
+Redirect 301 /teams.html http://therealbitcoin.club/bch-bitcoin-cash-teams.html
+
+Redirect 301 /videos http://therealbitcoin.club/bitcoin-cash-gallery-video.html
+Redirect 301 /videos.html http://therealbitcoin.club/bitcoin-cash-gallery-video.html
+Redirect 301 /gallery http://therealbitcoin.club/bitcoin-cash-gallery-video.html
+Redirect 301 /gallery.html http://therealbitcoin.club/bitcoin-cash-gallery-video.html
+Redirect 301 /gallery-video http://therealbitcoin.club/bitcoin-cash-gallery-video.html
+Redirect 301 /gallery-video.html http://therealbitcoin.club/bitcoin-cash-gallery-video.html
+
+Redirect 301 /faq http://therealbitcoin.club/bch-bitcoin-crypto-faq.html
+Redirect 301 /faq.html http://therealbitcoin.club/bch-bitcoin-crypto-faq.html
+
+Redirect 301 /event http://therealbitcoin.club/crypto-bitcoin-bch-events.html
+Redirect 301 /event.html http://therealbitcoin.club/crypto-bitcoin-bch-events.html
+Redirect 301 /events http://therealbitcoin.club/crypto-bitcoin-bch-events.html
+Redirect 301 /events.html http://therealbitcoin.club/crypto-bitcoin-bch-events.html
+
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^www\.therealbitcoin\.club$ [NC]
+
+RewriteRule ^(.*)$ http://therealbitcoin.club/$1 [L,R=301]
+
+Redirect 301 /ChIJEUo5JceipBIRlw3IsieB6Sg http://loc.trbc.io
+Redirect 301 /ChIJqQmtTryipBIRe3u-XKQxkmw https://www.google.es/maps/place/La+Besneta/@41.4038908,2.1560689,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2bc4ead09a9:0x6c9231a45cbe7b7b!8m2!3d41.4038868!4d2.1582576
+Redirect 301 /ChIJXSD0a9uipBIRwD4vX_u1enY https://www.google.es/maps/place/Molsa+Sagrada+Familia/@41.4067313,2.1738323,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2db6bf4205d:0x767ab5fb5f2f3ec0!8m2!3d41.4067273!4d2.176021
+Redirect 301 /ChIJY_ZMtr6ipBIRVC0WRH76Txc https://www.google.es/maps/place/Cara+B/@41.4056038,2.1586777,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2beb64cf663:0x174ffa7e44162d54!8m2!3d41.4055998!4d2.1608664
+Redirect 301 /ChIJh2A7VL2ipBIRIxR3Ylnot50 https://www.google.es/maps/place/Sincronia+Yoga+%7C+Gracia+Barcelona/@41.4006381,2.1537003,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2bd543b6087:0x9db7e85962771423!8m2!3d41.4006341!4d2.155889
