@@ -2,7 +2,6 @@ package club.therealbitcoin.bchmap;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -20,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
@@ -103,14 +103,18 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate");
+        //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_bchmaps);
+        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.my_custom_title);
         initMarkersList();
         findViewsById();
 
         fm = getSupportFragmentManager();
 
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle(R.string.toolbar);
+        //getSupportActionBar().setTitle(R.string.toolbar);
+        getSupportActionBar().setIcon(R.drawable.title_bar);
+
 
         mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
@@ -231,7 +235,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             listFragment.initAdapter(false);
         } else if (index == 2 && favosFragment != null) {
             favosFragment.initAdapter(true);
-        } 
+        }
     }
 
     private void getPermissionAccessFineLocation() {
