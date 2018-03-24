@@ -36,6 +36,7 @@ public class MarkerDetailsFragment extends DialogFragment {
         initClickListener(venue, view);
 
         StringBuilder builder = new StringBuilder(getString(R.string.reviews));
+        builder.append(" ");
         builder.append(venue.stars);
         builder.append(" (");
         builder.append(venue.reviews);
