@@ -56,6 +56,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places.json";
+    private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
     private int currentMapStyle = 0;
@@ -225,8 +226,6 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
         }
-
-        mMap.setMinZoomPreference(10.0f);
     }
 
     private void initListFragment(int index) {
@@ -295,6 +294,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                                 LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                                mMap.setMinZoomPreference(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED);
                             } else {
                                 Log.d(TAG, "getLastLocation:exception", task.getException());
                             }
