@@ -134,7 +134,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         ActionBar bar = getSupportActionBar();
         bar.setIcon(R.drawable.title_bar);
         bar.setHomeButtonEnabled(true);
-        bar.setHomeAsUpIndicator(R.drawable.ic_action_home);
+        bar.setHomeAsUpIndicator(R.drawable.logo_action_bar);
         bar.setDisplayHomeAsUpEnabled(true);
     }
 
