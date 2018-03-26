@@ -224,7 +224,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
 
         if (!isCacheEmpty())
-            updateBothListViews();
+            initAllListViews();
     }
 
     private void initListFragment(int index) {
@@ -313,19 +313,19 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     @Override
-    public void updateBothListViews() {
+    public void initAllListViews() {
         Log.d(TAG,"updateListViews");
-        updateFavosList();
-        updateListView();
+        initFavosList();
+        initListView();
     }
 
     @Override
-    public void updateFavosList() {
+    public void initFavosList() {
         initListFragment(2);
     }
 
     @Override
-    public void updateListView() {
+    public void initListView() {
         initListFragment(1);
     }
 
@@ -344,7 +344,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                     if(isMapReady)
                         addVenueMarkersToMap();
 
-                    updateBothListViews();
+                    initAllListViews();
                 } catch (JSONException e) {
                     Log.e(TAG, "exception: " + Log.getStackTraceString(e));
                     e.printStackTrace();
@@ -411,6 +411,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private void filterAndUpdateViews(VenueType type) {
         VenueFacade.getInstance().filterListByType(type);
         switchVisibility(markersList.get(type.getIndex()));
+        initAllListViews();
     }
 
     private void openWebsite() {

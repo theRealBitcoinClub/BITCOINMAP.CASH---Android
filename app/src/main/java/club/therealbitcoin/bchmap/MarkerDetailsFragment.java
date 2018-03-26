@@ -110,7 +110,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 				switchColor(btn_favo, isFavo);
 				venue.setFavorite(isFavo, ctx);
-				cb.updateBothListViews();
+				cb.initAllListViews();
 			}
 		});
 	}
