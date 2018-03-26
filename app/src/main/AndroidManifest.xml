@@ -17,6 +17,7 @@
         android:name="club.therealbitcoin.bchmap.MyApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:screenOrientation="portrait"
         android:theme="@style/MyMaterialTheme">
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
