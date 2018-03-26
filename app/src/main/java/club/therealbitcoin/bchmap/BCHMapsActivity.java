@@ -50,7 +50,7 @@ import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
-public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationClickListener, UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
@@ -243,6 +243,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         addMapListener();
         mMap.setIndoorEnabled(false);
         mMap.setBuildingsEnabled(false);
+        mMap.setOnMyLocationClickListener(this);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setCompassEnabled(false);
@@ -445,16 +446,5 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         } else {
             Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Log.d(TAG,"onMyLocationButtonClick");
-        if (!isLocationAvailable) {
-            Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
-        }
-        return false;
     }
 }
