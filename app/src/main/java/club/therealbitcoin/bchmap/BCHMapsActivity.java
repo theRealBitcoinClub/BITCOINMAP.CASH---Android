@@ -12,14 +12,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
@@ -27,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,13 +50,14 @@ import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
-public class BCHMapsActivity extends AppCompatActivity implements UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places.json";
     private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
+    public static final String URI_CLICK_LOGO = "http://trbc.io";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
     private int currentMapStyle = 0;
@@ -78,6 +79,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     private boolean isMapReady = false;
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
+    private boolean isLocationAvailable = false;
 
     /*@Override
     protected void onStop() {
@@ -112,20 +114,26 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
 
         fm = getSupportFragmentManager();
 
-        setSupportActionBar(tb);
-        //getSupportActionBar().setTitle(R.string.toolbar);
-        getSupportActionBar().setIcon(R.drawable.title_bar);
-
+        initActionBar();
 
         mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-        initTitleTouchListener();
 
         callWebservice();
         Log.d(TAG,"FINISH ON CREATE");
+    }
+
+    private void initActionBar() {
+        setSupportActionBar(tb);
+        //getSupportActionBar().setTitle(R.string.toolbar);
+        ActionBar bar = getSupportActionBar();
+        bar.setIcon(R.drawable.title_bar);
+        bar.setHomeButtonEnabled(true);
+        bar.setHomeAsUpIndicator(R.drawable.ic_action_home);
+        bar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void findViewsById() {
@@ -133,24 +141,6 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
     }
-
-    private void initTitleTouchListener() {
-        try {
-            final int abTitleId = getResources().getIdentifier("action_bar_title", "id", "android");
-
-            findViewById(abTitleId).setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://trbc.io")));
-                }
-            });
-        } catch (Exception e) {
-            Log.e(TAG,"ERROR: INIT TITLE LISTENER:" + e);
-            e.printStackTrace();
-        }
-    }
-
 
     private void setupViewPager(ViewPager viewPager) {
         Log.d(TAG,"VIEWPAGER");
@@ -212,7 +202,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
     public void onMapReady(GoogleMap googleMap) {
         isMapReady = true;
         Log.d(TAG, "onMapReady: ");
-        configureMap(googleMap);
+        initMap(googleMap);
         getPermissionAccessFineLocation();
         setMapStyle(mapStyles[0]);
         setupTabIcons();
@@ -248,11 +238,17 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         }
     }
 
-    private void configureMap(GoogleMap googleMap) {
+    private void initMap(GoogleMap googleMap) {
         mMap = googleMap;
         addMapListener();
         mMap.setIndoorEnabled(false);
         mMap.setBuildingsEnabled(false);
+        UiSettings uiSettings = mMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setCompassEnabled(false);
+        uiSettings.setRotateGesturesEnabled(false);
+        uiSettings.setTiltGesturesEnabled(false);
+        uiSettings.setScrollGesturesEnabled(true);
     }
 
     private void addMapListener() {
@@ -295,6 +291,7 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                                 mMap.setMinZoomPreference(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED);
+                                isLocationAvailable = true;
                             } else {
                                 Log.d(TAG, "getLastLocation:exception", task.getException());
                             }
@@ -365,6 +362,9 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         switchCheck(item);
 
         switch (item.getItemId()) {
+            case android.R.id.home:
+                openWebsite();
+                return true;
             case R.id.menu_atm:
                 switchVisibility(markersList.get(VenueType.ATM.getIndex()));
                 return true;
@@ -393,6 +393,10 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void openWebsite() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));
     }
 
     private void switchCheck(MenuItem item) {
@@ -430,6 +434,27 @@ public class BCHMapsActivity extends AppCompatActivity implements UpdateActivity
         }
 
         MarkerDetailsFragment.newInstance(v, this).show(fm,"MARKERDIALOG");
+        return false;
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+        Log.d(TAG,"onMyLocationClick");
+        if (!isLocationAvailable) {
+            Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Log.d(TAG,"onMyLocationButtonClick");
+        if (!isLocationAvailable) {
+            Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
+        }
         return false;
     }
 }

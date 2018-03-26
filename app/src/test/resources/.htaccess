@@ -43,3 +43,5 @@ Redirect 301 /ChIJqQmtTryipBIRe3u-XKQxkmw https://www.google.es/maps/place/La+Be
 Redirect 301 /ChIJXSD0a9uipBIRwD4vX_u1enY https://www.google.es/maps/place/Molsa+Sagrada+Familia/@41.4067313,2.1738323,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2db6bf4205d:0x767ab5fb5f2f3ec0!8m2!3d41.4067273!4d2.176021
 Redirect 301 /ChIJY_ZMtr6ipBIRVC0WRH76Txc https://www.google.es/maps/place/Cara+B/@41.4056038,2.1586777,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2beb64cf663:0x174ffa7e44162d54!8m2!3d41.4055998!4d2.1608664
 Redirect 301 /ChIJh2A7VL2ipBIRIxR3Ylnot50 https://www.google.es/maps/place/Sincronia+Yoga+%7C+Gracia+Barcelona/@41.4006381,2.1537003,17z/data=!3m1!4b1!4m5!3m4!1s0x12a4a2bd543b6087:0x9db7e85962771423!8m2!3d41.4006341!4d2.155889
+
+Redirect 301 /moveyourbch /landingpageUpcomingThanksForTesting
