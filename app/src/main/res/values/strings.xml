@@ -26,6 +26,6 @@
     <string name="toast_sharing_venue">Thank you, for your support!</string>
     <string name="toast_route_button">You will be forwarded to Google Maps now.</string>
     <string name="favo_list_empty">You do not have any favorites yet.</string>
-    <string name="toast_filter_by_type">are invisible now.</string>
-    <string name="toast_unfilter_by_type">are visible now.</string>
+    <string name="toast_filter_by_type">Hide all</string>
+    <string name="toast_unfilter_by_type">Show all</string>
 </resources>

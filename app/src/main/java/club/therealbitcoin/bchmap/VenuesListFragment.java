@@ -151,7 +151,7 @@ class PopupAdapter extends ArrayAdapter<String> {
         int iconResource = VenueType.getIconResource(venue.type);
         icon.setBackgroundResource(iconResource);
 
-        //venue.favoListIndex = position;
+        venue.favoListIndex = position;
         button.setTag(venue);
 
         if (!showOnlyFavos) {

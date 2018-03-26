@@ -408,10 +408,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void applyFilters(MenuItem item, VenueType type) {
         if (item.isChecked()) {
-            Toast.makeText(this, VenueType.getTranslatedType(type)+" "+getString(R.string.toast_unfilter_by_type), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_unfilter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().restoreFilteredVenues(type);
         } else {
-            Toast.makeText(this, VenueType.getTranslatedType(type)+" "+getString(R.string.toast_filter_by_type), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().filterListByType(type);
         }
         switchVisibility(markersList.get(type.getIndex()));
