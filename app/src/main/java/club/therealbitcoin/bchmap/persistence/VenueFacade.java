@@ -1,11 +1,9 @@
 package club.therealbitcoin.bchmap.persistence;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -87,6 +85,7 @@ public class VenueFacade {
     boolean hasChangedFavo = true;
 
     public void addFavoriteVenue(Venue v) {
+        v.favoListIndex = favorites.size();
         Log.d("TRBC","addFavoriteVenue persist:" + v);
         favorites.add(v);
         hasChangedFavo = true;
@@ -101,8 +100,8 @@ public class VenueFacade {
     }
 
     public void removeFavoriteVenue(Venue item) {
-        Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.tempIndex);
-        favorites.remove(item.tempIndex);
+        Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
+        favorites.remove(item.favoListIndex);
         hasChangedFavo = true;
     }
 

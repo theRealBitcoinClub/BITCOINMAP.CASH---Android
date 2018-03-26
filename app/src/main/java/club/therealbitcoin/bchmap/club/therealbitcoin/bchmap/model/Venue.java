@@ -11,14 +11,11 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 import club.therealbitcoin.bchmap.R;
-import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class Venue implements Parcelable {
-    public int tempIndex=-1;
+    public int favoListIndex =-1;
     public String name;
     public int iconRes;
     public int type;
@@ -30,7 +27,7 @@ public class Venue implements Parcelable {
     LatLng coordinates;
 
     protected Venue(Parcel in) {
-        tempIndex = in.readInt();
+        favoListIndex = in.readInt();
         name = in.readString();
         iconRes = in.readInt();
         type = in.readInt();
@@ -175,7 +172,7 @@ public class Venue implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(tempIndex);
+        dest.writeInt(favoListIndex);
         dest.writeString(name);
         dest.writeInt(iconRes);
         dest.writeInt(type);

@@ -1,12 +1,14 @@
 package club.therealbitcoin.bchmap;
  
-import android.app.Dialog;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,54 +53,120 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 	private void initClickListener(final Venue venue, View dialog) {
 		final View btn_route = dialog.findViewById(R.id.dialog_button_route);
+
+		clickedRouteButton(venue, btn_route);
+		clickedShareButton(dialog);
+
+		final View btn_favo = dialog.findViewById(R.id.dialog_button_favo);
+
+		Context ctx = getContext();
+		if (venue.isFavorite(ctx)) {
+			switchColor(btn_favo, true);
+			isFavo = true;
+		}
+
+		clickedFavoButton(venue, btn_favo, ctx);
+	}
+
+	private void clickedRouteButton(Venue venue, View btn_route) {
 		btn_route.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				switchColor(btn_route, true);
 				openMapsRoute(venue.placesId);
+				resetColorWithDelay(btn_route);
 			}
 
 		});
+	}
+
+	private void clickedShareButton(View dialog) {
 		final View btn_share = dialog.findViewById(R.id.dialog_button_share);
 		btn_share.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				switchColor(btn_share, true);
 				shareDeepLink();
-			}
-		});
-
-		final View btn_favo = dialog.findViewById(R.id.dialog_button_favo);
-		btn_favo.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			    if (hasClickedFavo)
-			        return;
-
-                switchColor(btn_favo, true);
-                Context ctx = getContext();
-
-                    Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
-					VenueFacade.getInstance().addFavoriteVenue(venue);
-					venue.setFavorite(true, ctx);
-
-                    cb.updateBothListViews();
-					hasClickedFavo = true;
+				resetColorWithDelay(btn_share);
 			}
 		});
 	}
-    @Override
+
+	private void clickedFavoButton(Venue venue, View btn_favo, Context ctx) {
+		btn_favo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchColor(btn_favo, true);
+				if (isFavo) {
+					Toast.makeText(ctx, R.string.toast_removed_favorite + " " + venue.name, Toast.LENGTH_SHORT).show();
+					VenueFacade.getInstance().removeFavoriteVenue(venue);
+					isFavo = false;
+					return;
+				}
+
+
+                    Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
+				VenueFacade.getInstance().addFavoriteVenue(venue);
+					venue.setFavorite(true, ctx);
+
+                    cb.updateBothListViews();
+					isFavo = true;
+			}
+		});
+	}
+
+
+	private void animateColorChange(View view, String fromColor, String toColor) {
+		final float[] from = new float[3],
+				to =   new float[3];
+
+		Color.colorToHSV(Color.parseColor(fromColor), from);   // from white
+		Color.colorToHSV(Color.parseColor(toColor), to);     // to red
+
+		ValueAnimator anim = ValueAnimator.ofFloat(0, 1);   // animate from 0 to 1
+		anim.setDuration(300);                              // for 300 ms
+
+		final float[] hsv  = new float[3];                  // transition color
+		anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
+			@Override public void onAnimationUpdate(ValueAnimator animation) {
+				// Transition along each axis of HSV (hue, saturation, value)
+				hsv[0] = from[0] + (to[0] - from[0])*animation.getAnimatedFraction();
+				hsv[1] = from[1] + (to[1] - from[1])*animation.getAnimatedFraction();
+				hsv[2] = from[2] + (to[2] - from[2])*animation.getAnimatedFraction();
+
+				view.setBackgroundColor(Color.HSVToColor(hsv));
+			}
+		});
+
+		anim.start();
+	}
+
+	private void resetColorWithDelay(View btn_route) {
+		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switchColor(btn_route, false);
+            }
+        },50L);
+	}
+
+	@Override
     public void onDestroy() {
         super.onDestroy();
         cb = null;
     }
 
-	private boolean hasClickedFavo = false;
+	private boolean isFavo = false;
 
 	private void switchColor(View btn, boolean onOff) {
-	    if (onOff)
-		btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-	    else btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+		String accent = "#79bf8c";
+		String primary = "#549c68";
+	    if (onOff) {
+			animateColorChange(btn, primary, accent);
+			//btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+		}
+	    else animateColorChange(btn, accent, primary);
+		//btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
     }
 
