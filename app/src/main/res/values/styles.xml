@@ -4,7 +4,6 @@
         <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
             <item name="android:windowMinWidthMajor">80%</item>
             <item name="android:windowMinWidthMinor">80%</item>
-
         </style>
 
         <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
