@@ -2,12 +2,19 @@ package club.therealbitcoin.bchmap;
 
 
         import android.content.Context;
+        import android.graphics.Color;
+        import android.graphics.drawable.AnimationDrawable;
+        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
+        import android.os.Handler;
         import android.util.Log;
+        import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
+        import android.widget.Button;
         import android.widget.ListView;
+        import android.widget.Toast;
 
         import java.util.ArrayList;
         import java.util.List;
@@ -47,12 +54,14 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
             showOnlyFavos = true;
         }
+        setEmptyText(getResources().getString(R.string.favo_list_empty));
         Log.d("TRBC","VenuesListFragment, onActivityCreated: onlyFavos:" + showOnlyFavos);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        initAdapter(showOnlyFavos);
         Log.d("TRBC","VenuesListFragment, onResume:  onlyFavos:" + showOnlyFavos);
     }
 
@@ -98,7 +107,8 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         Log.d("TRBC","onClick item" + v);
 
         if (showOnlyFavos) {
-            Log.d("TRBC","onClick item" + v);
+            Toast.makeText(ctx, R.string.toast_removed_favorite + " " + v.name, Toast.LENGTH_SHORT).show();
+            Log.d("TRBC","onClick item showOnlyFavos" + showOnlyFavos + v);
             VenueFacade.getInstance().removeFavoriteVenue(v);
             v.setFavorite(false,ctx);
             callback.updateBothListViews();
@@ -131,13 +141,17 @@ class PopupAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup container) {
+        Venue venue = getVenueByIndex(position);
+
+        if (venue.isFiltered()) {
+            return null;
+        }
+
         View view = super.getView(position, convertView, container);
         Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
 
         View button = view.findViewById(R.id.list_item_button);
         View icon = view.findViewById(R.id.list_item_icon);
-
-        Venue venue = getVenueByIndex(position);
 
         int iconResource = VenueType.getIconResource(venue.type);
         icon.setBackgroundResource(iconResource);
@@ -155,8 +169,29 @@ class PopupAdapter extends ArrayAdapter<String> {
     }
 
 }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     private void updateFavoriteSymbol(View button, Venue venue) {
         if (venue.isFavorite(getContext())) {
+            /*final AnimationDrawable drawable = new AnimationDrawable();
+            final Handler handler = new Handler();
+
+            drawable.addFrame(getResources().getDrawable(R.drawable.ic_action_favorite), 400);
+            drawable.addFrame(getResources().getDrawable(R.drawable.ic_action_favorite_border), 400);
+            drawable.setOneShot(false);
+
+            button.setBackgroundDrawable(drawable);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawable.start();
+                }
+            }, 100);*/
+
             button.setBackgroundResource(R.drawable.ic_action_favorite);
         } else {
             button.setBackgroundResource(R.drawable.ic_action_favorite_border);

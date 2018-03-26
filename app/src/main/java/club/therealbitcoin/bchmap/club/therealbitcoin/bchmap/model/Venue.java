@@ -25,6 +25,7 @@ public class Venue implements Parcelable {
     public double stars;
     private Boolean isFavorite = null;
     LatLng coordinates;
+    private boolean filtered = false;
 
     protected Venue(Parcel in) {
         favoListIndex = in.readInt();
@@ -181,5 +182,13 @@ public class Venue implements Parcelable {
         dest.writeDouble(stars);
         dest.writeByte((byte) (isFavorite == null ? 0 : isFavorite ? 1 : 2));
         dest.writeParcelable(coordinates, flags);
+    }
+
+    public void setFiltered(boolean b) {
+        filtered = b;
+    }
+
+    public boolean isFiltered() {
+        return filtered;
     }
 }

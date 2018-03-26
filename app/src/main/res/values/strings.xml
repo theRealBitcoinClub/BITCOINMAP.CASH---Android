@@ -12,7 +12,7 @@
     <string name="type_bar">Bar/Club</string>
     <string name="type_spa">Spa/Wellness</string>
     <string name="recommendation">Check out this Bitcoin Android App now, follow this link: http://therealbitcoin.club/moveyourbch</string>
-    <string name="thank_you">Thank You!</string>
+    <string name="thank_you">Tell your friends!</string>
     <string name="toolbar">TRBC.io</string>
     <string name="visibility_bitcoin">ATM/Teller</string>
     <string name="toast_added_favorite">Added Favorite:</string>
@@ -23,4 +23,7 @@
     <string name="toast_moving_location">Moving to last known location.</string>
     <string name="switch_style">Style</string>
     <string name="filter">Map Filter</string>
+    <string name="toast_sharing_venue">Thank you, for your support!</string>
+    <string name="toast_route_button">You will be forwarded to Google Maps now.</string>
+    <string name="favo_list_empty">You do not have any favorites yet.</string>
 </resources>

@@ -122,10 +122,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (VenueFacade.getInstance().getVenuesList().size() == 0)
+        if (isCacheEmpty())
             callWebservice();
 
         Log.d(TAG,"FINISH ON CREATE");
+    }
+
+    private boolean isCacheEmpty() {
+        return VenueFacade.getInstance().getVenuesList().size() == 0;
     }
 
     private void initActionBar() {
@@ -206,7 +210,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         Log.d(TAG, "onMapReady: ");
         initMap(googleMap);
         getPermissionAccessFineLocation();
-        setMapStyle(mapStyles[0]);
+        setMapStyle(mapStyles[currentMapStyle]);
         setupTabIcons();
 
         try {
@@ -218,6 +222,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
         }
+
+        if (!isCacheEmpty())
+            updateBothListViews();
     }
 
     private void initListFragment(int index) {
@@ -361,27 +368,29 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        viewPager.setCurrentItem(0);
+        //viewPager.setCurrentItem(0);
         switchCheck(item);
+
+        VenueType type = null;
 
         switch (item.getItemId()) {
             case android.R.id.home:
                 openWebsite();
                 return true;
             case R.id.menu_atm:
-                switchVisibility(markersList.get(VenueType.ATM.getIndex()));
+                filterAndUpdateViews(VenueType.ATM);
                 return true;
             case R.id.menu_bar:
-                switchVisibility(markersList.get(VenueType.Bar.getIndex()));
+                filterAndUpdateViews(VenueType.Bar);
                 return true;
             case R.id.menu_shops:
-                switchVisibility(markersList.get(VenueType.Super.getIndex()));
+                filterAndUpdateViews(VenueType.Super);
                 return true;
             case R.id.menu_spa:
-                switchVisibility(markersList.get(VenueType.Spa.getIndex()));
+                filterAndUpdateViews(VenueType.Spa);
                 return true;
             case R.id.menu_food:
-                switchVisibility(markersList.get(VenueType.Food.getIndex()));
+                filterAndUpdateViews(VenueType.Food);
                 return true;
             case R.id.menu_switch:
                 switchMapStyle(item);
@@ -396,6 +405,12 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+    private void filterAndUpdateViews(VenueType type) {
+        VenueFacade.getInstance().filterListByType(type);
+        switchVisibility(markersList.get(type.getIndex()));
     }
 
     private void openWebsite() {

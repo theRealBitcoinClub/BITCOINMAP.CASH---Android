@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
 public class VenueFacade {
     private static VenueFacade ourInstance = new VenueFacade();
@@ -34,9 +35,24 @@ public class VenueFacade {
         return venuesList;
     }
 
+    public void filterListByType(VenueType t) {
+        //ArrayList<Venue> copyList = new ArrayList<Venue>();
+        //Collections.copy(copyList, venuesList);
+
+        int initialSize = venuesList.size();
+        for (int i = 0; i< initialSize; i++) {
+            if (venuesList.get(i).type == t.getIndex()) {
+                venuesList.remove(i);
+                i--;
+            }
+        }
+        hasChangedList = true;
+        hasChangedFavoList = true;
+    }
+
     public ArrayList<String> getVenueTitles() {
         Log.d("TRBC","getVenueTitles");
-        if (!hasAddedNew && titles.size() > 0) {
+        if (!hasChangedList && titles.size() > 0) {
             return titles;
         }
 
@@ -45,16 +61,17 @@ public class VenueFacade {
         for (Venue v: getVenuesList()
              ) {
             Log.d("TRBC","titlessssss" + v.name);
+
             titles.add(v.name);
         }
         Log.d("TRBC","titles end");
-        hasAddedNew = false;
+        hasChangedList = false;
         return titles;
     }
 
     public ArrayList<String> getFavoTitles() {
         Log.d("TRBC","getFavoTitles");
-        if (!hasChangedFavo && titles.size() > 0) {
+        if (!hasChangedFavoList && titles.size() > 0) {
             return titlesFavo;
         }
 
@@ -66,29 +83,30 @@ public class VenueFacade {
             titlesFavo.add(v.name);
         }
         Log.d("TRBC","titlesfavos end");
-        hasChangedFavo = false;
+        hasChangedFavoList = false;
         return titlesFavo;
     }
 
     public void addVenue(Venue v) {
-        hasAddedNew = true;
+        hasChangedList = true;
         Log.d("TRBC","addVenue" + v);
-       venuesMap.put(v.placesId, v);
-       venuesList.add(v);
+       if (venuesMap.put(v.placesId, v) == null) {
+           venuesList.add(v);
+       }
     }
 
     public Venue findVenueById(String id) {
         return venuesMap.get(id);
     }
 
-    boolean hasAddedNew = true;
-    boolean hasChangedFavo = true;
+    boolean hasChangedList = true;
+    boolean hasChangedFavoList = true;
 
     public void addFavoriteVenue(Venue v) {
         v.favoListIndex = favorites.size();
         Log.d("TRBC","addFavoriteVenue persist:" + v);
         favorites.add(v);
-        hasChangedFavo = true;
+        hasChangedFavoList = true;
     }
 
     public List<Venue> getFavoriteVenues () {
@@ -102,7 +120,7 @@ public class VenueFacade {
     public void removeFavoriteVenue(Venue item) {
         Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
         favorites.remove(item.favoListIndex);
-        hasChangedFavo = true;
+        hasChangedFavoList = true;
     }
 
     public Venue findVenueByIndex(int position) {

@@ -72,6 +72,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 		btn_route.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
 				switchColor(btn_route, true);
 				openMapsRoute(venue.placesId);
 				resetColorWithDelay(btn_route);
@@ -85,6 +86,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 		btn_share.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
 				switchColor(btn_share, true);
 				shareDeepLink();
 				resetColorWithDelay(btn_share);
@@ -96,21 +98,19 @@ public class MarkerDetailsFragment extends DialogFragment {
 		btn_favo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				switchColor(btn_favo, true);
 				if (isFavo) {
-					Toast.makeText(ctx, R.string.toast_removed_favorite + " " + venue.name, Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
 					VenueFacade.getInstance().removeFavoriteVenue(venue);
 					isFavo = false;
-					return;
+				} else {
+					Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
+					VenueFacade.getInstance().addFavoriteVenue(venue);
+					isFavo = true;
 				}
 
-
-                    Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
-				VenueFacade.getInstance().addFavoriteVenue(venue);
-					venue.setFavorite(true, ctx);
-
-                    cb.updateBothListViews();
-					isFavo = true;
+				switchColor(btn_favo, isFavo);
+				venue.setFavorite(isFavo, ctx);
+				cb.updateBothListViews();
 			}
 		});
 	}
@@ -147,7 +147,7 @@ public class MarkerDetailsFragment extends DialogFragment {
             public void run() {
                 switchColor(btn_route, false);
             }
-        },50L);
+        },250L);
 	}
 
 	@Override
