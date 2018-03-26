@@ -27,7 +27,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.marker_detail_fragment, container, false);
+        View view = inflater.inflate(R.layout.marker_detail_fragment, container, true);
         //view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         setCancelable(true);
