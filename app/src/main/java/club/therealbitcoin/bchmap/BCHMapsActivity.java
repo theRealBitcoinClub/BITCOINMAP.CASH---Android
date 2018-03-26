@@ -122,7 +122,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        callWebservice();
+        if (VenueFacade.getInstance().getVenuesList().size() == 0)
+            callWebservice();
+
         Log.d(TAG,"FINISH ON CREATE");
     }
 
