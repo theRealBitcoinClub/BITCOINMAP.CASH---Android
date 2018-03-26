@@ -76,12 +76,19 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
     @Override
     public void onListItemClick(ListView listView, View v, int position, long id) {
-        Venue venue = VenueFacade.getInstance().findVenueByIndex(position);
-
+        Venue venue = getVenueByIndex(position);
 
         MarkerDetailsFragment.newInstance(venue, callback).show(getFragmentManager(),"MARKERDIALOG");
-        // Show a toast if the user clicks on an item
-        //Toast.makeText(getActivity(), "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
+    }
+
+    private Venue getVenueByIndex(int position) {
+        Venue venue;
+        if (!showOnlyFavos) {
+            venue = VenueFacade.getInstance().findVenueByIndex(position);
+        } else {
+            venue =VenueFacade.getInstance().findFavoByIndex(position);
+        }
+        return venue;
     }
 
     @Override
@@ -130,13 +137,7 @@ class PopupAdapter extends ArrayAdapter<String> {
         View button = view.findViewById(R.id.list_item_button);
         View icon = view.findViewById(R.id.list_item_icon);
 
-        Venue venue;
-
-        if (!showOnlyFavos) {
-            venue =VenueFacade.getInstance().findVenueByIndex(position);
-        } else {
-            venue =VenueFacade.getInstance().findFavoByIndex(position);
-        }
+        Venue venue = getVenueByIndex(position);
 
         int iconResource = VenueType.getIconResource(venue.type);
         icon.setBackgroundResource(iconResource);
