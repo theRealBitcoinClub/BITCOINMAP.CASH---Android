@@ -368,7 +368,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (viewPager.getCurrentItem() == 2) {
+        if (viewPager.getCurrentItem() == 2 && item.getItemId() != android.R.id.home && item.getItemId() != R.id.menu_switch) {
             viewPager.setCurrentItem(1);
             Toast.makeText(this, R.string.toast_favorites_not_affected_by_filter, Toast.LENGTH_SHORT).show();
         }
@@ -377,6 +377,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         switch (item.getItemId()) {
             case android.R.id.home:
+                Toast.makeText(this, R.string.toast_go_to_website, Toast.LENGTH_LONG).show();
                 openWebsite();
                 return true;
             case R.id.menu_atm:
