@@ -28,4 +28,5 @@
     <string name="favo_list_empty">You do not have any favorites yet.</string>
     <string name="toast_filter_by_type">Hide all</string>
     <string name="toast_unfilter_by_type">Show all</string>
+    <string name="toast_favorites_not_affected_by_filter">Favorites are not being filtered.</string>
 </resources>

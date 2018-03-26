@@ -368,8 +368,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (viewPager.getCurrentItem() == 2)
+        if (viewPager.getCurrentItem() == 2) {
             viewPager.setCurrentItem(1);
+            Toast.makeText(this, R.string.toast_favorites_not_affected_by_filter, Toast.LENGTH_SHORT).show();
+        }
 
         switchCheck(item);
 
