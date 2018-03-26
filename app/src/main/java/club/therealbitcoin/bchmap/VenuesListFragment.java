@@ -27,7 +27,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
     public static VenuesListFragment newInstance(boolean onlyFavs, UpdateActivityCallback cb) {
         VenuesListFragment.callback = cb;
-        Log.d("TRBC","VenuesListFragment, newInstance");
+        Log.d("TRBC","VenuesListFragment, newInstance only favos:" + onlyFavs);
         Bundle args = new Bundle();
         args.putBoolean(ONLY_FAVOS,onlyFavs);
         VenuesListFragment fragment = new VenuesListFragment();
@@ -44,18 +44,16 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //initAdapter(showOnlyFavos);
         if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
             showOnlyFavos = true;
         }
-        Log.d("TRBC","VenuesListFragment, onActivityCreated" + showOnlyFavos);
+        Log.d("TRBC","VenuesListFragment, onActivityCreated: onlyFavos:" + showOnlyFavos);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("TRBC","VenuesListFragment, onResume" + showOnlyFavos);
-        //initAdapter(showOnlyFavos);
+        Log.d("TRBC","VenuesListFragment, onResume:  onlyFavos:" + showOnlyFavos);
     }
 
     public void initAdapter(boolean onlyFavorites) {
