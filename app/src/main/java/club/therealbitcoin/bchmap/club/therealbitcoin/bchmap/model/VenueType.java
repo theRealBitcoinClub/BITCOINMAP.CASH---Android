@@ -34,6 +34,10 @@ public enum VenueType {
         return -1;
     }
 
+    public static int getTranslatedType(VenueType t) {
+        return getTranslatedType(t.getIndex());
+    }
+
     public static int getTranslatedType(int type) {
         if (VenueType.ATM.getIndex() == type)
             return R.string.type_atm;

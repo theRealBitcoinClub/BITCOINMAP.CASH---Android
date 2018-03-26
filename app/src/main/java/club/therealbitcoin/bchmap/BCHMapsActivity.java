@@ -376,19 +376,19 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 openWebsite();
                 return true;
             case R.id.menu_atm:
-                filterAndUpdateViews(VenueType.ATM);
+                applyFilters(item, VenueType.ATM);
                 return true;
             case R.id.menu_bar:
-                filterAndUpdateViews(VenueType.Bar);
+                applyFilters(item,VenueType.Bar);
                 return true;
             case R.id.menu_shops:
-                filterAndUpdateViews(VenueType.Super);
+                applyFilters(item,VenueType.Super);
                 return true;
             case R.id.menu_spa:
-                filterAndUpdateViews(VenueType.Spa);
+                applyFilters(item,VenueType.Spa);
                 return true;
             case R.id.menu_food:
-                filterAndUpdateViews(VenueType.Food);
+                applyFilters(item,VenueType.Food);
                 return true;
             case R.id.menu_switch:
                 switchMapStyle(item);
@@ -406,11 +406,18 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     }
 
-    private void filterAndUpdateViews(VenueType type) {
-        VenueFacade.getInstance().filterListByType(type);
+    private void applyFilters(MenuItem item, VenueType type) {
+        if (item.isChecked()) {
+            Toast.makeText(this, VenueType.getTranslatedType(type)+" "+getString(R.string.toast_unfilter_by_type), Toast.LENGTH_SHORT).show();
+            VenueFacade.getInstance().restoreFilteredVenues(type);
+        } else {
+            Toast.makeText(this, VenueType.getTranslatedType(type)+" "+getString(R.string.toast_filter_by_type), Toast.LENGTH_SHORT).show();
+            VenueFacade.getInstance().filterListByType(type);
+        }
         switchVisibility(markersList.get(type.getIndex()));
         initAllListViews();
     }
+
 
     private void openWebsite() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));

@@ -18,6 +18,7 @@ public class VenueFacade {
     public static final String MY_FAVORITES = "myFavorites";
     private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
+    private Map<Integer,ArrayList<Venue>> filteredVenuesMap = new HashMap<Integer,ArrayList<Venue>>();;
 
     /*
     THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
@@ -35,10 +36,21 @@ public class VenueFacade {
         return venuesList;
     }
 
-    public void filterListByType(VenueType t) {
-        //ArrayList<Venue> copyList = new ArrayList<Venue>();
-        //Collections.copy(copyList, venuesList);
+    public void restoreFilteredVenues(VenueType t) {
+        ArrayList<Venue> venues = filteredVenuesMap.get(t.getIndex());
+        if (venues == null)
+            return;
 
+        venuesList.addAll(0,venues);
+        hasChangedBothLists();
+    }
+
+    private void hasChangedBothLists() {
+        hasChangedFavoList = true;
+        hasChangedList = true;
+    }
+
+    public void filterListByType(VenueType t) {
         int initialSize = venuesList.size();
         for (int i = 0; i< initialSize; i++) {
             Log.d("TRBC","check type:" + t.toString() + " index:" + i);
@@ -47,14 +59,21 @@ public class VenueFacade {
                 break;
             }
 
-            if (venuesList.get(i).type == t.getIndex()) {
+            int typeIndex = t.getIndex();
+            if (venuesList.get(i).type == typeIndex) {
                 Log.d("TRBC","remove item type:" + t.toString() + " index:" + i);
-                venuesList.remove(i);
+                ArrayList<Venue> filteredVenues = filteredVenuesMap.get(typeIndex);
+                if (filteredVenues == null) {
+                    for (VenueType x: VenueType.values()) {
+                        filteredVenuesMap.put(x.getIndex(), new ArrayList<Venue>());
+                    }
+                    filteredVenues = filteredVenuesMap.get(typeIndex);
+                }
+                filteredVenues.add(venuesList.remove(i));
                 i--;
             }
         }
-        hasChangedList = true;
-        hasChangedFavoList = true;
+        hasChangedBothLists();
     }
 
     public ArrayList<String> getVenueTitles() {
@@ -78,7 +97,7 @@ public class VenueFacade {
 
     public ArrayList<String> getFavoTitles() {
         Log.d("TRBC","getFavoTitles");
-        if (!hasChangedFavoList && titles.size() > 0) {
+        if (!hasChangedFavoList && titlesFavo.size() > 0) {
             return titlesFavo;
         }
 
