@@ -73,6 +73,7 @@ public class VenueFacade {
                 i--;
             }
         }
+
         hasChangedBothLists();
     }
 

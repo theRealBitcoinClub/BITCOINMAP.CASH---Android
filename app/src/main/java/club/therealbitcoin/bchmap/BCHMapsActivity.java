@@ -368,7 +368,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //viewPager.setCurrentItem(0);
+        if (viewPager.getCurrentItem() == 2)
+            viewPager.setCurrentItem(1);
+
         switchCheck(item);
 
         switch (item.getItemId()) {
