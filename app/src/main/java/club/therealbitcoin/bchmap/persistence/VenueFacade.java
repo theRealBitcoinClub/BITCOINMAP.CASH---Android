@@ -41,7 +41,14 @@ public class VenueFacade {
 
         int initialSize = venuesList.size();
         for (int i = 0; i< initialSize; i++) {
+            Log.d("TRBC","check type:" + t.toString() + " index:" + i);
+            if (venuesList.size() == i) {
+                Log.d("TRBC","break:" + t.toString() + " index:" + i);
+                break;
+            }
+
             if (venuesList.get(i).type == t.getIndex()) {
+                Log.d("TRBC","remove item type:" + t.toString() + " index:" + i);
                 venuesList.remove(i);
                 i--;
             }

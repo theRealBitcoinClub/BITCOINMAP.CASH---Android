@@ -371,8 +371,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         //viewPager.setCurrentItem(0);
         switchCheck(item);
 
-        VenueType type = null;
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 openWebsite();

@@ -102,7 +102,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         Log.d("TRBC","onClick item" + v);
 
         if (showOnlyFavos) {
-            Toast.makeText(ctx, R.string.toast_removed_favorite + " " + v.name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + v.name, Toast.LENGTH_SHORT).show();
             Log.d("TRBC","onClick item showOnlyFavos" + showOnlyFavos + v);
             VenueFacade.getInstance().removeFavoriteVenue(v);
             v.setFavorite(false,ctx);
