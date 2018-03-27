@@ -26,8 +26,15 @@ public class MarkerDetailsFragment extends DialogFragment {
 	public static final String PARCEL_ID = "dsjlkfndsjkf";
 	private static final String TAG = "TRBCDialog";
     private static UpdateActivityCallback cb;
+	private int accentColor;
+	private int primaryColor;
+	private String accent;
+	private String primary;
+	private float[] from;
+	private float[] to;
+	private ValueAnimator valueAnimator;
 
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.marker_detail_fragment, container, true);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -117,17 +124,19 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 
 	private void animateColorChange(View view, String fromColor, String toColor) {
-		final float[] from = new float[3],
-				to =   new float[3];
+		if (valueAnimator == null) {
+			from = new float[3];
+			to = new float[3];
 
-		Color.colorToHSV(Color.parseColor(fromColor), from);   // from white
-		Color.colorToHSV(Color.parseColor(toColor), to);     // to red
+			Color.colorToHSV(Color.parseColor(fromColor), from);   // from white
+			Color.colorToHSV(Color.parseColor(toColor), to);     // to red
 
-		ValueAnimator anim = ValueAnimator.ofFloat(0, 1);   // animate from 0 to 1
-		anim.setDuration(300);                              // for 300 ms
-
+			// animate from 0 to 1
+			valueAnimator = ValueAnimator.ofFloat(0, 1);
+			valueAnimator.setDuration(300);                              // for 300 ms
+		}
 		final float[] hsv  = new float[3];                  // transition color
-		anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
+		valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
 			@Override public void onAnimationUpdate(ValueAnimator animation) {
 				// Transition along each axis of HSV (hue, saturation, value)
 				hsv[0] = from[0] + (to[0] - from[0])*animation.getAnimatedFraction();
@@ -138,7 +147,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 			}
 		});
 
-		anim.start();
+		valueAnimator.start();
 	}
 
 	private void resetColorWithDelay(View btn_route) {
@@ -159,8 +168,12 @@ public class MarkerDetailsFragment extends DialogFragment {
 	private boolean isFavo = false;
 
 	private void switchColor(View btn, boolean onOff) {
-		String accent = "#79bf8c";
-		String primary = "#549c68";
+		if (accent == null) {
+			accentColor = getResources().getColor(R.color.colorAccent);
+			primaryColor = getResources().getColor(R.color.colorPrimary);
+			accent = Integer.toHexString(accentColor);
+			primary = Integer.toHexString(primaryColor);
+		}
 	    if (onOff) {
 			animateColorChange(btn, primary, accent);
 			//btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
