@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +31,6 @@ public class MarkerDetailsFragment extends DialogFragment {
 	private int primaryColor;
 	private String accent;
 	private String primary;
-	private float[] from;
-	private float[] to;
-	private ValueAnimator valueAnimator;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,18 +122,20 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 
 	private void animateColorChange(View view, String fromColor, String toColor) {
-		if (valueAnimator == null) {
-			from = new float[3];
-			to = new float[3];
+			final float[] from = new float[3];
+			final float[] to = new float[3];
 
-			Color.colorToHSV(Color.parseColor(fromColor), from);   // from white
-			Color.colorToHSV(Color.parseColor(toColor), to);     // to red
+			Log.d("TRBC", "fromColor:" + fromColor);
+			Log.d("TRBC", "toColor:" + toColor);
 
-			// animate from 0 to 1
-			valueAnimator = ValueAnimator.ofFloat(0, 1);
-			valueAnimator.setDuration(300);                              // for 300 ms
-		}
-		final float[] hsv  = new float[3];                  // transition color
+			Color.colorToHSV(Color.parseColor(fromColor), from);
+			Color.colorToHSV(Color.parseColor(toColor), to);
+
+		// animate from 0 to 1
+		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+		valueAnimator.setDuration(300);
+
+		final float[] hsv  = new float[3];
 		valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
 			@Override public void onAnimationUpdate(ValueAnimator animation) {
 				// Transition along each axis of HSV (hue, saturation, value)
@@ -171,8 +171,12 @@ public class MarkerDetailsFragment extends DialogFragment {
 		if (accent == null) {
 			accentColor = getResources().getColor(R.color.colorAccent);
 			primaryColor = getResources().getColor(R.color.colorPrimary);
-			accent = Integer.toHexString(accentColor);
-			primary = Integer.toHexString(primaryColor);
+			accent = "#" + Integer.toHexString(accentColor).substring(2);
+			primary = "#" + Integer.toHexString(primaryColor).substring(2);
+
+			Log.d("TRBC", "accent:" + accent);
+			Log.d("TRBC", "primary:" + primary);
+
 		}
 	    if (onOff) {
 			animateColorChange(btn, primary, accent);
