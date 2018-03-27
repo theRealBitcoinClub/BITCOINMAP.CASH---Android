@@ -396,6 +396,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 applyFilters(item,VenueType.Food);
                 return true;
             case R.id.menu_switch:
+                viewPager.setCurrentItem(1);
                 switchMapStyle(item);
 
                 if (currentMapStyle == 0) {
