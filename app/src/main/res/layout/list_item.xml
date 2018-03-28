@@ -10,7 +10,7 @@
         android:layout_width="24dip"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
-        android:alpha="0.75"
+        android:alpha="0.85"
         android:background="?attr/selectableItemBackground"/>
 
     <TextView
@@ -19,11 +19,12 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:paddingLeft="8dp"
+        android:paddingLeft="12dp"
         android:paddingRight="8dp"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:alpha="0.7"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <ImageView
         android:id="@+id/list_item_button"
@@ -31,7 +32,7 @@
         android:layout_width="24dip"
         android:layout_marginRight="16dp"
         android:layout_marginTop="20dp"
-        android:background="?attr/selectableItemBackground"
+        android:alpha="0.9"
         android:src="@drawable/ic_action_favorite_border"/>
 
 </LinearLayout>

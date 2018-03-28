@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -301,7 +302,15 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                 LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                                mMap.setMinZoomPreference(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED);
+                                /*mMap.setMinZoomPreference(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mMap.resetMinMaxZoomPreference();
+                                    }
+                                },100L);*/
+
                                 isLocationAvailable = true;
                             } else {
                                 Log.d(TAG, "getLastLocation:exception", task.getException());
@@ -312,6 +321,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             Log.d(TAG,"SECURITYEXCEPTION");
         }
     }
+
+
 
     @Override
     public void initAllListViews() {

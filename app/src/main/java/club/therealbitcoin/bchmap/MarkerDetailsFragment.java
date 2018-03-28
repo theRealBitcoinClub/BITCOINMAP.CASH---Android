@@ -156,7 +156,7 @@ public class MarkerDetailsFragment extends DialogFragment {
             public void run() {
                 switchColor(btn_route, false);
             }
-        },250L);
+        },300L);
 	}
 
 	@Override

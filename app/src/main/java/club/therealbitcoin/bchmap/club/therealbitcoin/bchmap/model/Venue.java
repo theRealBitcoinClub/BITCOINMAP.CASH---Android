@@ -26,9 +26,11 @@ public class Venue implements Parcelable {
     private Boolean isFavorite = null;
     LatLng coordinates;
     private boolean filtered = false;
+    public int listIndex = -1;
 
     protected Venue(Parcel in) {
         favoListIndex = in.readInt();
+        listIndex = in.readInt();
         name = in.readString();
         iconRes = in.readInt();
         type = in.readInt();
@@ -174,6 +176,7 @@ public class Venue implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(favoListIndex);
+        dest.writeInt(listIndex);
         dest.writeString(name);
         dest.writeInt(iconRes);
         dest.writeInt(type);

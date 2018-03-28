@@ -6,7 +6,7 @@
     <string name="rating">Rating</string>
     <string name="error_con_webservice">Error connecting to the internet, please check your signal strength and restart the app. Thank You.</string>
     <string name="logo_desc">logo_description</string>
-    <string name="type_atm">ATM-Teller</string>
+    <string name="type_atm">Crypto Trader</string>
     <string name="type_food">Restaurant</string>
     <string name="type_super">Supermarket</string>
     <string name="type_bar">Bar-Club</string>
@@ -28,5 +28,5 @@
     <string name="toast_filter_by_type">Hide all</string>
     <string name="toast_unfilter_by_type">Show all</string>
     <string name="toast_favorites_not_affected_by_filter">Favorites are not being filtered.</string>
-    <string name="toast_go_to_website">Opening website: The Real Bitcoin Club (http://trbc.io)</string>
+    <string name="toast_go_to_website">Website: The Real Bitcoin Club (trbc.io)</string>
 </resources>
