@@ -114,7 +114,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     }
 
     private void handleOnClickFavoView(Venue v, Context ctx, View view) {
-        Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + v.name, Toast.LENGTH_SHORT).show();
         Log.d("TRBC","onClick item showOnlyFavos" + showOnlyFavos + v);
         Animation animation = AnimationUtils.loadAnimation(ctx, R.anim.animation_remove_favorite);
         animation.reset();
