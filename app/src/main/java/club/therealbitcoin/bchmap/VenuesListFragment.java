@@ -19,6 +19,7 @@ package club.therealbitcoin.bchmap;
 
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
+        import club.therealbitcoin.bchmap.interfaces.AnimationEndAbstract;
         import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
         import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
@@ -115,12 +116,9 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     private void handleOnClickFavoView(Venue v, Context ctx, View view) {
         Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + v.name, Toast.LENGTH_SHORT).show();
         Log.d("TRBC","onClick item showOnlyFavos" + showOnlyFavos + v);
-        /*VenueFacade.getInstance().removeFavoriteVenue(v);
-        v.setFavorite(false,ctx);
-        callback.initAllListViews();*/
         Animation animation = AnimationUtils.loadAnimation(ctx, R.anim.animation_remove_favorite);
         animation.reset();
-        view.startAnimation(animation);
+        v.listItem.startAnimation(animation);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -165,6 +163,7 @@ class PopupAdapter extends ArrayAdapter<String> {
         View view = super.getView(position, convertView, container);
         Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
 
+        venue.listItem = view;
         View button = view.findViewById(R.id.list_item_button);
         View icon = view.findViewById(R.id.list_item_icon);
 
@@ -197,23 +196,14 @@ class PopupAdapter extends ArrayAdapter<String> {
             if (animate) {
                 Animation scaleOut = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_hero_to_zero);
                 scaleOut.reset();
-                scaleOut.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
 
-                    }
-
+                scaleOut.setAnimationListener(new AnimationEndAbstract() {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         button.setBackgroundResource(R.drawable.ic_action_favorite);
                         Animation scaleIn = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_zero_to_hero);
                         scaleIn.reset();
                         button.startAnimation(scaleIn);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
                     }
                 });
                 button.startAnimation(scaleOut);
@@ -224,23 +214,13 @@ class PopupAdapter extends ArrayAdapter<String> {
             if (animate) {
                 Animation scaleOut = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_hero_to_zero);
                 scaleOut.reset();
-                scaleOut.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
+                scaleOut.setAnimationListener(new AnimationEndAbstract() {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         button.setBackgroundResource(R.drawable.ic_action_favorite_border);
                         Animation scaleIn = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_zero_to_hero);
                         scaleIn.reset();
                         button.startAnimation(scaleIn);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
                     }
                 });
                 button.startAnimation(scaleOut);

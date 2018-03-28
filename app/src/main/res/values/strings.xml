@@ -6,7 +6,7 @@
     <string name="rating">Rating</string>
     <string name="error_con_webservice">Error connecting to the internet, please check your signal strength and restart the app. Thank You.</string>
     <string name="logo_desc">logo_description</string>
-    <string name="type_atm">Crypto Trader</string>
+    <string name="type_atm">Bitcoin Trader</string>
     <string name="type_food">Restaurant</string>
     <string name="type_super">Supermarket</string>
     <string name="type_bar">Bar-Club</string>

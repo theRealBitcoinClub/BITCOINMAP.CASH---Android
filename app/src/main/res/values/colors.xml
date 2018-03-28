@@ -2,5 +2,6 @@
 <resources>
     <color name="colorPrimary">#36a69e</color>
     <color name="colorPrimaryDark">#339c9a</color>
+    <color name="actionBarGradientTopAndBottom">#226964</color>
     <color name="colorAccent">#3bb8af</color>
 </resources>

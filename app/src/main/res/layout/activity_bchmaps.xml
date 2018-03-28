@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/actionbar_background"
         android:elevation="4dp"
         app:titleMarginStart="0dp"
         app:contentInsetStartWithNavigation="0dp"

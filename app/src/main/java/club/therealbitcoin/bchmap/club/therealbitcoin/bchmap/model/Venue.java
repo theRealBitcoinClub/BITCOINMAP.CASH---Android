@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -27,6 +28,7 @@ public class Venue implements Parcelable {
     LatLng coordinates;
     private boolean filtered = false;
     public int listIndex = -1;
+    public View listItem;
 
     protected Venue(Parcel in) {
         favoListIndex = in.readInt();

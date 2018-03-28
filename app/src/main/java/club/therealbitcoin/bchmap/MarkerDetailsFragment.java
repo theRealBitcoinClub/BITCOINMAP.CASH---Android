@@ -1,5 +1,6 @@
 package club.therealbitcoin.bchmap;
  
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.interfaces.AnimatorEndAbstract;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
@@ -66,7 +68,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 		Context ctx = getContext();
 		if (venue.isFavorite(ctx)) {
-			switchColor(btn_favo, true);
+			switchColor(btn_favo, true, null);
 			isFavo = true;
 		}
 
@@ -78,7 +80,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
-				switchColor(btn_route, true);
+				switchColor(btn_route, true, null);
 				openMapsRoute(venue.placesId);
 				resetColorWithDelay(btn_route);
 			}
@@ -92,7 +94,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
-				switchColor(btn_share, true);
+				switchColor(btn_share, true, null);
 				shareDeepLink();
 				resetColorWithDelay(btn_share);
 			}
@@ -113,25 +115,29 @@ public class MarkerDetailsFragment extends DialogFragment {
 					isFavo = true;
 				}
 
-				switchColor(btn_favo, isFavo);
-				venue.setFavorite(isFavo, ctx);
-				cb.initAllListViews();
+				switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
+					@Override
+					public void onAnimationEnd(Animator animation) {
+
+						venue.setFavorite(isFavo, ctx);
+						cb.initAllListViews();
+					}
+				});
 			}
 		});
 	}
 
 
-	private void animateColorChange(View view, String fromColor, String toColor) {
-			final float[] from = new float[3];
-			final float[] to = new float[3];
+	private void animateColorChange(View view, String fromColor, String toColor, Animator.AnimatorListener afterAnim) {
+		final float[] from = new float[3];
+		final float[] to = new float[3];
 
-			Log.d("TRBC", "fromColor:" + fromColor);
-			Log.d("TRBC", "toColor:" + toColor);
+		Log.d("TRBC", "fromColor:" + fromColor);
+		Log.d("TRBC", "toColor:" + toColor);
 
-			Color.colorToHSV(Color.parseColor(fromColor), from);
-			Color.colorToHSV(Color.parseColor(toColor), to);
+		Color.colorToHSV(Color.parseColor(fromColor), from);
+		Color.colorToHSV(Color.parseColor(toColor), to);
 
-		// animate from 0 to 1
 		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
 		valueAnimator.setDuration(300);
 
@@ -147,6 +153,9 @@ public class MarkerDetailsFragment extends DialogFragment {
 			}
 		});
 
+		if (afterAnim != null)
+			valueAnimator.addListener(afterAnim);
+
 		valueAnimator.start();
 	}
 
@@ -154,7 +163,8 @@ public class MarkerDetailsFragment extends DialogFragment {
 		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                switchColor(btn_route, false);
+            	btn_route.clearAnimation();
+                //switchColor(btn_route, false, );
             }
         },300L);
 	}
@@ -167,7 +177,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 
 	private boolean isFavo = false;
 
-	private void switchColor(View btn, boolean onOff) {
+	private void switchColor(View btn, boolean onOff, Animator.AnimatorListener afterAnim) {
 		if (accent == null) {
 			accentColor = getResources().getColor(R.color.colorAccent);
 			primaryColor = getResources().getColor(R.color.colorPrimary);
@@ -178,13 +188,10 @@ public class MarkerDetailsFragment extends DialogFragment {
 			Log.d("TRBC", "primary:" + primary);
 
 		}
-	    if (onOff) {
-			animateColorChange(btn, primary, accent);
-			//btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-		}
-	    else animateColorChange(btn, accent, primary);
-		//btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
+	    if (onOff)
+			animateColorChange(btn, primary, accent, afterAnim);
+	    else
+	    	animateColorChange(btn, accent, primary, afterAnim);
     }
 
 	private void openMapsRoute(String s) {
