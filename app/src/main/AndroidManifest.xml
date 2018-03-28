@@ -16,6 +16,7 @@
         android:label="@string/app_name"
         android:name="club.therealbitcoin.bchmap.MyApplication"
         android:supportsRtl="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:theme="@style/MyMaterialTheme">
         <!--
