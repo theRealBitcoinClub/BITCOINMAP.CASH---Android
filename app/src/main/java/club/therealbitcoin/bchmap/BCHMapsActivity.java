@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -81,6 +80,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
     private boolean isLocationAvailable = false;
+    public static final int NON_CHECKABLE_MENU_ITEMS = 1;
 
     /*@Override
     protected void onStop() {
@@ -300,6 +300,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                 LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                                Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
                                 /*mMap.setMinZoomPreference(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED);
 
                                 new Handler().postDelayed(new Runnable() {
@@ -307,7 +308,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                     public void run() {
                                         mMap.resetMinMaxZoomPreference();
                                     }
-                                },100L);*/
+                                },2000L);*/
 
                                 isLocationAvailable = true;
                             } else {
@@ -373,6 +374,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        for (int i = NON_CHECKABLE_MENU_ITEMS; i<menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(i - NON_CHECKABLE_MENU_ITEMS);
+            Log.d(TAG,"onCreateOptionsMenu:" + i + ", isChecked:" + isChecked);
+            item.setChecked(isChecked);
+        }
+
         return true;
     }
 
@@ -430,10 +438,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().filterListByType(type);
         }
-        switchVisibility(markersList.get(type.getIndex()));
+        updateMapView(type);
         initAllListViews();
     }
 
+    private void updateMapView(VenueType type) {
+        updateMapView(type.getIndex());
+    }
+    private void updateMapView(int index) {
+        switchVisibility(markersList.get(index));
+    }
 
     private void openWebsite() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));

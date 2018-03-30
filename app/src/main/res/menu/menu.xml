@@ -16,28 +16,23 @@
                 <item android:id="@+id/menu_atm"
                     android:icon="@drawable/ic_map_bitcoin"
                     android:title="@string/type_atm"
-                    android:checkable="true"
-                    android:checked="true"/>
+                    android:checkable="true"/>
                 <item android:id="@+id/menu_food"
                     android:icon="@drawable/ic_map_food"
                     android:title="@string/type_food"
-                    android:checkable="true"
-                    android:checked="true"/>
+                    android:checkable="true"/>
                 <item android:id="@+id/menu_bar"
                     android:icon="@drawable/ic_map_bar"
                     android:title="@string/type_bar"
-                    android:checkable="true"
-                    android:checked="true"/>
+                    android:checkable="true"/>
                 <item android:id="@+id/menu_shops"
                     android:icon="@drawable/ic_map_shop"
                     android:title="@string/type_super"
-                    android:checkable="true"
-                    android:checked="true"/>
+                    android:checkable="true"/>
                 <item android:id="@+id/menu_spa"
                     android:icon="@drawable/ic_map_spa"
                     android:title="@string/type_spa"
-                    android:checkable="true"
-                    android:checked="true"/>
+                    android:checkable="true"/>
             </group>
     </item>
 </menu>

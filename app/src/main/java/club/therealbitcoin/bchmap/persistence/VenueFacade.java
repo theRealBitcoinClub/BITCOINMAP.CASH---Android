@@ -36,8 +36,17 @@ public class VenueFacade {
         return venuesList;
     }
 
+    public boolean isTypeFiltered(int t) {
+        ArrayList<Venue> venues = filteredVenuesMap.get(t);
+        if (venues == null || venues.size() == 0)
+            return false;
+
+        return true;
+        //return filteredVenuesMap.get(t) != null || ;
+    }
+
     public void restoreFilteredVenues(VenueType t) {
-        ArrayList<Venue> venues = filteredVenuesMap.get(t.getIndex());
+        ArrayList<Venue> venues = filteredVenuesMap.remove(t.getIndex());
         if (venues == null)
             return;
 
