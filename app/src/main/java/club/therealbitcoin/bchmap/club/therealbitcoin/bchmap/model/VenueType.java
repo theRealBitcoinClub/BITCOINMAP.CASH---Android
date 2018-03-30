@@ -2,12 +2,8 @@ package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 
 import club.therealbitcoin.bchmap.R;
 
-/**
- * Created by root on 18.03.2018.
- */
-
 public enum VenueType {
-    ATM(0), Food(1), Super(2), Bar(3), Spa(4);
+    ATM(0), Food(1), Bar(2), Super(3), Spa(4);
 
     private int index;
 

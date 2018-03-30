@@ -63,8 +63,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private int currentMapStyle = 0;
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
     private FragmentManager fm;
-    private Map<String, Marker> markerMap;
-    private Map<Integer,ArrayList<Marker>> markersList;
+    //private Map<String, Marker> markerMap;
+    //private Map<Integer,ArrayList<Marker>> markersListMap;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -92,7 +92,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         viewPager = null;
         tabLayout = null;
         fm = null;
-        markersList = null;
+        markersListMap = null;
         markerMap = null;
         mMap = null;
     }
@@ -110,7 +110,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_bchmaps);
         //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.my_custom_title);
-        initMarkersList();
+        //initMarkersList();
         findViewsById();
 
         fm = getSupportFragmentManager();
@@ -169,14 +169,15 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
+    /*
     private void initMarkersList() {
         Log.d(TAG,"initMarkersList");
         markerMap = new HashMap<String,Marker>();
-        markersList = new HashMap<Integer,ArrayList<Marker>>();
+        markersListMap = new HashMap<Integer,ArrayList<Marker>>();
         for (int i=0; i<VenueType.values().length; i++) {
-            markersList.put(i, new ArrayList<Marker>());
+            markersListMap.put(i, new ArrayList<Marker>());
         }
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -215,9 +216,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         try {
             Log.d(TAG,"ssssss");
-            if (markerMap.isEmpty()) {
-                addVenueMarkersToMap();
-            }
+            //if (markerMap.isEmpty()) {
+                syncVenueMarkersDataWithMap();
+            //}
         } catch (Exception e) {
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
@@ -279,12 +280,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         setMapStyle(mapStyles[currentMapStyle]);
     }
 
-    void addVenueMarkersToMap() throws JSONException {
+    void syncVenueMarkersDataWithMap() throws JSONException {
+        mMap.clear();
+        //initMarkersList();
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
             Log.d(TAG, "venue: " + v);
             Marker marker = addMarker(v);
-            markersList.get(v.type).add(marker);
-            markerMap.put(v.placesId, marker);
+            //markersListMap.get(v.type).add(marker);
+            //markerMap.put(v.placesId, marker);
         }
         moveCameraToLastLocation();
     }
@@ -353,7 +356,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
                     Log.d(TAG, "responseData: " + responseData);
                     if(isMapReady)
-                        addVenueMarkersToMap();
+                        syncVenueMarkersDataWithMap();
 
                     initAllListViews();
                 } catch (JSONException e) {
@@ -374,9 +377,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        for (int i = NON_CHECKABLE_MENU_ITEMS; i<menu.size(); i++) {
+        int size = menu.size();
+        Log.d(TAG,"menu size:" + size);
+        for (int i = NON_CHECKABLE_MENU_ITEMS; i< size; i++) {
+            int realIndex = i - NON_CHECKABLE_MENU_ITEMS;
             MenuItem item = menu.getItem(i);
-            boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(i - NON_CHECKABLE_MENU_ITEMS);
+            Log.d(TAG,"item:" + item.getTitle());
+            boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(realIndex);
             Log.d(TAG,"onCreateOptionsMenu:" + i + ", isChecked:" + isChecked);
             item.setChecked(isChecked);
         }
@@ -438,16 +445,22 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().filterListByType(type);
         }
-        updateMapView(type);
+        //updateMapView(type);
+        try {
+            syncVenueMarkersDataWithMap();
+        } catch (JSONException e) {
+            Log.e(TAG,"JSONEXCEPTION");
+            e.printStackTrace();
+        }
         initAllListViews();
     }
 
-    private void updateMapView(VenueType type) {
+    /*private void updateMapView(VenueType type) {
         updateMapView(type.getIndex());
     }
     private void updateMapView(int index) {
-        switchVisibility(markersList.get(index));
-    }
+        switchVisibility(markersListMap.get(index));
+    }*/
 
     private void openWebsite() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));
@@ -460,14 +473,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             item.setChecked(true);
     }
 
-    private void switchVisibility(List<Marker> markers) {
+    /*private void switchVisibility(List<Marker> markers) {
         for (Marker m: markers) {
             if (m.isVisible())
                 m.setVisible(false);
             else
                 m.setVisible(true);
         }
-    }
+    }*/
 
     private Marker addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(VenueType.getIconResource(v.type));

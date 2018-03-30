@@ -11,6 +11,7 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
 public class VenueFacade {
+    public static final String TAG = "TRBC";
     private static VenueFacade ourInstance = new VenueFacade();
     private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
     private ArrayList<Venue> venuesList = new ArrayList<Venue>();
@@ -18,7 +19,7 @@ public class VenueFacade {
     public static final String MY_FAVORITES = "myFavorites";
     private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
-    private Map<Integer,ArrayList<Venue>> filteredVenuesMap = new HashMap<Integer,ArrayList<Venue>>();;
+    private Map<String,ArrayList<Venue>> filteredVenuesMap = new HashMap<String,ArrayList<Venue>>();
 
     /*
     THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
@@ -37,7 +38,8 @@ public class VenueFacade {
     }
 
     public boolean isTypeFiltered(int t) {
-        ArrayList<Venue> venues = filteredVenuesMap.get(t);
+        ArrayList<Venue> venues = filteredVenuesMap.get(""+t);
+        Log.d(TAG,"isTypeFiltered venues:" + venues);
         if (venues == null || venues.size() == 0)
             return false;
 
@@ -46,10 +48,13 @@ public class VenueFacade {
     }
 
     public void restoreFilteredVenues(VenueType t) {
-        ArrayList<Venue> venues = filteredVenuesMap.remove(t.getIndex());
-        if (venues == null)
+        Log.d(TAG,"restoreFilteredVenues" + t);
+        ArrayList<Venue> venues = filteredVenuesMap.remove(""+t.getIndex());
+        Log.d(TAG,"restoreFilteredVenues size" + venues.size());
+        if (venues == null || venues.size() == 0)
             return;
 
+        Log.d(TAG,"restoreFilteredVenues Yep" + t);
         venuesList.addAll(0,venues);
         hasChangedBothLists();
     }
@@ -71,12 +76,12 @@ public class VenueFacade {
             int typeIndex = t.getIndex();
             if (venuesList.get(i).type == typeIndex) {
                 Log.d("TRBC","remove item type:" + t.toString() + " index:" + i);
-                ArrayList<Venue> filteredVenues = filteredVenuesMap.get(typeIndex);
-                if (filteredVenues == null) {
+                ArrayList<Venue> filteredVenues = filteredVenuesMap.get(""+typeIndex);
+                if (filteredVenues == null || filteredVenues.size() == 0) {
                     for (VenueType x: VenueType.values()) {
-                        filteredVenuesMap.put(x.getIndex(), new ArrayList<Venue>());
+                        filteredVenuesMap.put(""+typeIndex, new ArrayList<Venue>());
                     }
-                    filteredVenues = filteredVenuesMap.get(typeIndex);
+                    filteredVenues = filteredVenuesMap.get(""+typeIndex);
                 }
                 filteredVenues.add(venuesList.remove(i));
                 i--;
