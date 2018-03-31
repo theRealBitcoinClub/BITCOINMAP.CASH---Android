@@ -381,6 +381,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        updateSwitchThemeIcon(menu.getItem(0));
+        
         int size = menu.size();
         Log.d(TAG,"menu size:" + size);
         for (int i = NON_CHECKABLE_MENU_ITEMS; i< size; i++) {
@@ -431,17 +433,21 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 //viewPager.setCurrentItem(0);
                 switchMapStyle(item);
 
-                if (VenueFacade.getInstance().getTheme() == 0) {
-                    item.setIcon(R.drawable.ic_action_luna);
-                } else {
-                    item.setIcon(R.drawable.ic_action_sun);
-                }
+                updateSwitchThemeIcon(item);
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private void updateSwitchThemeIcon(MenuItem item) {
+        if (VenueFacade.getInstance().getTheme() == 0) {
+            item.setIcon(R.drawable.ic_action_luna);
+        } else {
+            item.setIcon(R.drawable.ic_action_sun);
+        }
     }
 
     private void applyFilters(MenuItem item, VenueType type) {
