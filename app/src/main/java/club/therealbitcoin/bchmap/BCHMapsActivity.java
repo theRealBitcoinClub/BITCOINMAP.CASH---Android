@@ -487,6 +487,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private Marker addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
+        
         Log.d(TAG,"addMarker lat:" + v.getCoordinates().latitude + " lon:" + v.getCoordinates().longitude);
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
@@ -498,7 +499,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         Log.d(TAG,"markerclick:" + marker.getId());
 
         Venue v = (Venue) marker.getTag();
-
         if (v == null) {
             Log.d(TAG,"venue:" + v);
             return false;
