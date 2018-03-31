@@ -20,6 +20,7 @@ public class VenueFacade {
     private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
     private Map<String,ArrayList<Venue>> filteredVenuesMap = new HashMap<String,ArrayList<Venue>>();
+    private int theme = 0;
 
     /*
     THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
@@ -170,5 +171,13 @@ public class VenueFacade {
 
     public Venue findFavoByIndex(int position) {
         return favorites.get(position);
+    }
+
+    public void setTheme(int theme) {
+        this.theme = theme;
+    }
+
+    public int getTheme() {
+        return theme;
     }
 }

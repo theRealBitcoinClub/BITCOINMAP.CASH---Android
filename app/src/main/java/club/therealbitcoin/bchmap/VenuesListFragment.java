@@ -12,6 +12,7 @@ package club.therealbitcoin.bchmap;
         import android.view.animation.AnimationUtils;
         import android.widget.ArrayAdapter;
         import android.widget.ListView;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     }
 
     public void initAdapter(boolean onlyFavorites) {
+        switchBackground();
+
         Log.d("TRBC","VenuesListFragment, initAdapter favos:" + onlyFavorites);
 
         int itemRes;
@@ -81,6 +84,15 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             setListAdapter(new PopupAdapter(venueTitles, itemRes, getActivity()));
             Log.d("TRBC","venuetitles size:" + venueTitles.size() + " getListAdapter().getCount();" + getListAdapter().getCount());
         }
+    }
+
+    private void switchBackground() {
+        try {
+            if (VenueFacade.getInstance().getTheme() == 0 && getListView() != null)
+                getListView().setBackgroundColor(getResources().getColor(android.R.color.white));
+            else
+                getListView().setBackgroundColor(getResources().getColor(R.color.colorBackGroundDark));
+        } catch (IllegalStateException e) {/*catch exception which occurs if initAdapter is called first Time before view is created*/}
     }
 
     @Override
@@ -161,6 +173,11 @@ class PopupAdapter extends ArrayAdapter<String> {
 
         View view = super.getView(position, convertView, container);
         Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
+
+        if (VenueFacade.getInstance().getTheme() != 0) {
+            view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
+            ((TextView)view.findViewById(android.R.id.text1)).setTextColor(getResources().getColor(android.R.color.white));
+        }
 
         venue.listItem = view;
         View button = view.findViewById(R.id.list_item_button);

@@ -60,7 +60,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public static final String URI_CLICK_LOGO = "http://trbc.io";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
-    private int currentMapStyle = 0;
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
     private FragmentManager fm;
     //private Map<String, Marker> markerMap;
@@ -211,7 +210,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         Log.d(TAG, "onMapReady: ");
         initMap(googleMap);
         getPermissionAccessFineLocation();
-        setMapStyle(mapStyles[currentMapStyle]);
+        setMapStyle(mapStyles[VenueFacade.getInstance().getTheme()]);
         setupTabIcons();
 
         try {
@@ -273,11 +272,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void switchMapStyle(MenuItem item){
-        currentMapStyle++;
-        if (currentMapStyle>=mapStyles.length) {
-            currentMapStyle = 0;
+        VenueFacade facade = VenueFacade.getInstance();
+        int theme = facade.getTheme();
+        theme++;
+        if (theme >=mapStyles.length) {
+            theme=0;
         }
-        setMapStyle(mapStyles[currentMapStyle]);
+        Log.d(TAG,"switchMapStyle" + theme);
+        facade.setTheme(theme);
+        setMapStyle(mapStyles[theme]);
+        initAllListViews();
     }
 
     void syncVenueMarkersDataWithMap() throws JSONException {
@@ -424,10 +428,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 applyFilters(item,VenueType.Fashion);
                 return true;
             case R.id.menu_switch:
-                viewPager.setCurrentItem(0);
+                //viewPager.setCurrentItem(0);
                 switchMapStyle(item);
 
-                if (currentMapStyle == 0) {
+                if (VenueFacade.getInstance().getTheme() == 0) {
                     item.setIcon(R.drawable.ic_action_luna);
                 } else {
                     item.setIcon(R.drawable.ic_action_sun);
@@ -487,7 +491,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private Marker addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
-        
+
         Log.d(TAG,"addMarker lat:" + v.getCoordinates().latitude + " lon:" + v.getCoordinates().longitude);
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
