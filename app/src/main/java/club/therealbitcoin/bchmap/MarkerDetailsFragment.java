@@ -57,16 +57,18 @@ public class MarkerDetailsFragment extends DialogFragment {
         ((TextView)view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
         ((TextView)view.findViewById(R.id.dialog_header)).setText(venue.name);
+		int discountText = venue.getDiscountText();
+		if (discountText != -1)
+			((TextView)view.findViewById(R.id.dialog_discount)).setText(discountText);
+		else {
+			((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
+		}
 
 		ImageView img = view.findViewById(R.id.img);
 String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 		Log.d(TAG,imgUri);
 
-		Glide.with(this)
-				.load(imgUri)
-				.into(img);
-				//.placeholder(android.R.drawable.)
-
+		Glide.with(this).load(imgUri).into(img);
 
 		return view;
     }

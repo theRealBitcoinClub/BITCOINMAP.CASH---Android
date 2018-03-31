@@ -5,7 +5,7 @@ package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
  */
 
 public enum VenueJson {
-    placesId("p"), lat("x"), lon("y"), name("n"), type("t"), reviews("c"), score("s");
+    placesId("p"), lat("x"), lon("y"), name("n"), type("t"), reviews("c"), score("s"), discount("d");
 
     String code;
 

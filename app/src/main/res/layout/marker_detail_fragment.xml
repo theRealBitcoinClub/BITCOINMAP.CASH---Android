@@ -32,12 +32,13 @@
     <ImageView
         android:scaleType="centerCrop"
         android:id="@+id/img"
-        android:layout_width="240dp"
+        android:layout_width="280dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:layout_height="180dp" />
+        android:background="@color/colorAccent"
+        android:layout_height="210dp" />
 
     <ImageView
         android:id="@+id/horizontal_rule2"
@@ -67,6 +68,17 @@
             android:paddingRight="8dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/colorPrimaryDark" />
+    <TextView
+        android:id="@+id/dialog_discount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorDiscount" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"

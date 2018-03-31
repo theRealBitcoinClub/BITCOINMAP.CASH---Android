@@ -6,4 +6,5 @@
     <color name="colorAccent">#3bb8af</color>
     <color name="colorBackGroundDark">#222222</color>
     <color name="colorListItemDark">#111111</color>
+    <color name="colorDiscount">#aa0000</color>
 </resources>

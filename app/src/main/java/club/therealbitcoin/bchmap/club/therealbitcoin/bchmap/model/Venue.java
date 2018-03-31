@@ -30,8 +30,10 @@ public class Venue implements Parcelable {
     private boolean filtered = false;
     public int listIndex = -1;
     public View listItem;
+    private int discountLevel = -1;
 
     protected Venue(Parcel in) {
+        discountLevel = in.readInt();
         favoListIndex = in.readInt();
         listIndex = in.readInt();
         name = in.readString();
@@ -80,7 +82,8 @@ public class Venue implements Parcelable {
         return coordinates;
     }
 
-    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord) {
+    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt) {
+        this.discountLevel = dscnt;
         this.name = name;
         this.iconRes = iconRes;
         this.type = type;
@@ -97,7 +100,8 @@ public class Venue implements Parcelable {
         LatLng latLng = WebService.parseLatLng(venue);
         int type = venue.getInt(VenueJson.type.toString());
         String placesId = venue.getString(VenueJson.placesId.toString());
-        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng);
+        int dscnt = venue.getInt(VenueJson.discount.toString());
+        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt);
     }
 
     @Override
@@ -121,7 +125,8 @@ public class Venue implements Parcelable {
         appendData(sb, VenueJson.name.toString(), name);
         appendData(sb, VenueJson.type.toString(), type);
         appendData(sb, VenueJson.reviews.toString(), reviews);
-        appendData(sb, VenueJson.score.toString(), stars, true);
+        appendData(sb, VenueJson.score.toString(), stars);
+        appendData(sb, VenueJson.discount.toString(), discountLevel, true);
         sb.append("}");
         return sb.toString();
     }
@@ -178,6 +183,7 @@ public class Venue implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(discountLevel);
         dest.writeInt(favoListIndex);
         dest.writeInt(listIndex);
         dest.writeString(name);
@@ -196,5 +202,15 @@ public class Venue implements Parcelable {
 
     public boolean isFiltered() {
         return filtered;
+    }
+
+    public int getDiscountText() {
+        switch (discountLevel) {
+            case 0: return R.string.discount0;
+            case 1: return R.string.discount1;
+            case 2: return R.string.discount2;
+            case 3: return R.string.discount3;
+            default: return -1;
+        }
     }
 }

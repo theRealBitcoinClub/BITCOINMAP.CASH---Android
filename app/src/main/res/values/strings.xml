@@ -30,4 +30,8 @@
     <string name="toast_unfilter_by_type">Show all</string>
     <string name="toast_favorites_not_affected_by_filter">Favorites are not being filtered.</string>
     <string name="toast_go_to_website">Website: The Real Bitcoin Club (trbc.io)</string>
+    <string name="discount0">6% discount on all BCH payments</string>
+    <string name="discount1">12% discount on all BCH payments</string>
+    <string name="discount2">24% discount on all BCH payments</string>
+    <string name="discount3">Sell your BCH here with 0.0% fee</string>
 </resources>

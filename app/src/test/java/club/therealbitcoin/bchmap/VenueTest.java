@@ -19,7 +19,7 @@ import club.therealbitcoin.bchmap.persistence.VenueFacade;
 @RunWith(RobolectricTestRunner.class)
 public class VenueTest {
     String testName = "name";
-    int testIconRes = R.drawable.ic_action_add_location;
+    int testIconRes = R.drawable.ic_action_bitcoin;
     int type = 0;
     LatLng cord = new LatLng(3.4,5.6);
     String placesId = "4543tdfg34";
@@ -28,7 +28,7 @@ public class VenueTest {
 
     @Test
     public void testIsFavorite() throws IOException {
-        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
+        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
         VenueFacade.getInstance().addFavoriteVenue(v);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
         Assert.assertEquals(1, favoriteVenues.size());
@@ -39,8 +39,8 @@ public class VenueTest {
 
     @Test
     public void testEquals() {
-        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
-        Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
+        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
+        Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
         Assert.assertTrue(v.equals(v2));
         v.placesId = "dfdsfds";
         Assert.assertFalse(v.equals(v2));
@@ -48,7 +48,7 @@ public class VenueTest {
 
     @Test
     public void createVenue() {
-        Venue venue = new Venue(testName, testIconRes, type, placesId, rev, stras, cord);
+        Venue venue = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
         Assert.assertEquals(testName, venue.name);
         Assert.assertNotSame(testName + "fdsfds", venue.name);
         Assert.assertEquals(testIconRes, venue.iconRes);
