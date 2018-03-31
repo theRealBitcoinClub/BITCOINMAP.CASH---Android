@@ -167,7 +167,7 @@ class PopupAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup container) {
         Venue venue = getVenueByIndex(position);
 
-        if (venue.isFiltered()) {
+        if (venue == null || venue.isFiltered()) {
             return null;
         }
 
@@ -176,7 +176,7 @@ class PopupAdapter extends ArrayAdapter<String> {
 
         if (VenueFacade.getInstance().getTheme() != 0) {
             view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
-            ((TextView)view.findViewById(android.R.id.text1)).setTextColor(getResources().getColor(android.R.color.white));
+            ((TextView)view.findViewById(android.R.id.text1)).setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
         }
 
         venue.listItem = view;
