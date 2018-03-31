@@ -2,7 +2,6 @@ package club.therealbitcoin.bchmap;
  
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,10 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.bumptech.glide.Glide;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
@@ -58,7 +58,17 @@ public class MarkerDetailsFragment extends DialogFragment {
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
         ((TextView)view.findViewById(R.id.dialog_header)).setText(venue.name);
 
-        return view;
+		ImageView img = view.findViewById(R.id.img);
+String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
+		Log.d(TAG,imgUri);
+
+		Glide.with(this)
+				.load(imgUri)
+				.into(img);
+				//.placeholder(android.R.drawable.)
+
+
+		return view;
     }
 
 	private void initClickListener(final Venue venue, View dialog) {
@@ -87,7 +97,6 @@ public class MarkerDetailsFragment extends DialogFragment {
 				openMapsRoute(venue);
 				resetColorWithDelay(btn_route);
 			}
-
 		});
 	}
 
@@ -204,7 +213,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 		startActivity(intent);*/
 
 		Intent i = new Intent(Intent.ACTION_VIEW,
-				Uri.parse(Venue.DIRECTIONS+ v.placesId));
+				Uri.parse(Venue.BASE_URI + v.placesId));
 		startActivity(i);
 /*
 		i.setClassName("com.google.android.apps.maps",
@@ -217,7 +226,7 @@ public class MarkerDetailsFragment extends DialogFragment {
 			try
 			{
 				i = new Intent(Intent.ACTION_VIEW,
-						Uri.parse(Venue.DIRECTIONS+ v.placesId));
+						Uri.parse(Venue.BASE_URI+ v.placesId));
 				Log.e(TAG,"NO GOOGLE MAPS ACTIVITY AVAILABLE");
 				startActivity(i);
 			}

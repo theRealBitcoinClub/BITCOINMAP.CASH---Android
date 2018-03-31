@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
         <TextView
             android:id="@+id/dialog_header"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textStyle="bold"
@@ -18,7 +18,8 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/colorPrimary" />
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"/>
 
         <ImageView
             android:id="@+id/horizontal_rule"
@@ -27,6 +28,19 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
             android:background="@color/colorPrimary"/>
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/horizontal_rule2"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/dialog_type"
