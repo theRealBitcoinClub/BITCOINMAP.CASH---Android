@@ -30,9 +30,14 @@
             android:background="@color/colorPrimary"/>
 
     <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/img"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="240dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:layout_height="180dp" />
 
     <ImageView
         android:id="@+id/horizontal_rule2"
