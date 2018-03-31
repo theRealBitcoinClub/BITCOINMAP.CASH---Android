@@ -420,6 +420,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             case R.id.menu_food:
                 applyFilters(item,VenueType.Food);
                 return true;
+            case R.id.menu_fashion:
+                applyFilters(item,VenueType.Fashion);
+                return true;
             case R.id.menu_switch:
                 viewPager.setCurrentItem(0);
                 switchMapStyle(item);
@@ -483,7 +486,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }*/
 
     private Marker addMarker(Venue v) {
-        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(VenueType.getIconResource(v.type));
+        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
+        Log.d(TAG,"addMarker lat:" + v.getCoordinates().latitude + " lon:" + v.getCoordinates().longitude);
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
         return marker;

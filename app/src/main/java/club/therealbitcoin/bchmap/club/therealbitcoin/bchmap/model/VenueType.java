@@ -3,7 +3,7 @@ package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 import club.therealbitcoin.bchmap.R;
 
 public enum VenueType {
-    ATM(0), Food(1), Bar(2), Super(3), Spa(4);
+    ATM(0), Food(1), Bar(2), Super(3), Spa(4), Fashion(5);
 
     private int index;
 
@@ -26,6 +26,8 @@ public enum VenueType {
             return R.drawable.ic_map_bar;
         if (type == VenueType.Spa.getIndex())
             return R.drawable.ic_map_spa;
+        if (type == VenueType.Fashion.getIndex())
+            return R.drawable.ic_map_basket;
 
         return -1;
     }
@@ -49,6 +51,9 @@ public enum VenueType {
 
         if (VenueType.Spa.getIndex() == type)
             return R.string.type_spa;
+
+        if (VenueType.Fashion.getIndex() == type)
+            return R.string.type_fashion;
 
         return -1;
     }

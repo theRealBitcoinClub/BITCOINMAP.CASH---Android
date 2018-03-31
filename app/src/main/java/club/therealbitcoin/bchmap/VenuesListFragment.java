@@ -166,8 +166,8 @@ class PopupAdapter extends ArrayAdapter<String> {
         View button = view.findViewById(R.id.list_item_button);
         View icon = view.findViewById(R.id.list_item_icon);
 
-        int iconResource = VenueType.getIconResource(venue.type);
-        icon.setBackgroundResource(iconResource);
+        //int iconResource = VenueType.getIconResource(venue.type);
+        icon.setBackgroundResource(venue.iconRes);
 
         button.setTag(venue);
 
