@@ -34,4 +34,5 @@
     <string name="discount1">12% discount on all BCH payments</string>
     <string name="discount2">24% discount on all BCH payments</string>
     <string name="discount3">Sell your BCH here with 0.0% fee</string>
+    <string name="type_sweet">Sweets</string>
 </resources>

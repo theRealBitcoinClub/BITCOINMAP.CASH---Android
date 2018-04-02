@@ -37,6 +37,10 @@
                     android:icon="@drawable/ic_map_basket"
                     android:title="@string/type_fashion"
                     android:checkable="true"/>
+                <item android:id="@+id/menu_sweet"
+                    android:icon="@drawable/ic_map_sweet"
+                    android:title="@string/type_sweet"
+                    android:checkable="true"/>
             </group>
     </item>
 </menu>

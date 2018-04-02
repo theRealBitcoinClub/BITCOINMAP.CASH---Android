@@ -317,6 +317,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                     }
                                 },2000L);*/
 
+                                //TODO FIX LOCATION BUG
+
                                 isLocationAvailable = true;
                             } else {
                                 Log.d(TAG, "getLastLocation:exception", task.getException());
@@ -382,7 +384,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         updateSwitchThemeIcon(menu.getItem(0));
-        
+
         int size = menu.size();
         Log.d(TAG,"menu size:" + size);
         for (int i = NON_CHECKABLE_MENU_ITEMS; i< size; i++) {
@@ -429,6 +431,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             case R.id.menu_fashion:
                 applyFilters(item,VenueType.Fashion);
                 return true;
+            case R.id.menu_sweet:
+                applyFilters(item,VenueType.Sweet);
+                return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);
                 switchMapStyle(item);
@@ -458,6 +463,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().filterListByType(type);
         }
+
         //updateMapView(type);
         try {
             syncVenueMarkersDataWithMap();
