@@ -16,21 +16,19 @@ public class VenueFacade {
     private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
     private ArrayList<Venue> venuesList = new ArrayList<Venue>();
     private ArrayList<String> titles = new ArrayList<String>();
-    public static final String MY_FAVORITES = "myFavorites";
     private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
     private Map<String,ArrayList<Venue>> filteredVenuesMap = new HashMap<String,ArrayList<Venue>>();
     private int theme = 0;
-
-    /*
-    THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
-     */
-    public static VenueFacade createNewFacadeForTesting() {
-        ourInstance = new VenueFacade();
-        return ourInstance;
-    }
+    public static final int ONE_DAY = 60 * 60 * 1000 * 24;
+    private static long nextUpdateClearCache = System.currentTimeMillis()+ ONE_DAY;
 
     public static VenueFacade getInstance() {
+        if (nextUpdateClearCache < System.currentTimeMillis()) {
+            ourInstance = new VenueFacade();
+            nextUpdateClearCache = System.currentTimeMillis()+ONE_DAY;
+        }
+
         return ourInstance;
     }
 
@@ -45,7 +43,6 @@ public class VenueFacade {
             return false;
 
         return true;
-        //return filteredVenuesMap.get(t) != null || ;
     }
 
     public void restoreFilteredVenues(VenueType t) {
@@ -179,5 +176,13 @@ public class VenueFacade {
 
     public int getTheme() {
         return theme;
+    }
+
+    /*
+    THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
+     */
+    public static VenueFacade createNewFacadeForTesting() {
+        ourInstance = new VenueFacade();
+        return ourInstance;
     }
 }
