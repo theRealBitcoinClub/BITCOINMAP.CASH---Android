@@ -55,7 +55,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
-    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places.json";
+    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places2.json";
     private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
     public static final String URI_CLICK_LOGO = "http://trbc.io";
     private GoogleMap mMap;
@@ -216,7 +216,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         try {
             Log.d(TAG,"ssssss");
             //if (markerMap.isEmpty()) {
-                syncVenueMarkersDataWithMap();
+                syncVenueMarkersDataWithMap(true);
             //}
         } catch (Exception e) {
             Log.e(TAG,"YAYAYAYAAAAA");
@@ -284,7 +284,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         initAllListViews();
     }
 
-    void syncVenueMarkersDataWithMap() throws JSONException {
+    void syncVenueMarkersDataWithMap(boolean moveCamera) throws JSONException {
         mMap.clear();
         //initMarkersList();
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
@@ -293,7 +293,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             //markersListMap.get(v.type).add(marker);
             //markerMap.put(v.placesId, marker);
         }
-        moveCameraToLastLocation();
+        if (moveCamera)
+            moveCameraToLastLocation();
     }
 
     private void moveCameraToLastLocation() {
@@ -362,7 +363,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
                     Log.d(TAG, "responseData: " + responseData);
                     if(isMapReady)
-                        syncVenueMarkersDataWithMap();
+                        syncVenueMarkersDataWithMap(true);
 
                     initAllListViews();
                 } catch (JSONException e) {
@@ -434,6 +435,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             case R.id.menu_sweet:
                 applyFilters(item,VenueType.Sweet);
                 return true;
+            case R.id.menu_hotel:
+                applyFilters(item,VenueType.Hotel);
+                return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);
                 switchMapStyle(item);
@@ -466,7 +470,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         //updateMapView(type);
         try {
-            syncVenueMarkersDataWithMap();
+            syncVenueMarkersDataWithMap(false);
         } catch (JSONException e) {
             Log.e(TAG,"JSONEXCEPTION");
             e.printStackTrace();

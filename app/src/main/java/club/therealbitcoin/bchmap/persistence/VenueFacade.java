@@ -20,13 +20,14 @@ public class VenueFacade {
     private ArrayList<String> titlesFavo = new ArrayList<String>();
     private Map<String,ArrayList<Venue>> filteredVenuesMap = new HashMap<String,ArrayList<Venue>>();
     private int theme = 0;
-    public static final int ONE_DAY = 60 * 60 * 1000 * 24;
-    private static long nextUpdateClearCache = System.currentTimeMillis()+ ONE_DAY;
+    public static final int ONE_HOUR = 60 * 60 * 1000;
+    public static final int ONE_DAY = ONE_HOUR * 24;
+    private static long nextUpdateClearCache = System.currentTimeMillis()+ ONE_HOUR;
 
     public static VenueFacade getInstance() {
         if (nextUpdateClearCache < System.currentTimeMillis()) {
             ourInstance = new VenueFacade();
-            nextUpdateClearCache = System.currentTimeMillis()+ONE_DAY;
+            nextUpdateClearCache = System.currentTimeMillis()+ONE_HOUR;
         }
 
         return ourInstance;
