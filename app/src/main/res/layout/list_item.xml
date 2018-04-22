@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="?attr/listPreferredItemHeight">
+    android:layout_height="64dp">
 
     <ImageView
         android:id="@+id/list_item_icon"
-        android:layout_height="24dip"
-        android:layout_width="24dip"
+        android:layout_height="28dip"
+        android:layout_width="28dip"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
         android:alpha="0.85"/>
@@ -27,10 +27,11 @@
 
     <ImageView
         android:id="@+id/list_item_button"
-        android:layout_height="24dip"
-        android:layout_width="24dip"
-        android:paddingTop="20dp"
-        android:paddingRight="16dp"
+        android:layout_height="32dp"
+        android:layout_width="32dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="center_vertical"
         android:alpha="0.9"
         android:src="@drawable/ic_action_favorite_border"/>
 

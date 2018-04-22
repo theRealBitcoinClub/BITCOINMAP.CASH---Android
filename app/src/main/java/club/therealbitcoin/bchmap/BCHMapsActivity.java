@@ -414,17 +414,11 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 Toast.makeText(this, R.string.toast_go_to_website, Toast.LENGTH_LONG).show();
                 openWebsite();
                 return true;
-            case R.id.menu_atm:
-                applyFilters(item, VenueType.ATM);
-                return true;
             case R.id.menu_bar:
                 applyFilters(item,VenueType.Bar);
                 return true;
             case R.id.menu_shops:
                 applyFilters(item,VenueType.Super);
-                return true;
-            case R.id.menu_spa:
-                applyFilters(item,VenueType.Spa);
                 return true;
             case R.id.menu_food:
                 applyFilters(item,VenueType.Food);
@@ -461,10 +455,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void applyFilters(MenuItem item, VenueType type) {
         if (item.isChecked()) {
-            Toast.makeText(this, getString(R.string.toast_unfilter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.toast_unfilter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().restoreFilteredVenues(type);
         } else {
-            Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().filterListByType(type);
         }
 

@@ -120,11 +120,11 @@ String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 			@Override
 			public void onClick(View v) {
 				if (isFavo) {
-					Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
 					VenueFacade.getInstance().removeFavoriteVenue(venue);
 					isFavo = false;
 				} else {
-					Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
+					//Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
 					VenueFacade.getInstance().addFavoriteVenue(venue);
 					isFavo = true;
 				}

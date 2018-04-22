@@ -49,7 +49,6 @@ public class VenueFacade {
     public void restoreFilteredVenues(VenueType t) {
         Log.d(TAG,"restoreFilteredVenues" + t);
         ArrayList<Venue> venues = filteredVenuesMap.remove(""+t.getIndex());
-        Log.d(TAG,"restoreFilteredVenues size" + venues.size());
         if (venues == null || venues.size() == 0)
             return;
 

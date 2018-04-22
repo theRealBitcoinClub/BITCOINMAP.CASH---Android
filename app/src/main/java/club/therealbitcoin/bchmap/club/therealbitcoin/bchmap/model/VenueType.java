@@ -3,7 +3,7 @@ package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 import club.therealbitcoin.bchmap.R;
 
 public enum VenueType {
-    ATM(0), Food(1), Bar(2), Super(3), Spa(4), Fashion(5), Sweet(6), Hotel(7);
+    ATM(99), Food(0), Sweet(1), Bar(2), Super(3), Spa(999), Fashion(4), Hotel(5);
 
     private int index;
 
