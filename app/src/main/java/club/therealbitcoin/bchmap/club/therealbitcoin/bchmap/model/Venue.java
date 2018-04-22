@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -112,10 +113,18 @@ public class Venue implements Parcelable {
         return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt, atribs);
     }
 
-    private static String[] parseAttributes(JSONObject vJson) throws JSONException {
-        String attribs = vJson.getString(VenueJson.attributes.toString());
-        if (attribs == null)
+    private static String[] parseAttributes(JSONObject vJson) {
+        Log.d("TRBC","parseAttributes:" + vJson);
+        String attribs = null;
+        try {
+            attribs = vJson.getString(VenueJson.attributes.toString());
+            Log.d("TRBC","yyyy:" + attribs);
+            if (attribs == null)
+                return null;
+        } catch (JSONException e) {
+            Log.d("TRBC","jjjjjjjjj:" + attribs);
             return null;
+        }
 
         String[] split = attribs.split(",");
         return split;

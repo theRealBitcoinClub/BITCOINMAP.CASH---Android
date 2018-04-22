@@ -4,24 +4,26 @@
     android:layout_margin="50dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-        <TextView
+
+
+       <TextView
             android:id="@+id/dialog_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textStyle="bold"
-            android:gravity="center"
+           android:gravity="center"
             android:layout_gravity="center"
             android:maxLines="1"
-            android:paddingBottom="12dp"
-            android:paddingTop="12dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+           android:padding="12dp"
+           android:paddingLeft="16dp"
+           android:paddingStart="16dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:background="@color/colorPrimaryDark"
             android:textColor="@android:color/white"/>
 
-        <ImageView
+
+    <ImageView
             android:id="@+id/horizontal_rule"
             android:layout_height="1dp"
             android:layout_width="match_parent"
@@ -84,68 +86,38 @@
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:background="@color/colorPrimaryDark"
+
         android:orientation="horizontal">
     <TextView
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:id="@+id/tag0"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        style="@style/TagStyle"
-        android:textColor="@color/tag0" />
+        style="@style/TagStyle" />
         <TextView
             android:id="@+id/tag1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag1" />
+            style="@style/TagStyle" />
         <TextView
             android:id="@+id/tag2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag2" />
+            style="@style/TagStyle" />
         <TextView
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:id="@+id/tag3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag3" />
-        <TextView
-            android:id="@+id/tag4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag4" />
-        <TextView
-            android:id="@+id/tag5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag5" />
-        <TextView
-            android:id="@+id/tag6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag6" />
-        <TextView
-            android:id="@+id/tag7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag7" />
-        <TextView
-            android:id="@+id/tag8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag8" />
-        <TextView
-            android:id="@+id/tag9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle"
-            android:textColor="@color/tag9" />
-
+            style="@style/TagStyle" />
     </android.support.v7.widget.LinearLayoutCompat>
 
         <android.support.v7.widget.LinearLayoutCompat

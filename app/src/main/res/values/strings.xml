@@ -34,9 +34,9 @@
     <string name="discount2">Accepting Bitcoin payments soon</string>
     <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
     <string-array name="location_attributes">
-        <item>Bitcoin Food Tour</item>
-        <item>Silent Bitcoin Disco</item>
-        <item>Poker Tournaments</item>
+        <item>Bitcoin</item>
+        <item>Events</item>
+        <item>Trading</item>
         <item>Organic</item>
         <!--4--><item>Vegetarian</item>
         <item>Vegan</item>
@@ -46,27 +46,28 @@
         <!--9--><item>Muffin</item>
         <item>Brownie</item>
         <item>Cake</item>
-        <item>Cookies</item>
+        <item>Cookie</item>
         <item>Tiramisu</item>
         <!--14--><item>Pizza</item>
         <item>Salad</item>
-        <item>Smoothies</item>
-        <item>Fruits</item>
+        <item>Smoothie</item>
+        <item>Fruit</item>
         <item>Ice-Cream</item>
         <!--19--><item>Raw</item>
-        <item>Bags</item>
-        <item>Cosmetics</item>
+        <item>Handbag</item>
+        <item>Cosmetic</item>
         <item>Tattoo</item>
         <item>Piercing</item>
-        <!--24--><item>Souvenirs</item>
+        <!--24--><item>Souvenir</item>
         <item>Hatha</item>
         <item>Vinyasa</item>
         <item>Massage</item>
         <item>Upcycled</item>
         <!--29--><item>Coffee</item>
-        <item>Gluten-Free</item>
+        <item>Gluten</item>
         <item>Cocktails</item>
         <item>Beer</item>
-        <item>Live-Music</item>
+        <item>Music</item>
+        <!--34--><item>Projects</item>
     </string-array>
 </resources>

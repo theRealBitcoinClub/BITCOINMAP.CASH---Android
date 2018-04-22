@@ -49,31 +49,13 @@ public class MarkerDetailsFragment extends DialogFragment {
         final Venue venue = getArguments().getParcelable(PARCEL_ID);
         initClickListener(venue, view);
 
-        StringBuilder builder = new StringBuilder(getString(R.string.reviews));
-        builder.append(" ");
-        builder.append(venue.stars);
-        builder.append(" (");
-        builder.append(venue.reviews);
-        builder.append(")");
-
-        ((TextView)view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
+        initReviewText(view, venue);
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
-        ((TextView)view.findViewById(R.id.dialog_header)).setText(venue.name);
-		initTagViews(view);
-		String[] attribs = venue.getAttributes();
-		int i = 0;
-			for (String a: attribs
-				 ) {
-				tags[i++].setText(a);
-			}
+        initDialogDismissListener(view, venue);
+        initTagValues(view, venue);
 
 
-		int discountText = venue.getDiscountText();
-		if (discountText != -1)
-			((TextView)view.findViewById(R.id.dialog_discount)).setText(discountText);
-		else {
-			((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
-		}
+        initDiscountText(view, venue);
 
 		ImageView img = view.findViewById(R.id.img);
 String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
@@ -84,17 +66,67 @@ String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 		return view;
     }
 
-	private void initTagViews(View view) {
+    private void initReviewText(View view, Venue venue) {
+        StringBuilder builder = new StringBuilder(getString(R.string.reviews));
+        builder.append(" ");
+        builder.append(venue.stars);
+        builder.append(" (");
+        builder.append(venue.reviews);
+        builder.append(")");
+
+        ((TextView)view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
+    }
+
+    private void initDiscountText(View view, Venue venue) {
+        int discountText = venue.getDiscountText();
+        if (discountText != -1)
+            ((TextView)view.findViewById(R.id.dialog_discount)).setText(discountText);
+        else {
+            ((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void initTagValues(View view, Venue venue) {
+        String[] attribs = venue.getAttributes();
+        Log.d("TRBC","attribs:" + attribs);
+        if (attribs != null) {
+initTagViews(view);
+int i = 0;
+Log.d("TRBC","itTagVie:");
+for (String a : attribs
+) {
+if (a == null || a.trim().length() == 0)
+break;
+
+Log.d("TRBC","aaaaaaaaaaaa:" + a);
+String[] array = getResources().getStringArray(R.array.location_attributes);
+tags[i++].setText(array[Integer.valueOf(a)]);
+}
+}
+    }
+
+    private void initDialogDismissListener(View view, Venue venue) {
+        View header = view.findViewById(R.id.dialog_header);
+        ((TextView) header).setText(venue.name);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        view.findViewById(R.id.img).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
+    private void initTagViews(View view) {
 		tags[0] = (TextView)view.findViewById(R.id.tag0);
 		tags[1] = (TextView)view.findViewById(R.id.tag1);
 		tags[2] = (TextView)view.findViewById(R.id.tag2);
 		tags[3] = (TextView)view.findViewById(R.id.tag3);
-		tags[4] = (TextView)view.findViewById(R.id.tag4);
-		tags[5] = (TextView)view.findViewById(R.id.tag5);
-		tags[6] = (TextView)view.findViewById(R.id.tag6);
-		tags[7] = (TextView)view.findViewById(R.id.tag7);
-		tags[8] = (TextView)view.findViewById(R.id.tag8);
-		tags[9] = (TextView)view.findViewById(R.id.tag9);
 	}
 
 	private void initClickListener(final Venue venue, View dialog) {
