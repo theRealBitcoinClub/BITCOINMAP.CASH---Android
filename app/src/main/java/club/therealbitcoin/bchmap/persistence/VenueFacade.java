@@ -25,10 +25,10 @@ public class VenueFacade {
     private static long nextUpdateClearCache = System.currentTimeMillis()+ ONE_HOUR;
 
     public static VenueFacade getInstance() {
-        if (nextUpdateClearCache < System.currentTimeMillis()) {
+        /*if (nextUpdateClearCache < System.currentTimeMillis()) {
             ourInstance = new VenueFacade();
             nextUpdateClearCache = System.currentTimeMillis()+ONE_HOUR;
-        }
+        }*/
 
         return ourInstance;
     }
