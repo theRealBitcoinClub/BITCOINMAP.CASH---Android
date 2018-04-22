@@ -208,7 +208,7 @@ public class Venue implements Parcelable {
         switch (discountLevel) {
             case 0: return R.string.discount0;
             case 1: return R.string.discount1;
-            //case 2: return R.string.discount2;
+            case 2: return R.string.discount2;
             case 3: return R.string.discount3;
             default: return -1;
         }

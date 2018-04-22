@@ -55,7 +55,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String COINMAP_ORG_VENUES_QUERY = "https://coinmap.org/api/v1/venues/?query=%23trbc";
-    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places2.json";
+    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places3.json";
     private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
     public static final String URI_CLICK_LOGO = "http://trbc.io";
     private GoogleMap mMap;
