@@ -80,6 +80,74 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorDiscount" />
 
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tag0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TagStyle"
+        android:textColor="@color/tag0" />
+        <TextView
+            android:id="@+id/tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag1" />
+        <TextView
+            android:id="@+id/tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag2" />
+        <TextView
+            android:id="@+id/tag3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag3" />
+        <TextView
+            android:id="@+id/tag4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag4" />
+        <TextView
+            android:id="@+id/tag5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag5" />
+        <TextView
+            android:id="@+id/tag6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag6" />
+        <TextView
+            android:id="@+id/tag7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag7" />
+        <TextView
+            android:id="@+id/tag8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag8" />
+        <TextView
+            android:id="@+id/tag9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TagStyle"
+            android:textColor="@color/tag9" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -31,6 +31,11 @@ public class Venue implements Parcelable {
     public int listIndex = -1;
     public View listItem;
     private int discountLevel = -1;
+    private String[] attributes;
+
+    public String[] getAttributes() {
+        return attributes;
+    }
 
     protected Venue(Parcel in) {
         discountLevel = in.readInt();
@@ -42,6 +47,7 @@ public class Venue implements Parcelable {
         placesId = in.readString();
         reviews = in.readInt();
         stars = in.readDouble();
+        in.readStringArray(attributes);
         byte tmpIsFavorite = in.readByte();
         isFavorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
         coordinates = in.readParcelable(LatLng.class.getClassLoader());
@@ -82,7 +88,7 @@ public class Venue implements Parcelable {
         return coordinates;
     }
 
-    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt) {
+    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr) {
         this.discountLevel = dscnt;
         this.name = name;
         this.iconRes = iconRes;
@@ -91,6 +97,7 @@ public class Venue implements Parcelable {
         this.stars = stras;
         this.reviews = rev;
         this.coordinates = cord;
+        this.attributes = attr;
     }
 
     public static Venue createInstance(JSONObject venue) throws JSONException {
@@ -101,7 +108,17 @@ public class Venue implements Parcelable {
         int type = venue.getInt(VenueJson.type.toString());
         String placesId = venue.getString(VenueJson.placesId.toString());
         int dscnt = venue.getInt(VenueJson.discount.toString());
-        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt);
+        String[] atribs = parseAttributes(venue);
+        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt, atribs);
+    }
+
+    private static String[] parseAttributes(JSONObject vJson) throws JSONException {
+        String attribs = vJson.getString(VenueJson.attributes.toString());
+        if (attribs == null)
+            return null;
+
+        String[] split = attribs.split(",");
+        return split;
     }
 
     @Override

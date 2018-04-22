@@ -7,5 +7,15 @@
     <color name="colorBackGroundDark">#222222</color>
     <color name="colorListItemDark">#111111</color>
     <color name="colorTextDarkTheme">#ffffff</color>
-    <color name="colorDiscount">#aa0000</color>
+    <color name="colorDiscount">#e91e63</color>
+    <color name="tag0">#9c27b0</color>
+    <color name="tag1">#673ab7</color>
+    <color name="tag2">#3f51b5</color>
+    <color name="tag3">#4caf50</color>
+    <color name="tag4">#8bc34a</color>
+    <color name="tag5">#cddc39</color>
+    <color name="tag6">#ffeb3b</color>
+    <color name="tag7">#ffc107</color>
+    <color name="tag8">#ff9800</color>
+    <color name="tag9">#ff5722</color>
 </resources>

@@ -36,6 +36,8 @@ public class MarkerDetailsFragment extends DialogFragment {
 	private int primaryColor;
 	private String accent;
 	private String primary;
+	private TextView[] tags = new TextView[10];
+
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,15 @@ public class MarkerDetailsFragment extends DialogFragment {
         ((TextView)view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
         ((TextView)view.findViewById(R.id.dialog_header)).setText(venue.name);
+		initTagViews(view);
+		String[] attribs = venue.getAttributes();
+		int i = 0;
+			for (String a: attribs
+				 ) {
+				tags[i++].setText(a);
+			}
+
+
 		int discountText = venue.getDiscountText();
 		if (discountText != -1)
 			((TextView)view.findViewById(R.id.dialog_discount)).setText(discountText);
@@ -72,6 +83,19 @@ String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 
 		return view;
     }
+
+	private void initTagViews(View view) {
+		tags[0] = (TextView)view.findViewById(R.id.tag0);
+		tags[1] = (TextView)view.findViewById(R.id.tag1);
+		tags[2] = (TextView)view.findViewById(R.id.tag2);
+		tags[3] = (TextView)view.findViewById(R.id.tag3);
+		tags[4] = (TextView)view.findViewById(R.id.tag4);
+		tags[5] = (TextView)view.findViewById(R.id.tag5);
+		tags[6] = (TextView)view.findViewById(R.id.tag6);
+		tags[7] = (TextView)view.findViewById(R.id.tag7);
+		tags[8] = (TextView)view.findViewById(R.id.tag8);
+		tags[9] = (TextView)view.findViewById(R.id.tag9);
+	}
 
 	private void initClickListener(final Venue venue, View dialog) {
 		final View btn_route = dialog.findViewById(R.id.dialog_button_route);

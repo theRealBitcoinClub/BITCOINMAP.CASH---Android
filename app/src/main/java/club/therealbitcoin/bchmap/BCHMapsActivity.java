@@ -63,8 +63,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private static final String TAG = "TRBC";
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
     private FragmentManager fm;
-    //private Map<String, Marker> markerMap;
-    //private Map<Integer,ArrayList<Marker>> markersListMap;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -82,36 +80,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private boolean isLocationAvailable = false;
     public static final int NON_CHECKABLE_MENU_ITEMS = 1;
 
-    /*@Override
-    protected void onStop() {
-        super.onStop();
-        listFragment = null;
-        favosFragment = null;
-        mapFragment = null;
-        tb = null;
-        viewPager = null;
-        tabLayout = null;
-        fm = null;
-        markersListMap = null;
-        markerMap = null;
-        mMap = null;
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        onCreate(null);
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Log.d(TAG,"onCreate");
-        //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_bchmaps);
-        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.my_custom_title);
-        //initMarkersList();
         findViewsById();
 
         fm = getSupportFragmentManager();
@@ -170,16 +145,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
-    /*
-    private void initMarkersList() {
-        Log.d(TAG,"initMarkersList");
-        markerMap = new HashMap<String,Marker>();
-        markersListMap = new HashMap<Integer,ArrayList<Marker>>();
-        for (int i=0; i<VenueType.values().length; i++) {
-            markersListMap.put(i, new ArrayList<Marker>());
-        }
-    }*/
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Log.d(TAG,"onRequestPermissionsResult");
@@ -217,9 +182,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         try {
             Log.d(TAG,"ssssss");
-            //if (markerMap.isEmpty()) {
                 syncVenueMarkersDataWithMap(true);
-            //}
         } catch (Exception e) {
             Log.e(TAG,"YAYAYAYAAAAA");
             e.printStackTrace();
