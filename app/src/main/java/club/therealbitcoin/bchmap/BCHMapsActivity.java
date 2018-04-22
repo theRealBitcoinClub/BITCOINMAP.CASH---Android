@@ -3,6 +3,7 @@ package club.therealbitcoin.bchmap;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -105,6 +106,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Log.d(TAG,"onCreate");
         //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_bchmaps);
@@ -431,6 +433,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 return true;
             case R.id.menu_hotel:
                 applyFilters(item,VenueType.Hotel);
+                return true;
+            case R.id.menu_tattoo:
+                applyFilters(item,VenueType.Tattoo);
                 return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);

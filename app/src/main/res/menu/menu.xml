@@ -37,6 +37,10 @@
                     android:icon="@drawable/ic_map_hotel"
                     android:title="@string/type_hotel"
                     android:checkable="true"/>
+                <item android:id="@+id/menu_tattoo"
+                    android:icon="@drawable/ic_map_tattoo"
+                    android:title="@string/type_tattoo"
+                    android:checkable="true"/>
             </group>
     </item>
 </menu>

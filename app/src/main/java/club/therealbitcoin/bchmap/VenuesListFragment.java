@@ -54,6 +54,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
             showOnlyFavos = true;
         }
+
         setEmptyText(getResources().getString(R.string.favo_list_empty));
         Log.d("TRBC","VenuesListFragment, onActivityCreated: onlyFavos:" + showOnlyFavos);
     }
