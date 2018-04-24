@@ -166,42 +166,78 @@ class PopupAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup container) {
+        ViewHolder holder;
+        View view = super.getView(position, convertView, container);
+        if (convertView == null) {
+            holder = new ViewHolder(view.findViewById(android.R.id.text1),view.findViewById(R.id.list_item_click_area),view.findViewById(R.id.list_item_button),view.findViewById(R.id.list_item_icon));
+            view.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         Venue venue = getVenueByIndex(position);
 
         if (venue == null || venue.isFiltered()) {
             return null;
         }
 
-        View view = super.getView(position, convertView, container);
+        //View view = super.getView(position, convertView, container);
         Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
 
         if (VenueFacade.getInstance().getTheme() != 0) {
             view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
-            ((TextView)view.findViewById(android.R.id.text1)).setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
+            holder.title.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
         }
 
+
         venue.listItem = view;
-        View button = view.findViewById(R.id.list_item_button);
-        View icon = view.findViewById(R.id.list_item_icon);
-
+        optimizeTouchArea(holder);
         //int iconResource = VenueType.getIconResource(venue.type);
-        icon.setBackgroundResource(venue.iconRes);
+        holder.icon.setBackgroundResource(venue.iconRes);
 
-        button.setTag(venue);
+        holder.button.setTag(venue);
 
         if (showOnlyFavos) {
             venue.favoListIndex = position;
             Log.d("TRBC", "showOnlyFavos: " + showOnlyFavos + position);
         } else {
             venue.listIndex = position;
-            updateFavoriteSymbol(button, venue, false);
+            updateFavoriteSymbol(holder.button, venue, false);
         }
 
-            button.setOnClickListener(VenuesListFragment.this);
+            holder.button.setOnClickListener(VenuesListFragment.this);
             return view;
     }
 
 }
+
+    private void optimizeTouchArea(ViewHolder holder) {
+        View touchArea = holder.clickArea;
+        if (touchArea != null) {
+            touchArea.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                             public void onClick(View v) {
+                                                VenuesListFragment.this.onClick(holder.button);
+                                             }
+                                         });
+        }
+    }
+
+    private static class ViewHolder {
+
+        public TextView title;
+        public View clickArea;
+        public View icon;
+        public View button;
+
+        public ViewHolder(TextView title, View clickArea, View button, View icon) {
+            this.title = title;
+            this.clickArea = clickArea;
+            this.button = button;
+            this.icon = icon;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
