@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -59,6 +62,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places4.json";
     private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
     public static final String URI_CLICK_LOGO = "http://trbc.io";
+    public static final String CAM = "cam";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
@@ -84,7 +88,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Log.d(TAG,"onCreate");
         setContentView(R.layout.activity_bchmaps);
         findViewsById();
@@ -99,10 +103,18 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (isCacheEmpty())
-            callWebservice();
+        callWebservice(true);
 
         Log.d(TAG,"FINISH ON CREATE");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isMapReady) {
+            syncVenueMarkersDataWithMap(false);
+            initAllListViews();
+        }
     }
 
     private boolean isCacheEmpty() {
@@ -177,7 +189,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         Log.d(TAG, "onMapReady: ");
         initMap(googleMap);
         getPermissionAccessFineLocation();
-        setMapStyle(mapStyles[VenueFacade.getInstance().getTheme()]);
+        setMapStyle(mapStyles[VenueFacade.getInstance().getTheme(this)]);
         setupTabIcons();
 
         try {
@@ -238,18 +250,18 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void switchMapStyle(MenuItem item){
         VenueFacade facade = VenueFacade.getInstance();
-        int theme = facade.getTheme();
+        int theme = facade.getTheme(this);
         theme++;
         if (theme >=mapStyles.length) {
             theme=0;
         }
         Log.d(TAG,"switchMapStyle" + theme);
-        facade.setTheme(theme);
+        facade.setTheme(theme, this);
         setMapStyle(mapStyles[theme]);
         initAllListViews();
     }
 
-    void syncVenueMarkersDataWithMap(boolean moveCamera) throws JSONException {
+    void syncVenueMarkersDataWithMap(boolean moveCamera) {
         mMap.clear();
         //initMarkersList();
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
@@ -315,20 +327,21 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         initListFragment(1);
     }
 
-    private void callWebservice() {
+    private void callWebservice(boolean moveCam) {
         new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String responseData) {
                 try {
                     List<Venue> venues = WebService.parseVenues(responseData);
+                    VenueFacade.getInstance().clearCache(BCHMapsActivity.this);
 
                     for (Venue v: venues) {
-                        VenueFacade.getInstance().addVenue(v);
+                        VenueFacade.getInstance().addVenue(v, BCHMapsActivity.this);
                     }
 
                     Log.d(TAG, "responseData: " + responseData);
                     if(isMapReady)
-                        syncVenueMarkersDataWithMap(true);
+                        syncVenueMarkersDataWithMap(moveCam);
 
                     initAllListViews();
                 } catch (JSONException e) {
@@ -414,7 +427,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void updateSwitchThemeIcon(MenuItem item) {
-        if (VenueFacade.getInstance().getTheme() == 0) {
+        if (VenueFacade.getInstance().getTheme(this) == 0) {
             item.setIcon(R.drawable.ic_action_luna);
         } else {
             item.setIcon(R.drawable.ic_action_sun);
@@ -431,12 +444,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
 
         //updateMapView(type);
-        try {
-            syncVenueMarkersDataWithMap(false);
-        } catch (JSONException e) {
-            Log.e(TAG,"JSONEXCEPTION");
-            e.printStackTrace();
-        }
+        syncVenueMarkersDataWithMap(false);
         initAllListViews();
     }
 
@@ -500,4 +508,23 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
         return false;
     }
+/*
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG,"onSavedInstance");
+        CameraPosition cameraPosition = mMap.getCameraPosition();
+        outState.putParcelable(CAM, cameraPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG,"onRestoreInstance");
+        //onMapReady(mMap);
+
+        CameraPosition camPos = savedInstanceState.getParcelable(CAM);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(camPos.target);
+        mMap.animateCamera(cameraUpdate);
+    }*/
 }

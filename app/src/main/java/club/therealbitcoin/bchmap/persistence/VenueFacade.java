@@ -1,5 +1,7 @@
 package club.therealbitcoin.bchmap.persistence;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
 public class VenueFacade {
     public static final String TAG = "TRBC";
+    public static final String THEME = "THEME";
     private static VenueFacade ourInstance = new VenueFacade();
     private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
     private ArrayList<Venue> venuesList = new ArrayList<Venue>();
@@ -19,7 +22,7 @@ public class VenueFacade {
     private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
     private Map<String,ArrayList<Venue>> filteredVenuesMap = new HashMap<String,ArrayList<Venue>>();
-    private int theme = 0;
+    private int theme = -1;
     public static final int ONE_HOUR = 60 * 60 * 1000;
     public static final int ONE_DAY = ONE_HOUR * 24;
     private static long nextUpdateClearCache = System.currentTimeMillis()+ ONE_HOUR;
@@ -126,12 +129,15 @@ public class VenueFacade {
         return titlesFavo;
     }
 
-    public void addVenue(Venue v) {
+    public void addVenue(Venue v, Context ctx) {
         hasChangedList = true;
         Log.d("TRBC","addVenue" + v);
        if (venuesMap.put(v.placesId, v) == null) {
            venuesList.add(v);
        }
+
+        if (v.isFavorite(ctx))
+            favorites.add(v);
     }
 
     public Venue findVenueById(String id) {
@@ -141,11 +147,28 @@ public class VenueFacade {
     boolean hasChangedList = true;
     boolean hasChangedFavoList = true;
 
-    public void addFavoriteVenue(Venue v) {
+    private static String SHARED_PREF= "SDfdsfds";
+
+    public void addFavoriteVenue(Venue v, Context ctx) {
         v.favoListIndex = favorites.size();
         Log.d("TRBC","addFavoriteVenue persist:" + v);
         favorites.add(v);
+        v.setFavorite(true,ctx);
+        //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+        //sharedPreferences.edit().putBoolean(v.placesId, true).commit();
+
         hasChangedFavoList = true;
+    }
+
+    public void clearCache(Context ctx) {
+        venuesMap.clear();
+        venuesList.clear();
+        favorites.clear();
+        titlesFavo.clear();
+        titles.clear();
+        filteredVenuesMap.clear();
+        hasChangedFavoList = true;
+        hasChangedList = true;
     }
 
     public List<Venue> getFavoriteVenues () {
@@ -156,9 +179,12 @@ public class VenueFacade {
     private VenueFacade() {
     }
 
-    public void removeFavoriteVenue(Venue item) {
+    public void removeFavoriteVenue(Venue item, Context ctx) {
         Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
         favorites.remove(item.favoListIndex);
+        //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+        //sharedPreferences.edit().remove(item.placesId).commit();
+        item.setFavorite(false,ctx);
         hasChangedFavoList = true;
     }
 
@@ -170,11 +196,17 @@ public class VenueFacade {
         return favorites.get(position);
     }
 
-    public void setTheme(int theme) {
-        this.theme = theme;
+    public void setTheme(int theme, Context ctx) {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(THEME, theme).commit();
     }
 
-    public int getTheme() {
+    public int getTheme(Context ctx) {
+        if (theme == -1) {
+            SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+            theme = sharedPreferences.getInt("THEME", 0);
+        }
+
         return theme;
     }
 

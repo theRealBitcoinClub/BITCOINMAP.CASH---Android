@@ -177,11 +177,11 @@ tags[i++].setText(array[Integer.valueOf(a)]);
 			public void onClick(View v) {
 				if (isFavo) {
 					//Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
-					VenueFacade.getInstance().removeFavoriteVenue(venue);
+					VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
 					isFavo = false;
 				} else {
 					//Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
-					VenueFacade.getInstance().addFavoriteVenue(venue);
+					VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
 					isFavo = true;
 				}
 

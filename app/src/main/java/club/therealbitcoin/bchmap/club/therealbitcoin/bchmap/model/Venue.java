@@ -17,6 +17,7 @@ import club.therealbitcoin.bchmap.R;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class Venue implements Parcelable {
+    public static final String YAYAYA = "YAYAYA";
     public int favoListIndex =-1;
     public String name;
     public int iconRes;
@@ -70,16 +71,16 @@ public class Venue implements Parcelable {
         isFavorite = favorite;
 
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                ctx.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        sharedPref.edit().putString(placesId,null);
+                YAYAYA, Context.MODE_PRIVATE);
+        sharedPref.edit().putString(placesId,null).commit();
     }
 
     @Nullable
     public Boolean isFavorite(Context ctx) {
         if (isFavorite == null && ctx != null) {
             SharedPreferences sharedPref = ctx.getSharedPreferences(
-                    ctx.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            return sharedPref.contains(placesId);
+                    YAYAYA, Context.MODE_PRIVATE);
+            isFavorite = sharedPref.contains(placesId);
         }
 
         return isFavorite != null ? isFavorite : false;

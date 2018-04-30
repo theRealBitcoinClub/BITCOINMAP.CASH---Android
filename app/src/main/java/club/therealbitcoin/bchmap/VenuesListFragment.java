@@ -4,6 +4,7 @@ package club.therealbitcoin.bchmap;
         import android.content.Context;
         import android.os.Bundle;
         import android.os.Handler;
+        import android.support.annotation.NonNull;
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -51,12 +52,23 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS)) {
+        if ((savedInstanceState != null && savedInstanceState.getBoolean(ONLY_FAVOS))
+                || (getArguments() != null && getArguments().getBoolean(ONLY_FAVOS))) {
             showOnlyFavos = true;
         }
 
-        setEmptyText(getResources().getString(R.string.favo_list_empty));
+        if (showOnlyFavos)
+            setEmptyText(getResources().getString(R.string.favo_list_empty));
+        else
+            setEmptyText(getResources().getString(R.string.error_empty_list));
+
         Log.d("TRBC","VenuesListFragment, onActivityCreated: onlyFavos:" + showOnlyFavos);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(ONLY_FAVOS,showOnlyFavos);
     }
 
     @Override
@@ -89,7 +101,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
     private void switchBackground() {
         try {
-            if (VenueFacade.getInstance().getTheme() == 0 && getListView() != null)
+            if (VenueFacade.getInstance().getTheme(getActivity()) == 0 && getListView() != null)
                 getListView().setBackgroundColor(getResources().getColor(android.R.color.white));
             else
                 getListView().setBackgroundColor(getResources().getColor(R.color.colorBackGroundDark));
@@ -134,8 +146,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                VenueFacade.getInstance().removeFavoriteVenue(v);
-                v.setFavorite(false,ctx);
+                VenueFacade.getInstance().removeFavoriteVenue(v, getContext());
                 callback.initAllListViews();
 
             }
@@ -146,11 +157,11 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         if (!item.isFavorite(ctx)) {
             item.setFavorite(true, ctx);
             //Toast.makeText(ctx, getString(R.string.toast_added_favorite) + item.name, Toast.LENGTH_SHORT).show();
-            VenueFacade.getInstance().addFavoriteVenue(item);
+            VenueFacade.getInstance().addFavoriteVenue(item, getContext());
         } else {
             item.setFavorite(false, ctx);
             //Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + item.name, Toast.LENGTH_SHORT).show();
-            VenueFacade.getInstance().removeFavoriteVenue(item);
+            VenueFacade.getInstance().removeFavoriteVenue(item, getContext());
         }
 
         updateFavoriteSymbol(button,item, true);
@@ -185,7 +196,7 @@ class PopupAdapter extends ArrayAdapter<String> {
         //View view = super.getView(position, convertView, container);
         Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
 
-        if (VenueFacade.getInstance().getTheme() != 0) {
+        if (VenueFacade.getInstance().getTheme(getActivity()) != 0) {
             view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
             holder.title.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
         }

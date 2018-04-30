@@ -33,6 +33,7 @@
     <string name="discount1">20% discount on first BCH payment</string>
     <string name="discount2">Accepting Bitcoin payments soon</string>
     <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
+    <string name="error_empty_list">Update available! Restart app!</string>
     <string-array name="location_attributes">
         <item>Bitcoin</item>
         <item>Events</item>
