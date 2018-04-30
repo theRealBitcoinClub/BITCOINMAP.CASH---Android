@@ -78,7 +78,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     };
     private SupportMapFragment mapFragment;
     private Toolbar tb;
-    private boolean isMapReady = false;
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
     private boolean isLocationAvailable = false;
@@ -99,6 +98,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
+        mapFragment.setRetainInstance(true);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -109,12 +109,21 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //BUGFIX BECAUSE OTHERWISE ILLEGALSTATEExCEPTION ON MARKERCLICK
+        //https://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-wit
+        //https://developer.android.com/guide/topics/resources/runtime-changes#RetainingAnObject
+        //super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        if(isMapReady) {
-            syncVenueMarkersDataWithMap(false);
-            initAllListViews();
-        }
+        Log.d(TAG,"onResume isMapReady:" + mMap);
+        /*if (mMap != null)
+            onMapReady(mMap);
+        else
+            mapFragment.getMapAsync(this);*/
     }
 
     private boolean isCacheEmpty() {
@@ -128,6 +137,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         bar.setHomeButtonEnabled(true);
         bar.setHomeAsUpIndicator(R.drawable.ic_action_home);
         bar.setDisplayHomeAsUpEnabled(true);
+        bar.setTitle("");
     }
 
     private void findViewsById() {
@@ -185,20 +195,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        isMapReady = true;
         Log.d(TAG, "onMapReady: ");
         initMap(googleMap);
         getPermissionAccessFineLocation();
         setMapStyle(mapStyles[VenueFacade.getInstance().getTheme(this)]);
         setupTabIcons();
 
-        try {
-            Log.d(TAG,"ssssss");
-                syncVenueMarkersDataWithMap(true);
-        } catch (Exception e) {
-            Log.e(TAG,"YAYAYAYAAAAA");
-            e.printStackTrace();
-        }
+        syncVenueMarkersDataWithMap(true);
 
         if (!isCacheEmpty())
             initAllListViews();
@@ -340,7 +343,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                     }
 
                     Log.d(TAG, "responseData: " + responseData);
-                    if(isMapReady)
+                    if(mMap != null)
                         syncVenueMarkersDataWithMap(moveCam);
 
                     initAllListViews();
