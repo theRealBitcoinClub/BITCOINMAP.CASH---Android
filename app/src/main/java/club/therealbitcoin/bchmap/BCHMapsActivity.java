@@ -334,11 +334,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             public void onTaskDone(String responseData) {
                 try {
                     List<Venue> venues = WebService.parseVenues(responseData);
-                    VenueFacade.getInstance().clearCache(BCHMapsActivity.this);
-
-                    for (Venue v: venues) {
-                        VenueFacade.getInstance().addVenue(v, BCHMapsActivity.this);
-                    }
+                    VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
 
                     Log.d(TAG, "responseData: " + responseData);
                     if(mMap != null)
@@ -410,9 +406,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 return true;
             case R.id.menu_hotel:
                 applyFilters(item,VenueType.Hotel);
-                return true;
-            case R.id.menu_tattoo:
-                applyFilters(item,VenueType.Tattoo);
                 return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);

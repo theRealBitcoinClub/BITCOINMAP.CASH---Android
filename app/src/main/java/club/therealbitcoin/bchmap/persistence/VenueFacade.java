@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import club.therealbitcoin.bchmap.BCHMapsActivity;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
@@ -32,7 +33,6 @@ public class VenueFacade {
             ourInstance = new VenueFacade();
             nextUpdateClearCache = System.currentTimeMillis()+ONE_HOUR;
         }*/
-
         return ourInstance;
     }
 
@@ -129,7 +129,7 @@ public class VenueFacade {
         return titlesFavo;
     }
 
-    public void addVenue(Venue v, Context ctx) {
+    private void addVenue(Venue v, Context ctx) {
         hasChangedList = true;
         Log.d("TRBC","addVenue" + v);
        if (venuesMap.put(v.placesId, v) == null) {
@@ -217,5 +217,15 @@ public class VenueFacade {
     public static VenueFacade createNewFacadeForTesting() {
         ourInstance = new VenueFacade();
         return ourInstance;
+    }
+
+    public void initVenues(List<Venue> venues, Context ctx) {
+        VenueFacade.getInstance().clearCache(ctx);
+
+        for (Venue v: venues) {
+            VenueFacade.getInstance().addVenue(v, ctx);
+        }
+
+        filterListByType(VenueType.Hotel);
     }
 }
