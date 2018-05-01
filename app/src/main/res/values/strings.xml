@@ -53,7 +53,7 @@
         <item>Salad</item>
         <item>Smoothie</item>
         <item>Fruit</item>
-        <item>Ice-Cream</item>
+        <item>IceCream</item>
         <!--19--><item>Raw</item>
         <item>Handbag</item>
         <item>Cosmetic</item>
@@ -65,10 +65,18 @@
         <item>Massage</item>
         <item>Upcycled</item>
         <!--29--><item>Coffee</item>
-        <item>Gluten</item>
+        <item>GlutenFree</item>
         <item>Cocktails</item>
         <item>Beer</item>
         <item>Music</item>
         <!--34--><item>Projects</item>
+        <item>Electro</item>
+        <item>Rock</item>
+        <item>LiveDJ</item>
+        <item>Terrace</item>
+        <!--39--><item>Seeds</item>
+        <item>Grinder</item>
+        <item>Papers</item>
+        <item>Advice</item>
     </string-array>
 </resources>
