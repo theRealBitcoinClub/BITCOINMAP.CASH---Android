@@ -97,7 +97,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         initActionBar();
 
         mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(this);
+        //mapFragment.getMapAsync(this);
         mapFragment.setRetainInstance(true);
 
         setupViewPager(viewPager);
@@ -120,10 +120,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     protected void onResume() {
         super.onResume();
         Log.d(TAG,"onResume isMapReady:" + mMap);
-        /*if (mMap != null)
-            onMapReady(mMap);
-        else
-            mapFragment.getMapAsync(this);*/
+        if (mMap == null)
+            mapFragment.getMapAsync(this);
     }
 
     private boolean isCacheEmpty() {

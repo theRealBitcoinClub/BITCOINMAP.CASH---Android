@@ -32,6 +32,7 @@
             android:value="AIzaSyAVDl8Ng3iT4xfX2r6Fj1SvJJvndz73JOI" />
 
         <activity
+            android:launchMode="singleTop"
             android:name=".BCHMapsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
