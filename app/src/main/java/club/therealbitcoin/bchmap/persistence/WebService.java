@@ -1,6 +1,7 @@
 package club.therealbitcoin.bchmap.persistence;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -107,6 +108,7 @@ public class WebService extends AsyncTask<String, Void, String> {
              List<Venue> venues = new ArrayList<Venue>();
 
              for (int i=0; i<jsonArray.length(); i++) {
+                 Log.d("TRBC","checka:"  +jsonArray.getJSONObject(i));
                  venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
              }
 

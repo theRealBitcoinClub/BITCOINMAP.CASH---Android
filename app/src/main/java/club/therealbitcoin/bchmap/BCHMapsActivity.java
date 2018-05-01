@@ -453,6 +453,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));
     }
 
+    long backPressLastClick;
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - 1000L < backPressLastClick) {
+            super.onBackPressed();
+        }
+        backPressLastClick = System.currentTimeMillis();
+    }
+
     private void switchCheck(MenuItem item) {
         if (item.isCheckable() && item.isChecked())
             item.setChecked(false);

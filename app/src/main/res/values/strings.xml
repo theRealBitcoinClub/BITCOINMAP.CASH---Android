@@ -15,6 +15,7 @@
     <string name="type_hotel">Hostel-Flat</string>
     <string name="type_sweet">Take-Away-Food</string>
     <string name="type_tattoo">Tattoo-Piercing</string>
+    <string name="type_place">Place</string>
     <string name="recommendation">Check out this Bitcoin Android App now, follow this link: http://therealbitcoin.club/moveyourbch</string>
     <string name="thank_you">Tell your friends!</string>
     <string name="toolbar">TRBC.io</string>
@@ -33,7 +34,7 @@
     <string name="discount1">20% discount on first BCH payment</string>
     <string name="discount2">Accepting Bitcoin payments soon</string>
     <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
-    <string name="error_empty_list">Update available! Restart app!</string>
+    <string name="error_empty_list">Update available! Open Play Store!</string>
     <string-array name="location_attributes">
         <item>Bitcoin</item>
         <item>Events</item>
@@ -78,5 +79,9 @@
         <item>Grinder</item>
         <item>Papers</item>
         <item>Advice</item>
+        <item>Calzone</item>
+        <!--44--><item>Suppli</item>
+        <item>MakeUp</item>
+        <item>Gifts</item>
     </string-array>
 </resources>
