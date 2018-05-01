@@ -197,6 +197,7 @@ public class VenueFacade {
     }
 
     public void setTheme(int theme, Context ctx) {
+        this.theme = theme;
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         sharedPreferences.edit().putInt(THEME, theme).commit();
     }
@@ -204,7 +205,7 @@ public class VenueFacade {
     public int getTheme(Context ctx) {
         if (theme == -1) {
             SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-            theme = sharedPreferences.getInt("THEME", 0);
+            theme = sharedPreferences.getInt(THEME, 0);
         }
 
         return theme;
