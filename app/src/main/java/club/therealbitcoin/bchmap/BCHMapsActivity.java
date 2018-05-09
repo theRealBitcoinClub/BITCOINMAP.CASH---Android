@@ -1,6 +1,7 @@
 package club.therealbitcoin.bchmap;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -96,7 +97,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         initActionBar();
 
         mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
-        //mapFragment.getMapAsync(this);
         mapFragment.setRetainInstance(true);
 
         setupViewPager(viewPager);
@@ -107,6 +107,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         Log.d(TAG,"FINISH ON CREATE");
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //BUGFIX BECAUSE OTHERWISE ILLEGALSTATEExCEPTION ON MARKERCLICK

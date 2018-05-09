@@ -27,7 +27,7 @@ import club.therealbitcoin.bchmap.interfaces.AnimatorEndAbstract;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
-public class MarkerDetailsFragment extends DialogFragment {
+public class MarkerDetailsFragment extends DialogFragment implements View.OnClickListener {
 
 	public static final String PARCEL_ID = "dsjlkfndsjkf";
 	private static final String TAG = "TRBCDialog";
@@ -51,20 +51,35 @@ public class MarkerDetailsFragment extends DialogFragment {
 
         initReviewText(view, venue);
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
-        initDialogDismissListener(view, venue);
+
+		TextView header = view.findViewById(R.id.dialog_header);
+		View back = view.findViewById(R.id.dialog_button_back);
+		View close = view.findViewById(R.id.dialog_button_close);
+		header.setText(venue.name);
+		header.setSelected(true);
+		header.setOnClickListener(this);
+		back.setOnClickListener(this);
+		close.setOnClickListener(this);
         initTagValues(view, venue);
 
 
         initDiscountText(view, venue);
 
 		ImageView img = view.findViewById(R.id.img);
-String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
+		String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 		Log.d(TAG,imgUri);
 
 		Glide.with(this).load(imgUri).into(img);
 
 		return view;
     }
+
+
+
+	@Override
+	public void onClick(View v) {
+		dismiss();
+	}
 
     private void initReviewText(View view, Venue venue) {
         StringBuilder builder = new StringBuilder(getString(R.string.reviews));
@@ -90,36 +105,19 @@ String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
         String[] attribs = venue.getAttributes();
         Log.d("TRBC","attribs:" + attribs);
         if (attribs != null) {
-initTagViews(view);
-int i = 0;
-Log.d("TRBC","itTagVie:");
-for (String a : attribs
-) {
-if (a == null || a.trim().length() == 0)
-break;
+		initTagViews(view);
+		int i = 0;
+		Log.d("TRBC","itTagVie:");
+		for (String a : attribs
+			) {
+			if (a == null || a.trim().length() == 0)
+			break;
 
-Log.d("TRBC","aaaaaaaaaaaa:" + a);
-String[] array = getResources().getStringArray(R.array.location_attributes);
-tags[i++].setText(array[Integer.valueOf(a)]);
-}
-}
-    }
-
-    private void initDialogDismissListener(View view, Venue venue) {
-        View header = view.findViewById(R.id.dialog_header);
-        ((TextView) header).setText(venue.name);
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        view.findViewById(R.id.img).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+			Log.d("TRBC","aaaaaaaaaaaa:" + a);
+			String[] array = getResources().getStringArray(R.array.location_attributes);
+			tags[i++].setText(array[Integer.valueOf(a)]);
+			}
+		}
     }
 
     private void initTagViews(View view) {
@@ -265,35 +263,10 @@ tags[i++].setText(array[Integer.valueOf(a)]);
     }
 
 	private void openMapsRoute(Venue v) {
-		/*LatLng coordinates = v.getCoordinates();
-		Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-			Uri.parse("geo:0,0?q="+ coordinates.latitude+","+coordinates.longitude+" (" + v.name + ")"));
-		startActivity(intent);*/
 
 		Intent i = new Intent(Intent.ACTION_VIEW,
 				Uri.parse(Venue.BASE_URI + v.placesId));
 		startActivity(i);
-/*
-		i.setClassName("com.google.android.apps.maps",
-				"com.google.android.maps.MapsActivity");
-		try
-		{
-		}
-		catch(ActivityNotFoundException ex)
-		{
-			try
-			{
-				i = new Intent(Intent.ACTION_VIEW,
-						Uri.parse(Venue.BASE_URI+ v.placesId));
-				Log.e(TAG,"NO GOOGLE MAPS ACTIVITY AVAILABLE");
-				startActivity(i);
-			}
-			catch(ActivityNotFoundException innerEx)
-			{
-				Log.e(TAG,"NO MAPS ACTIVITY AVAILABLE");
-				Toast.makeText(getContext(), R.string.toast_install_maps, Toast.LENGTH_LONG).show();
-			}
-		}*/
 
 	}
 
