@@ -54,9 +54,11 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places5.json";
-    private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
+    public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 16f;
     public static final String URI_CLICK_LOGO = "http://map.therealbitcoin.club";
     public static final String CAM = "cam";
+    public static final String SHARED_PREF_CAM_POSITION = "hjadsbfzurzu23";
+    public static final String KEY_CAM_POS = "fdgnjerngui3w";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
@@ -279,7 +281,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                 Location lastCoordinates = task.getResult();
                                 LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
-                                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
                                 Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
 
                                 //TODO FIX LOCATION BUG
@@ -323,7 +325,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void switchTabZoomCamera() {
         viewPager.setCurrentItem(0);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
     }
 
     private void callWebservice(boolean moveCam) {
@@ -494,4 +496,11 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
         return false;
     }
+/*
+    @Override
+    public void onCameraMove() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
+        sharedPreferences.edit().putString(KEY_CAM_POS, mMap.getCameraPosition().target.toString()).commit();
+        Toast.makeText(this,"dsfds" + mMap.getCameraPosition().target.toString(),Toast.LENGTH_SHORT).show();
+    }*/
 }
