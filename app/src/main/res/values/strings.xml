@@ -66,8 +66,8 @@
         <item>Massage</item>
         <item>Upcycled</item>
         <!--29--><item>Coffee</item>
-        <item>GlutenFree</item>
-        <item>Cocktails</item>
+        <item>NoGluten</item>
+        <item>Cocktail</item>
         <item>Beer</item>
         <item>Music</item>
         <!--34--><item>Projects</item>
@@ -83,5 +83,25 @@
         <!--44--><item>Suppli</item>
         <item>MakeUp</item>
         <item>Gifts</item>
+        <item>Tapas</item>
+        <item>Copas</item>
+        <!--49--><item>Piadina</item>
+        <item>Hierba</item>
+        <item>Granel</item>
+        <item>Fashion</item>
+        <item>Fair</item>
+        <!--54--><item>Women</item>
+        <item>Drinks</item>
+        <item>TV</item>
+        <item>Retro</item>
+        <item>Color</item>
+        <!--59--><item>B/W</item>
+        <item>BTC</item>
+        <item>BCH</item>
+        <item>Online</item>
+        <item>Booking</item>
+        <!--64--><item>HotDog</item>
+        <item>Fast</item>
+        <item>Kosher</item>
     </string-array>
 </resources>
