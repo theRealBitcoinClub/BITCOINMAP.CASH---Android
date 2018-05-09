@@ -61,7 +61,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places5.json";
     private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
-    public static final String URI_CLICK_LOGO = "http://trbc.io";
+    public static final String URI_CLICK_LOGO = "http://map.trbc.io";
     public static final String CAM = "cam";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
@@ -389,6 +389,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         switchCheck(item);
 
         switch (item.getItemId()) {
+            case R.id.menu_browser:
+                openWebsite();
+                return true;
             case android.R.id.home:
                 Toast.makeText(this, R.string.toast_go_to_website, Toast.LENGTH_LONG).show();
                 openWebsite();

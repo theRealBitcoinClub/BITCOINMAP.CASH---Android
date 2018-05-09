@@ -37,6 +37,8 @@
                     android:icon="@drawable/ic_map_hotel"
                     android:title="@string/type_hotel"
                     android:checkable="true"/>
+                <item android:id="@+id/menu_browser"
+                    android:title="@string/browser"/>
             </group>
     </item>
 </menu>
