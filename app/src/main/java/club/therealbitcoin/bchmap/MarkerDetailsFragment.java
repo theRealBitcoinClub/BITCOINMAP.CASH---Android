@@ -53,13 +53,10 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
 
 		TextView header = view.findViewById(R.id.dialog_header);
-		View back = view.findViewById(R.id.dialog_button_back);
-		View close = view.findViewById(R.id.dialog_button_close);
+		View closeContainer = view.findViewById(R.id.close_details_dialog);
 		header.setText(venue.name);
 		header.setSelected(true);
-		header.setOnClickListener(this);
-		back.setOnClickListener(this);
-		close.setOnClickListener(this);
+		closeContainer.setOnClickListener(this);
         initTagValues(view, venue);
 
 
@@ -157,14 +154,12 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	}
 
 	private void clickedShareButton(View dialog) {
-		final View btn_share = dialog.findViewById(R.id.dialog_button_share);
-		btn_share.setOnClickListener(new View.OnClickListener() {
+		final View btn_map = dialog.findViewById(R.id.dialog_button_map);
+		btn_map.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
-				switchColor(btn_share, true, null);
-				shareDeepLink();
-				resetColorWithDelay(btn_share);
+				dismiss();
+				MarkerDetailsFragment.this.cb.switchTabZoomCamera();
 			}
 		});
 	}

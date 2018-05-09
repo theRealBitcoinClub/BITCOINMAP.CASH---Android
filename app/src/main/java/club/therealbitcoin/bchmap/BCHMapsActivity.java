@@ -326,6 +326,12 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
     }
 
+    @Override
+    public void switchTabZoomCamera() {
+        viewPager.setCurrentItem(0);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16f));
+    }
+
     private void callWebservice(boolean moveCam) {
         new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override

@@ -10,4 +10,6 @@ public interface UpdateActivityCallback {
     void initListView();
 
     void updateCameraPosition(LatLng coordinates);
+
+    void switchTabZoomCamera();
 }
