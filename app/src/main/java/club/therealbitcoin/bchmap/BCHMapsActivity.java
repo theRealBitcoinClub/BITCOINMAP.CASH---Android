@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +24,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,7 +31,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -43,10 +40,7 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
@@ -61,7 +55,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places5.json";
     private static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 10.0f;
-    public static final String URI_CLICK_LOGO = "http://map.trbc.io";
+    public static final String URI_CLICK_LOGO = "http://map.therealbitcoin.club";
     public static final String CAM = "cam";
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
@@ -132,9 +126,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         setSupportActionBar(tb);
         ActionBar bar = getSupportActionBar();
         bar.setIcon(R.drawable.logo_action_bar);
-        bar.setHomeButtonEnabled(true);
-        bar.setHomeAsUpIndicator(R.drawable.ic_action_home);
-        bar.setDisplayHomeAsUpEnabled(true);
+        //bar.setHomeButtonEnabled(true);
+        //bar.setHomeAsUpIndicator(R.drawable.ic_action_home);
+        //bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle("");
     }
 
@@ -363,7 +357,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-        updateSwitchThemeIcon(menu.getItem(0));
+        //updateSwitchThemeIcon(menu.getItem(0));
 
         int size = menu.size();
         Log.d(TAG,"menu size:" + size);
@@ -393,7 +387,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 openWebsite();
                 return true;
             case android.R.id.home:
-                Toast.makeText(this, R.string.toast_go_to_website, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, R.string.toast_go_to_website, Toast.LENGTH_LONG).show();
                 openWebsite();
                 return true;
             case R.id.menu_bar:
@@ -418,7 +412,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 //viewPager.setCurrentItem(0);
                 switchMapStyle(item);
 
-                updateSwitchThemeIcon(item);
+                //updateSwitchThemeIcon(item);
 
                 return true;
             default:
@@ -426,14 +420,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
 
     }
-
+/*
     private void updateSwitchThemeIcon(MenuItem item) {
         if (VenueFacade.getInstance().getTheme(this) == 0) {
             item.setIcon(R.drawable.ic_action_luna);
         } else {
             item.setIcon(R.drawable.ic_action_sun);
         }
-    }
+    }*/
 
     private void applyFilters(MenuItem item, VenueType type) {
         if (item.isChecked()) {
@@ -486,7 +480,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             return false;
         }
 
-        MarkerDetailsFragment.newInstance(v, this).show(fm,"MARKERDIALOG");
+        MarkerDetailsFragment.newInstance(v, this, true).show(fm,"MARKERDIALOG");
         return false;
     }
 

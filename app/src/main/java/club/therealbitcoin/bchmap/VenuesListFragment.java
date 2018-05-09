@@ -14,13 +14,11 @@ package club.therealbitcoin.bchmap;
         import android.widget.ArrayAdapter;
         import android.widget.ListView;
         import android.widget.TextView;
-        import android.widget.Toast;
 
         import java.util.ArrayList;
         import java.util.List;
 
         import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
-        import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
         import club.therealbitcoin.bchmap.interfaces.AnimationEndAbstract;
         import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
         import club.therealbitcoin.bchmap.persistence.VenueFacade;
@@ -113,7 +111,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         Venue venue = getVenueByIndex(position);
 
        callback.updateCameraPosition(venue.getCoordinates());
-        MarkerDetailsFragment.newInstance(venue, callback).show(getFragmentManager(),"MARKERDIALOG");
+        MarkerDetailsFragment.newInstance(venue, callback, false).show(getFragmentManager(),"MARKERDIALOG");
     }
 
     private Venue getVenueByIndex(int position) {

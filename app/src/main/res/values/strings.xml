@@ -16,14 +16,14 @@
     <string name="type_sweet">Take-Away-Food</string>
     <string name="type_tattoo">Tattoo-Piercing</string>
     <string name="type_place">Place</string>
-    <string name="recommendation">Check out this Bitcoin Android App now, follow this link: http://therealbitcoin.club/moveyourbch</string>
+    <string name="recommendation">Bitcoin Map: http://map.therealbitcoin.club, Android App: http://therealbitcoin.club/moveyourbch</string>
     <string name="thank_you">Tell your friends!</string>
     <string name="toolbar">TRBC.io</string>
     <string name="preference_file_key">favoriiiiits</string>
     <string name="reviews">Reviews:</string>
     <string name="toast_enable_location">Please enable your location in the device settings.</string>
     <string name="toast_moving_location">Moving to last known location.</string>
-    <string name="switch_style">Style</string>
+    <string name="switch_style">Switch Color Theme</string>
     <string name="filter">Map Filter</string>
     <string name="toast_sharing_venue">Thank you, for your support!</string>
     <string name="toast_route_button">You will be forwarded to Google Maps now.</string>
@@ -35,7 +35,7 @@
     <string name="discount2">Accepting Bitcoin payments soon</string>
     <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
-    <string name="browser">map.trbc.io</string>
+    <string name="browser">map.therealbitcoin.club</string>
     <string-array name="location_attributes">
         <item>Bitcoin</item>
         <item>Events</item>

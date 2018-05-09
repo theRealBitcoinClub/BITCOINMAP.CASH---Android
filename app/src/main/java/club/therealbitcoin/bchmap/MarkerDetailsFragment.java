@@ -31,12 +31,14 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
 	public static final String PARCEL_ID = "dsjlkfndsjkf";
 	private static final String TAG = "TRBCDialog";
-    private static UpdateActivityCallback cb;
+	private static final String IS_ON_MAP_VIEW = "dfdsfn34fn";
+	private static UpdateActivityCallback cb;
 	private int accentColor;
 	private int primaryColor;
 	private String accent;
 	private String primary;
 	private TextView[] tags = new TextView[10];
+	private boolean isMapView;
 
 
 	@Override
@@ -47,6 +49,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         setCancelable(true);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         final Venue venue = getArguments().getParcelable(PARCEL_ID);
+		isMapView = getArguments().getBoolean(IS_ON_MAP_VIEW);
         initClickListener(venue, view);
 
         initReviewText(view, venue);
@@ -63,6 +66,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         initDiscountText(view, venue);
 
 		ImageView img = view.findViewById(R.id.img);
+		img.setOnClickListener(this);
 		String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 		Log.d(TAG,imgUri);
 
@@ -128,7 +132,11 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		final View btn_route = dialog.findViewById(R.id.dialog_button_route);
 
 		clickedRouteButton(venue, btn_route);
-		clickedShareButton(dialog);
+		if (isMapView) {
+			initShareButton(dialog);
+		} else {
+			initMapButton(dialog);
+		}
 
 		final View btn_favo = dialog.findViewById(R.id.dialog_button_favo);
 
@@ -153,8 +161,22 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		});
 	}
 
-	private void clickedShareButton(View dialog) {
+	private void initShareButton(View dialog) {
+		final View btn_share = dialog.findViewById(R.id.dialog_button_share);
+		btn_share.setVisibility(View.VISIBLE);
+		btn_share.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
+				switchColor(btn_share, true, null);
+				shareDeepLink();
+				resetColorWithDelay(btn_share);
+			}
+		});
+	}
+
+	private void initMapButton(View dialog) {
 		final View btn_map = dialog.findViewById(R.id.dialog_button_map);
+		btn_map.setVisibility(View.VISIBLE);
 		btn_map.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -272,11 +294,12 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
 	}
 
-	public static MarkerDetailsFragment newInstance(Venue v, UpdateActivityCallback cb) {
+	public static MarkerDetailsFragment newInstance(Venue v, UpdateActivityCallback cb, boolean isOnMapView) {
         MarkerDetailsFragment.cb = cb;
         MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
 		Bundle args = new Bundle();
 		args.putParcelable(PARCEL_ID, v);
+		args.putBoolean(IS_ON_MAP_VIEW, isOnMapView);
 		myFragment.setArguments(args);
 
 		return myFragment;
