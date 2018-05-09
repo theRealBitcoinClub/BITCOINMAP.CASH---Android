@@ -112,6 +112,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     public void onListItemClick(ListView listView, View v, int position, long id) {
         Venue venue = getVenueByIndex(position);
 
+       callback.updateCameraPosition(venue.getCoordinates());
         MarkerDetailsFragment.newInstance(venue, callback).show(getFragmentManager(),"MARKERDIALOG");
     }
 
@@ -200,7 +201,6 @@ class PopupAdapter extends ArrayAdapter<String> {
             view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
             holder.title.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
         }
-
 
         venue.listItem = view;
         optimizeTouchArea(holder);

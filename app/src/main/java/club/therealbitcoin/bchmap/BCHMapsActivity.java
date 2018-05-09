@@ -287,14 +287,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                                 Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
-                                /*mMap.setMinZoomPreference(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED);
-
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mMap.resetMinMaxZoomPreference();
-                                    }
-                                },2000L);*/
 
                                 //TODO FIX LOCATION BUG
 
@@ -326,6 +318,12 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void initListView() {
         initListFragment(1);
+    }
+
+    @Override
+    public void updateCameraPosition(LatLng coordinates) {
+        if (mMap != null)
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
     }
 
     private void callWebservice(boolean moveCam) {
@@ -430,24 +428,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void applyFilters(MenuItem item, VenueType type) {
         if (item.isChecked()) {
-            //Toast.makeText(this, getString(R.string.toast_unfilter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().restoreFilteredVenues(type);
         } else {
-            //Toast.makeText(this, getString(R.string.toast_filter_by_type) + " " + getString(VenueType.getTranslatedType(type)), Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().filterListByType(type);
         }
 
-        //updateMapView(type);
         syncVenueMarkersDataWithMap(false);
         initAllListViews();
     }
-
-    /*private void updateMapView(VenueType type) {
-        updateMapView(type.getIndex());
-    }
-    private void updateMapView(int index) {
-        switchVisibility(markersListMap.get(index));
-    }*/
 
     private void openWebsite() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));
@@ -469,15 +457,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         else
             item.setChecked(true);
     }
-
-    /*private void switchVisibility(List<Marker> markers) {
-        for (Marker m: markers) {
-            if (m.isVisible())
-                m.setVisible(false);
-            else
-                m.setVisible(true);
-        }
-    }*/
 
     private Marker addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
@@ -512,23 +491,4 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
         return false;
     }
-/*
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(TAG,"onSavedInstance");
-        CameraPosition cameraPosition = mMap.getCameraPosition();
-        outState.putParcelable(CAM, cameraPosition);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.d(TAG,"onRestoreInstance");
-        //onMapReady(mMap);
-
-        CameraPosition camPos = savedInstanceState.getParcelable(CAM);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(camPos.target);
-        mMap.animateCamera(cameraUpdate);
-    }*/
 }
