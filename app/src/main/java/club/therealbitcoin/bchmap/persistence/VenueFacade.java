@@ -225,7 +225,5 @@ public class VenueFacade {
         for (Venue v: venues) {
             VenueFacade.getInstance().addVenue(v, ctx);
         }
-
-        filterListByType(VenueType.Hotel);
     }
 }

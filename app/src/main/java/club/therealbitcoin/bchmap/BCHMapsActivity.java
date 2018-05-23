@@ -6,10 +6,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -23,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,8 +32,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
@@ -54,7 +49,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places5.json";
-    public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 16f;
+    public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 15f;
     public static final String URI_CLICK_LOGO = "http://map.therealbitcoin.club";
     public static final String CAM = "cam";
     public static final String SHARED_PREF_CAM_POSITION = "hjadsbfzurzu23";
@@ -77,7 +72,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
     private boolean isLocationAvailable = false;
-    public static final int NON_CHECKABLE_MENU_ITEMS = 1;
+    public static final int NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS = 0;
 
 
     @Override
@@ -268,9 +263,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             //markerMap.put(v.placesId, marker);
         }
         if (moveCamera)
-            moveCameraToLastLocation();
+            moveCameraToQuinoa();
+           // moveCameraToLastLocation();
     }
 
+    private void moveCameraToQuinoa() {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.4027984,2.1600427),MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
+    }
+/*
     private void moveCameraToLastLocation() {
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
@@ -295,7 +295,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         } catch (SecurityException e){
             Log.d(TAG,"SECURITYEXCEPTION");
         }
-    }
+    }*/
 
 
 
@@ -325,7 +325,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void switchTabZoomCamera() {
         viewPager.setCurrentItem(0);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED + 2f));
     }
 
     private void callWebservice(boolean moveCam) {
@@ -363,8 +363,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         int size = menu.size();
         Log.d(TAG,"menu size:" + size);
-        for (int i = NON_CHECKABLE_MENU_ITEMS; i< size; i++) {
-            int realIndex = i - NON_CHECKABLE_MENU_ITEMS;
+        for (int i = NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS; i< size; i++) {
+            int realIndex = i - NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS;
             MenuItem item = menu.getItem(i);
             Log.d(TAG,"item:" + item.getTitle());
             boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(realIndex);
