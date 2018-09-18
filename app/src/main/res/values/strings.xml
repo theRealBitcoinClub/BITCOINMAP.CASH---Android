@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">MoveYourBCH</string>
+    <string name="app_name">Bitcoinmap</string>
     <string name="contact">Contact</string>
     <string name="settings">Settings</string>
     <string name="add_place">Add</string>
     <string name="rating">Rating</string>
     <string name="error_con_webservice">Error connecting to the internet, please check your signal strength and restart the app. Thank You.</string>
     <string name="logo_desc">logo_description</string>
-    <string name="type_atm">\@realBitcoinClub</string>
+    <string name="type_atm">\@RealBitcoinClub</string>
     <string name="type_food">Restaurant</string>
     <string name="type_super">Supermarket</string>
     <string name="type_bar">Cafe-Bar</string>
@@ -16,7 +16,7 @@
     <string name="type_sweet">Take-Away-Food</string>
     <string name="type_tattoo">Tattoo-Piercing</string>
     <string name="type_place">Place</string>
-    <string name="recommendation">Bitcoin Map: http://map.therealbitcoin.club, Android App: http://therealbitcoin.club/moveyourbch</string>
+    <string name="recommendation">Bitcoin Map: http://bitcoinmap.world, Android App: http://therealbitcoin.club/android</string>
     <string name="thank_you">Tell your friends!</string>
     <string name="toolbar">TRBC.io</string>
     <string name="preference_file_key">favoriiiiits</string>
@@ -30,18 +30,19 @@
     <string name="favo_list_empty">You do not have any favorites yet.</string>
     <string name="toast_favorites_not_affected_by_filter">Favorites are not being filtered.</string>
     <string name="toast_go_to_website">Website: The Real Bitcoin Club (trbc.io)</string>
-    <string name="discount0">10% discount on first BCH payment</string>
-    <string name="discount1">20% discount on first BCH payment</string>
+    <string name="discount0">10% discount on first Bitcoin payment</string>
+    <string name="discount1">20% discount on first Bitcoin payment</string>
     <string name="discount2">Accepting Bitcoin payments soon</string>
     <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
+    <string name="discount4">DASH, BCH, BTC accepted here</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
-    <string name="browser">map.therealbitcoin.club</string>
+    <string name="browser">bitcoinmap.world</string>
     <string-array name="location_attributes">
         <item>Bitcoin</item>
         <item>Events</item>
         <item>Trading</item>
         <item>Organic</item>
-        <!--4--><item>Vegetarian</item>
+        <!--4--><item>Veggie</item>
         <item>Vegan</item>
         <item>Healthy</item>
         <item>Burger</item>
@@ -104,5 +105,42 @@
         <!--64--><item>HotDog</item>
         <item>Fast</item>
         <item>Kosher</item>
+	<item>Sushi</item>
+	<item>Moto</item>
+	<!--69--><item>Coche</item>
+	<item>Tablet</item>
+	<item>Pollo</item>
+	<item>Conejo</item>
+	<item>Patatas</item>
+	<!--74--><item>DASH</item>
+	<item>ETH</item>
+	<item>ATM</item>
+	<item>Club</item>
+	<item>Dance</item>
+	<!--79--><item>TakeAway</item>
+	<item>Meditation</item>
+	<item>Wine</item>
+	<item>Champagne</item>
+	<item>Alcohol</item>
+	<!--84--><item>Booze</item>
+	<item>Hookers</item>
+	<item>Girls</item>
+	<item>Gay</item>
+	<item>Party</item>
+	<!--89--><item>English</item>
+	<item>B&B</item>
+	<item>Haircut</item>
+	<item>Nails</item>
+	<item>Beauty</item>
+	<!--94--><item>Miso</item>
+	<item>Teriyaki</item>
+	<item>Rice</item>
+	<item>Seafood</item>
+	<item>Hostel</item>
+	<!--99--><item>Fries</item>
+	<item>Fish</item>
+	<item>Chips</item>
+	<item>Italian</item>
+	<item>Karaoke</item>
     </string-array>
 </resources>
