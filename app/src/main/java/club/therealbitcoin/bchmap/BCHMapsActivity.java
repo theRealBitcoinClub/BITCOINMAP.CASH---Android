@@ -338,6 +338,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                     VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
 
                     Log.d(TAG, "responseData: " + responseData);
+
+                    restoreFilters();
+
                     if(mMap != null)
                         syncVenueMarkersDataWithMap(moveCam);
 
@@ -356,6 +359,15 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }).execute();
     }
 
+    private void restoreFilters() {
+        for (VenueType t: VenueType.getFilterableTypes()
+                ) {
+            if (VenueFacade.getInstance().isTypeFiltered(t.getIndex(),BCHMapsActivity.this)) {
+                VenueFacade.getInstance().filterListByType(t, BCHMapsActivity.this);
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -368,7 +380,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             int realIndex = i - NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS;
             MenuItem item = menu.getItem(i);
             Log.d(TAG,"item:" + item.getTitle());
-            boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(realIndex);
+            boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(realIndex, this);
+
             Log.d(TAG,"onCreateOptionsMenu:" + i + ", isChecked:" + isChecked);
             item.setChecked(isChecked);
         }
@@ -434,9 +447,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void applyFilters(MenuItem item, VenueType type) {
         if (item.isChecked()) {
-            VenueFacade.getInstance().restoreFilteredVenues(type);
+            VenueFacade.getInstance().restoreFilteredVenues(type, this);
         } else {
-            VenueFacade.getInstance().filterListByType(type);
+            VenueFacade.getInstance().filterListByType(type, this);
         }
 
         syncVenueMarkersDataWithMap(false);

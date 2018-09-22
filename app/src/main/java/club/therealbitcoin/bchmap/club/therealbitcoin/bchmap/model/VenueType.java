@@ -1,5 +1,7 @@
 package club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model;
 
+import java.util.ArrayList;
+
 import club.therealbitcoin.bchmap.R;
 
 public enum VenueType {
@@ -13,6 +15,31 @@ public enum VenueType {
 
     public int getIndex() {
         return index;
+    }
+
+    public static VenueType getTypeByIndex(int i) {
+        switch (i) {
+            case 0: return Food;
+            case 1: return Sweet;
+            case 2: return Bar;
+            case 3: return Super;
+            case 4: return Fashion;
+            case 5: return Hotel;
+        }
+        throw new RuntimeException("VenueType with that index is not mapped yet");
+    }
+
+    public static ArrayList<VenueType> getFilterableTypes () {
+        ArrayList<VenueType> list = new ArrayList<VenueType>();
+
+        list.add(Food);
+        list.add(Sweet);
+        list.add(Bar);
+        list.add(Super);
+        list.add(Fashion);
+        list.add(Hotel);
+
+        return list;
     }
 
     public static int getIconResource(int type) {
