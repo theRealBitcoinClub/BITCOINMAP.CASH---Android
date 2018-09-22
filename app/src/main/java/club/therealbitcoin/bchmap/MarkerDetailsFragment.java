@@ -83,12 +83,17 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	}
 
     private void initReviewText(View view, Venue venue) {
-        StringBuilder builder = new StringBuilder(getString(R.string.reviews));
-        builder.append(" ");
-        builder.append(venue.stars);
-        builder.append(" (");
-        builder.append(venue.reviews);
-        builder.append(")");
+		StringBuilder builder = new StringBuilder();
+		if (venue.reviews == 0) {
+			builder.append(getString(R.string.reviewsNotAvailable));
+		} else {
+			builder.append(getString(R.string.reviews));
+			builder.append(" ");
+			builder.append(venue.stars);
+			builder.append(" (");
+			builder.append(venue.reviews);
+			builder.append(")");
+		}
 
         ((TextView)view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
     }

@@ -103,7 +103,7 @@ public class WebService extends AsyncTask<String, Void, String> {
     }
 
          public static List<Venue> parseVenues(String responseData) throws JSONException {
-             //Log.d("TRBC","parseVenues" + responseData);
+             Log.d("TRBC","parseVenues");
              JSONArray jsonArray = new JSONArray(responseData);
              List<Venue> venues = new ArrayList<Venue>();
 

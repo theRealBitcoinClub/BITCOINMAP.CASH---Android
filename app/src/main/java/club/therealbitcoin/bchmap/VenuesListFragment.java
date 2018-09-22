@@ -179,7 +179,7 @@ class PopupAdapter extends ArrayAdapter<String> {
         ViewHolder holder;
         View view = super.getView(position, convertView, container);
         if (convertView == null) {
-            holder = new ViewHolder(view.findViewById(android.R.id.text1),view.findViewById(R.id.list_item_click_area),view.findViewById(R.id.list_item_button),view.findViewById(R.id.list_item_icon));
+            holder = new ViewHolder(view.findViewById(android.R.id.text1), view.findViewById(R.id.location),view.findViewById(R.id.list_item_click_area),view.findViewById(R.id.list_item_button),view.findViewById(R.id.list_item_icon));
             view.setTag(holder);
         }
         else {
@@ -198,14 +198,20 @@ class PopupAdapter extends ArrayAdapter<String> {
         if (VenueFacade.getInstance().getTheme(getActivity()) != 0) {
             view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
             holder.title.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
+            if (holder.location != null) //can be null on favo view
+                holder.location.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
         }
 
         venue.listItem = view;
         optimizeTouchArea(holder);
         //int iconResource = VenueType.getIconResource(venue.type);
         holder.icon.setBackgroundResource(venue.iconRes);
+        if (holder.location != null) //can be null on favo view
+            holder.location.setText(venue.location);
 
         holder.button.setTag(venue);
+        //this is necessary for marquee to work
+        //holder.title.setSelected(true);
 
         if (showOnlyFavos) {
             venue.favoListIndex = position;
@@ -218,7 +224,6 @@ class PopupAdapter extends ArrayAdapter<String> {
             holder.button.setOnClickListener(VenuesListFragment.this);
             return view;
     }
-
 }
 
     private void optimizeTouchArea(ViewHolder holder) {
@@ -234,14 +239,15 @@ class PopupAdapter extends ArrayAdapter<String> {
     }
 
     private static class ViewHolder {
-
         public TextView title;
+        public TextView location;
         public View clickArea;
         public View icon;
         public View button;
 
-        public ViewHolder(TextView title, View clickArea, View button, View icon) {
+        public ViewHolder(TextView title, TextView location, View clickArea, View button, View icon) {
             this.title = title;
+            this.location = location;
             this.clickArea = clickArea;
             this.button = button;
             this.icon = icon;

@@ -27,6 +27,7 @@ public class Venue implements Parcelable {
     public static String IMG_FOLDER =  BASE_URI + "img/app/";
     public int reviews;
     public double stars;
+    public String location;
     private Boolean isFavorite = null;
     LatLng coordinates;
     private boolean filtered = false;
@@ -37,22 +38,6 @@ public class Venue implements Parcelable {
 
     public String[] getAttributes() {
         return attributes;
-    }
-
-    protected Venue(Parcel in) {
-        discountLevel = in.readInt();
-        favoListIndex = in.readInt();
-        listIndex = in.readInt();
-        name = in.readString();
-        iconRes = in.readInt();
-        type = in.readInt();
-        placesId = in.readString();
-        reviews = in.readInt();
-        stars = in.readDouble();
-        in.readStringArray(attributes);
-        byte tmpIsFavorite = in.readByte();
-        isFavorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
-        coordinates = in.readParcelable(LatLng.class.getClassLoader());
     }
 
     public static final Creator<Venue> CREATOR = new Creator<Venue>() {
@@ -68,19 +53,23 @@ public class Venue implements Parcelable {
     };
 
     public void setFavorite(Boolean favorite, Context ctx) {
+        Log.d("TRBC","setFavorite");
         isFavorite = favorite;
 
         SharedPreferences sharedPref = ctx.getSharedPreferences(
                 YAYAYA, Context.MODE_PRIVATE);
-        sharedPref.edit().putString(placesId,null).commit();
+        sharedPref.edit().putBoolean(placesId,favorite).commit();
     }
 
     @Nullable
     public Boolean isFavorite(Context ctx) {
+        Log.d("TRBC","isFavorite");
         if (isFavorite == null && ctx != null) {
+            Log.d("TRBC","isFavorite null");
             SharedPreferences sharedPref = ctx.getSharedPreferences(
                     YAYAYA, Context.MODE_PRIVATE);
-            isFavorite = sharedPref.contains(placesId);
+            isFavorite = sharedPref.getBoolean(placesId, false);
+            Log.d("TRBC","isFavorite null" + isFavorite);
         }
 
         return isFavorite != null ? isFavorite : false;
@@ -90,7 +79,8 @@ public class Venue implements Parcelable {
         return coordinates;
     }
 
-    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr) {
+    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc) {
+        this.location = loc;
         this.discountLevel = dscnt;
         this.name = name;
         this.iconRes = iconRes;
@@ -103,6 +93,7 @@ public class Venue implements Parcelable {
     }
 
     public static Venue createInstance(JSONObject venue) throws JSONException {
+        String loc = venue.getString(VenueJson.location.toString());
         String name = venue.getString(VenueJson.name.toString());
         double stars = venue.getDouble(VenueJson.score.toString());
         int rev = venue.getInt(VenueJson.reviews.toString());
@@ -111,7 +102,7 @@ public class Venue implements Parcelable {
         String placesId = venue.getString(VenueJson.placesId.toString());
         int dscnt = venue.getInt(VenueJson.discount.toString());
         String[] atribs = parseAttributes(venue);
-        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt, atribs);
+        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt, atribs, loc);
     }
 
     private static String[] parseAttributes(JSONObject vJson) {
@@ -133,15 +124,7 @@ public class Venue implements Parcelable {
 
     @Override
     public String toString() {
-        return "Venue{" +
-                "name='" + name + '\'' +
-                ", iconRes=" + iconRes +
-                ", type=" + type +
-                ", placesId='" + placesId + '\'' +
-                ", reviews=" + reviews +
-                ", stars=" + stars +
-                ", coordinates=" + coordinates +
-                '}';
+        return toJson();
     }
     //{"p":"ChIJEUo5JceipBIRlw3IsieB6Sg","x":"41.406599", "y":"2.1621726","n":"The Real Bitcoin Club", "t":"0","c":"1","s":"5.0"}
     public String toJson() {
@@ -154,6 +137,8 @@ public class Venue implements Parcelable {
         appendData(sb, VenueJson.reviews.toString(), reviews);
         appendData(sb, VenueJson.score.toString(), stars);
         appendData(sb, VenueJson.discount.toString(), discountLevel, true);
+        appendData(sb, VenueJson.attributes.toString(), attributes, true);
+        appendData(sb, VenueJson.location.toString(), location, true);
         sb.append("}");
         return sb.toString();
     }
@@ -208,8 +193,27 @@ public class Venue implements Parcelable {
         return 0;
     }
 
+    protected Venue(Parcel in) {
+        location = in.readString();
+        in.readStringArray(attributes);
+        discountLevel = in.readInt();
+        favoListIndex = in.readInt();
+        listIndex = in.readInt();
+        name = in.readString();
+        iconRes = in.readInt();
+        type = in.readInt();
+        placesId = in.readString();
+        reviews = in.readInt();
+        stars = in.readDouble();
+        byte tmpIsFavorite = in.readByte();
+        isFavorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
+        coordinates = in.readParcelable(LatLng.class.getClassLoader());
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(location);
+        dest.writeStringArray(attributes);
         dest.writeInt(discountLevel);
         dest.writeInt(favoListIndex);
         dest.writeInt(listIndex);
@@ -237,6 +241,8 @@ public class Venue implements Parcelable {
             case 1: return R.string.discount1;
             case 2: return R.string.discount2;
             case 3: return R.string.discount3;
+            case 4: return R.string.discount4;
+            case 5: return R.string.discount5;
             default: return -1;
         }
     }

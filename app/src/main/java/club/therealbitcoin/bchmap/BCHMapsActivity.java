@@ -48,7 +48,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
-    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places5.json";
+    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places7.json";
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 15f;
     public static final String URI_CLICK_LOGO = "http://map.therealbitcoin.club";
     public static final String CAM = "cam";
@@ -333,6 +333,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             @Override
             public void onTaskDone(String responseData) {
                 try {
+                    Log.d(TAG, "onTaskDone: ");
                     List<Venue> venues = WebService.parseVenues(responseData);
                     VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
 
@@ -489,11 +490,11 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public boolean onMyLocationButtonClick() {
         Log.d(TAG,"onMyLocationButtonClick");
-        if (!isLocationAvailable) {
-            Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
-        } else {
+        //if (!isLocationAvailable) { //TODO FIX LOCATION NOT AVAILABLE MESSAGE if necessary at all because maybe the location button is simply not available
+           // Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
+        //} else {
             Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
-        }
+        //}
         return false;
     }
 /*

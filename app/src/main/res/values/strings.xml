@@ -21,6 +21,7 @@
     <string name="toolbar">TRBC.io</string>
     <string name="preference_file_key">favoriiiiits</string>
     <string name="reviews">Reviews:</string>
+    <string name="reviewsNotAvailable">Write history!! Spend Bitcoins!!</string>
     <string name="toast_enable_location">Please enable your location in the device settings.</string>
     <string name="toast_moving_location">Moving to last known location.</string>
     <string name="switch_style">Switch Color Theme</string>
@@ -35,6 +36,7 @@
     <string name="discount2">Accepting Bitcoin payments soon</string>
     <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
     <string name="discount4">DASH, BCH, BTC accepted here</string>
+    <string name="discount5">Information from discoverdash.com</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
     <string name="browser">bitcoinmap.world</string>
     <string-array name="location_attributes">
@@ -46,7 +48,7 @@
         <item>Vegan</item>
         <item>Healthy</item>
         <item>Burger</item>
-        <item>Bocadillo</item>
+        <item>Sandwich</item>
         <!--9--><item>Muffin</item>
         <item>Brownie</item>
         <item>Cake</item>
@@ -89,7 +91,7 @@
         <item>Copas</item>
         <!--49--><item>Piadina</item>
         <item>Hierba</item>
-        <item>Granel</item>
+        <item>Cereales</item>
         <item>Fashion</item>
         <item>Fair</item>
         <!--54--><item>Women</item>
@@ -109,9 +111,9 @@
 	<item>Moto</item>
 	<!--69--><item>Coche</item>
 	<item>Tablet</item>
-	<item>Pollo</item>
-	<item>Conejo</item>
-	<item>Patatas</item>
+	<item>Chicken</item>
+	<item>Rabbit</item>
+	<item>Potatoe</item>
 	<!--74--><item>DASH</item>
 	<item>ETH</item>
 	<item>ATM</item>
@@ -128,7 +130,7 @@
 	<item>Gay</item>
 	<item>Party</item>
 	<!--89--><item>English</item>
-	<item>B&B</item>
+	<item>B&amp;B</item>
 	<item>Haircut</item>
 	<item>Nails</item>
 	<item>Beauty</item>
@@ -142,5 +144,10 @@
 	<item>Chips</item>
 	<item>Italian</item>
 	<item>Karaoke</item>
+	<!--104--><item> x x x </item>
+	<item>Battery</item>
+	<item>Wheels</item>
+	<item>Men</item>
+        <item>Pasta</item>
     </string-array>
 </resources>

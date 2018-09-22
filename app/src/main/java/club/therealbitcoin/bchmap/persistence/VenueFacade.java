@@ -136,8 +136,12 @@ public class VenueFacade {
            venuesList.add(v);
        }
 
-        if (v.isFavorite(ctx))
+        if (v.isFavorite(ctx)) {
+            Log.d(TAG,"isFavorite true");
             favorites.add(v);
+        } else {
+            Log.d(TAG,"isFavorite false");
+        }
     }
 
     public Venue findVenueById(String id) {
@@ -220,6 +224,7 @@ public class VenueFacade {
     }
 
     public void initVenues(List<Venue> venues, Context ctx) {
+        Log.d(TAG,"initVenues");
         VenueFacade.getInstance().clearCache(ctx);
 
         for (Venue v: venues) {
