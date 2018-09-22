@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
+        android:installLocation="preferExternal"
         android:theme="@style/MyMaterialTheme">
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
