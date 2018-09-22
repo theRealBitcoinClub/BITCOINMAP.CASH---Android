@@ -380,7 +380,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public boolean onOptionsItemSelected(MenuItem item) {
         if (viewPager.getCurrentItem() == 2 && item.getItemId() != android.R.id.home && item.getItemId() != R.id.menu_switch) {
             viewPager.setCurrentItem(1);
-            Toast.makeText(this, R.string.toast_favorites_not_affected_by_filter, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_favorites_not_affected_by_filter, Toast.LENGTH_LONG).show();
         }
 
         switchCheck(item);
