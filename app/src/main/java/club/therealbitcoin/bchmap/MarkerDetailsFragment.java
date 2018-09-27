@@ -70,7 +70,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 		Log.d(TAG,imgUri);
 
-		Glide.with(this).load(imgUri).into(img);
+		Glide.with(this).load(imgUri).into(img).getView().setBackgroundResource(R.drawable.placeholder);
 
 		return view;
     }
