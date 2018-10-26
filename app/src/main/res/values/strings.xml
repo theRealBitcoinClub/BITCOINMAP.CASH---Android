@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bitcoinmap</string>
+    <string name="app_name">BMAP.CASH</string>
     <string name="contact">Contact</string>
     <string name="settings">Settings</string>
     <string name="add_place">Add</string>
@@ -16,9 +16,9 @@
     <string name="type_sweet">Take-Away-Food</string>
     <string name="type_tattoo">Tattoo-Piercing</string>
     <string name="type_place">Place</string>
-    <string name="recommendation">Bitcoin Map: http://bitcoinmap.world, Android App: http://therealbitcoin.club/android</string>
+    <string name="recommendation">Bitcoin Map: http://BITCOINMAP.CASH, Android App: http://therealbitcoin.club/android</string>
     <string name="thank_you">Tell your friends!</string>
-    <string name="toolbar">TRBC.io</string>
+    <string name="toolbar">BITCOINMAP.CASH</string>
     <string name="preference_file_key">favoriiiiits</string>
     <string name="reviews">Reviews:</string>
     <string name="reviewsNotAvailable">Write history!! Spend Bitcoins!!</string>
@@ -30,7 +30,7 @@
     <string name="toast_route_button">You will be forwarded to Google Maps now.</string>
     <string name="favo_list_empty">You do not have any favorites yet.</string>
     <string name="toast_favorites_not_affected_by_filter">Favorites are not being filtered.</string>
-    <string name="toast_go_to_website">Website: The Real Bitcoin Club (trbc.io)</string>
+    <string name="toast_go_to_website">Website: Bitcoin Cash Map (BITCOINMAP.CASH)</string>
     <string name="discount0">10% discount on first Bitcoin payment</string>
     <string name="discount1">20% discount on first Bitcoin payment</string>
     <string name="discount2">Accepting Bitcoin payments soon</string>
@@ -58,7 +58,7 @@
         <item>Salad</item>
         <item>Smoothie</item>
         <item>Fruit</item>
-        <item>IceCream</item>
+        <item>Gelato</item>
         <!--19--><item>Raw</item>
         <item>Handbag</item>
         <item>Cosmetic</item>
@@ -148,6 +148,69 @@
 	<item>Battery</item>
 	<item>Wheels</item>
 	<item>Men</item>
-        <item>Pasta</item>
+  <item>Pasta</item>
+	<!--109--><item>Dessert</item>
+  <item>Starter</item>
+  <item>BBQ</item>
+  <item>Noodle</item>
+  <item>Korean</item>
+	<!--114--><item>Market</item>
+  <item>Bread</item>
+  <item>Bakery</item>
+  <item>Cafe</item>
+  <item>Games</item>
+	<!--119--><item>Snacks</item>
+  <item>Elegant</item>
+  <item>Piano</item>
+  <item>Brunch</item>
+  <item>Nachos</item>
+	<!--124--><item>Lunch</item>
+  <item>Breakfast</item>
+  <item>HappyHour</item>
+  <item>LateNight</item>
+  <item>Mexican</item>
+	<!--129--><item>Burrito</item>
+  <item>Tortilla</item>
+  <item>Indonesian</item>
+  <item>Sports</item>
+  <item>Pastry</item>
+	<!--134--><item>Bistro</item>
+  <item>Soup</item>
+  <item>Tea</item>
+  <item>Onion</item>
+  <item>Steak</item>
+	<!--139--><item>Shakes</item>
+  <item>Empanadas</item>
+  <item>Dinner</item>
+  <item>Sweet</item>
+  <item>Fried</item>
+	<!--144--><item>Omelette</item>
+  <item>Gin</item>
+  <item>Donut</item>
+  <item>Delivery</item>
+  <item>Cups</item>
+	<!--149--><item>Filter</item>
+  <item>Juice</item>
+  <item>Vietnamese</item>
+  <item>Pie</item>
+  <item>Unagi</item>
+	<!--154--><item>Greek</item>
+  <item>Japanese</item>
+  <item>Tacos</item>
+  <item>Kombucha</item>
+  <item>Indian</item>
+	<!--159--><item>Nan</item>
+  <item>Club</item>
+  <item>Liquor</item>
+  <item>Pool</item>
+  <item>Hotel</item>
+	<!--164--><item>Pork</item>
+  <item>Ribs</item>
+  <item>Kava</item>
+  <item>Chai</item>
+  <item>Izzy</item>
+	<!--164--><item>Matcha</item>
+  <item>CBD</item>
+  <item>Latte</item>
     </string-array>
 </resources>
