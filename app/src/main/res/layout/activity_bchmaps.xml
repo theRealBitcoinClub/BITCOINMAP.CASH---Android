@@ -15,10 +15,14 @@
         android:background="@drawable/actionbar_background"
         app:titleMarginStart="0dp"
         app:contentInsetStartWithNavigation="0dp"
-        android:contentInsetStart="0dp"
-        android:contentInsetLeft="0dp"
+        android:contentInsetStart="16dp"
+        android:contentInsetLeft="16dp"
         app:contentInsetLeft="16dp"
         app:contentInsetStart="16dp"
+        android:contentInsetEnd="16dp"
+        android:contentInsetRight="16dp"
+        app:contentInsetRight="16dp"
+        app:contentInsetEnd="16dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 

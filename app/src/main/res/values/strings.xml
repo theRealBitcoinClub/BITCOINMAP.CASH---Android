@@ -38,7 +38,7 @@
     <string name="discount4">DASH, BCH, BTC accepted here</string>
     <string name="discount5">Information from discoverdash.com</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
-    <string name="browser">bitcoinmap.world</string>
+    <string name="browser">BITCOINMAP.CASH</string>
     <string-array name="location_attributes">
         <item>Bitcoin</item>
         <item>Events</item>
