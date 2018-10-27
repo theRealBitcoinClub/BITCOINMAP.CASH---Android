@@ -6,8 +6,10 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,6 +35,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
@@ -49,7 +54,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places8.json";
-    public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 15f;
+    public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
     public static final String URI_CLICK_LOGO = "http://bitcoinmap.cash";
     public static final String CAM = "cam";
     public static final String SHARED_PREF_CAM_POSITION = "hjadsbfzurzu23";
@@ -223,6 +228,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         mMap.setBuildingsEnabled(false);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setCompassEnabled(false);
         uiSettings.setRotateGesturesEnabled(false);
         uiSettings.setTiltGesturesEnabled(false);
@@ -263,14 +269,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             //markerMap.put(v.placesId, marker);
         }
         if (moveCamera)
-            moveCameraToQuinoa();
-           // moveCameraToLastLocation();
+           moveCameraToLastLocation();
+        //moveCameraToQuinoa();
     }
 
     private void moveCameraToQuinoa() {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.4027984,2.1600427),MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
     }
-/*
+
     private void moveCameraToLastLocation() {
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
@@ -282,7 +288,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                 LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
                                 Log.d(TAG,latLng.latitude + "" + latLng.longitude);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
-                                Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_LONG).show();
 
                                 //TODO FIX LOCATION BUG
 
@@ -295,7 +301,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         } catch (SecurityException e){
             Log.d(TAG,"SECURITYEXCEPTION");
         }
-    }*/
+    }
 
 
 
@@ -506,7 +512,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         //if (!isLocationAvailable) { //TODO FIX LOCATION NOT AVAILABLE MESSAGE if necessary at all because maybe the location button is simply not available
            // Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
         //} else {
-            Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_LONG).show();
         //}
         return false;
     }
