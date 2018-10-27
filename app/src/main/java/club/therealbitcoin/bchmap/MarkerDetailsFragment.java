@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
@@ -70,7 +72,11 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
 		Log.d(TAG,imgUri);
 
-		Glide.with(this).load(imgUri).into(img).getView().setBackgroundResource(R.drawable.placeholder);
+		RequestOptions options = new RequestOptions();
+		options.centerCrop();
+		options.diskCacheStrategy(DiskCacheStrategy.ALL);
+
+		Glide.with(this).load(imgUri).apply(options).into(img).getView().setBackgroundResource(R.drawable.placeholder);
 
 		return view;
     }
