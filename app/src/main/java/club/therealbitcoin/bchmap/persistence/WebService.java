@@ -65,7 +65,7 @@ public class WebService extends AsyncTask<String, Void, String> {
             HttpURLConnection httpConnection = (HttpURLConnection) mUrl.openConnection();
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Content-length", "0");
-            httpConnection.setUseCaches(false);
+            httpConnection.setUseCaches(true);
             httpConnection.setAllowUserInteraction(false);
             httpConnection.setConnectTimeout(100000);
             httpConnection.setReadTimeout(100000);
