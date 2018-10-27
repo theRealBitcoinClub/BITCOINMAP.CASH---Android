@@ -14,9 +14,10 @@
             <item name="colorAccent">@color/colorAccent</item>
         </style>
 
+
     <style name="ImageStyle">
-        <item name="android:layout_width">280dp</item>
-        <item name="android:layout_height">210dp</item>
+        <item name="android:layout_width">400dp</item>
+        <item name="android:layout_height">300dp</item>
     </style>
 
     <style name="TagStyle">
@@ -26,6 +27,6 @@
         <item name="android:maxLines">1</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginLeft">0dp</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 </resources>

@@ -59,6 +59,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public static final String CAM = "cam";
     public static final String SHARED_PREF_CAM_POSITION = "hjadsbfzurzu23";
     public static final String KEY_CAM_POS = "fdgnjerngui3w";
+    private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
     private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
@@ -331,7 +332,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void switchTabZoomCamera() {
         viewPager.setCurrentItem(0);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED + 2f));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL_DETAIL_CLICK));
     }
 
     private void callWebservice(boolean moveCam) {

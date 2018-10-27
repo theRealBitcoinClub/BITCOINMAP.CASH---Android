@@ -73,7 +73,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		Log.d(TAG,imgUri);
 
 		RequestOptions options = new RequestOptions();
-		//options.centerCrop();
+		//options.centerCrop(); This freezes, makes the webp not load
 		options.diskCacheStrategy(DiskCacheStrategy.ALL);
 
 		Glide.with(this).load(imgUri).apply(options).into(img).getView().setBackgroundResource(R.drawable.placeholder);
