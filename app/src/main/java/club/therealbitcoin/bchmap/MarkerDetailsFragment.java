@@ -211,6 +211,8 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 					isFavo = true;
 				}
 
+				//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
+
 				switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
 					@Override
 					public void onAnimationEnd(Animator animation) {

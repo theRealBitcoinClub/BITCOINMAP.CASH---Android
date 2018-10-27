@@ -163,7 +163,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             VenueFacade.getInstance().removeFavoriteVenue(item, getContext());
         }
 
-        updateFavoriteSymbol(button,item, true);
+        FavoriteButtonAnimator.updateFavoriteSymbol(getContext(),button,item, true);
         callback.initFavosList();
     }
 
@@ -218,7 +218,7 @@ class PopupAdapter extends ArrayAdapter<String> {
             Log.d("TRBC", "showOnlyFavos: " + showOnlyFavos + position);
         } else {
             venue.listIndex = position;
-            updateFavoriteSymbol(holder.button, venue, false);
+            FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), holder.button, venue, false);
         }
 
             holder.button.setOnClickListener(VenuesListFragment.this);
@@ -257,45 +257,6 @@ class PopupAdapter extends ArrayAdapter<String> {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void updateFavoriteSymbol(View button, Venue venue, boolean animate) {
-        if (venue.isFavorite(getContext())) {
-            if (animate) {
-                Animation scaleOut = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_hero_to_zero);
-                scaleOut.reset();
-
-                scaleOut.setAnimationListener(new AnimationEndAbstract() {
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        button.setBackgroundResource(R.drawable.ic_action_favorite);
-                        Animation scaleIn = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_zero_to_hero);
-                        scaleIn.reset();
-                        button.startAnimation(scaleIn);
-                    }
-                });
-                button.startAnimation(scaleOut);
-            } else {
-                button.setBackgroundResource(R.drawable.ic_action_favorite);
-            }
-        } else {
-            if (animate) {
-                Animation scaleOut = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_hero_to_zero);
-                scaleOut.reset();
-                scaleOut.setAnimationListener(new AnimationEndAbstract() {
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        button.setBackgroundResource(R.drawable.ic_action_favorite_border);
-                        Animation scaleIn = AnimationUtils.loadAnimation(getContext(), R.anim.animation_size_zero_to_hero);
-                        scaleIn.reset();
-                        button.startAnimation(scaleIn);
-                    }
-                });
-                button.startAnimation(scaleOut);
-            } else {
-                button.setBackgroundResource(R.drawable.ic_action_favorite_border);
-            }
-        }
     }
 
 }

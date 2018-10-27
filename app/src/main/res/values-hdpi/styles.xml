@@ -19,7 +19,6 @@
         <item name="android:layout_height">210dp</item>
     </style>
 
-
     <style name="TagStyle">
         <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:textColor">@color/colorTextDarkTheme</item>
