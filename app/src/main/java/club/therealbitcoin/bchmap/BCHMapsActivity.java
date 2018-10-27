@@ -157,9 +157,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void setupTabIcons() {
         Log.d(TAG,"setupTabIcons");
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]).setCustomView(R.layout.tabs_icon);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]).setCustomView(R.layout.tabs_icon);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]).setCustomView(R.layout.tabs_icon);
     }
 
     @Override
