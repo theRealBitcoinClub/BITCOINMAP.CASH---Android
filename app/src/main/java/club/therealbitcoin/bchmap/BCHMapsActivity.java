@@ -290,10 +290,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
                                 Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_LONG).show();
 
-                                //TODO FIX LOCATION BUG
-
-                                isLocationAvailable = true;
+                                //TODO FIX LOCATION BUG, if location is not available on startup but afterwards it keeps saying enable location
+                                //isLocationAvailable = true;
                             } else {
+                                Toast.makeText(BCHMapsActivity.this,R.string.toast_enable_location, Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "getLastLocation:exception", task.getException());
                             }
                         }
