@@ -146,7 +146,7 @@ public class VenueFacade {
         return titlesFavo;
     }
 
-    private void addVenue(Venue v, Context ctx) {
+    private void addVenue(Venue v, Context ctx, int favoCounter) {
         hasChangedList = true;
         Log.d("TRBC","addVenue" + v);
        if (venuesMap.put(v.placesId, v) == null) {
@@ -154,7 +154,8 @@ public class VenueFacade {
        }
 
         if (v.isFavorite(ctx)) {
-            Log.d(TAG,"isFavorite true");
+            Log.d(TAG,"isFavorite true favorcounter:" + favoCounter);
+            v.favoListIndex = favoCounter;
             favorites.add(v);
         } else {
             Log.d(TAG,"isFavorite false");
@@ -244,8 +245,12 @@ public class VenueFacade {
         Log.d(TAG,"initVenues");
         VenueFacade.getInstance().clearCache(ctx);
 
+        int favoCounter = -1;
         for (Venue v: venues) {
-            VenueFacade.getInstance().addVenue(v, ctx);
+            if (v.isFavorite(ctx))
+                favoCounter++;
+
+            VenueFacade.getInstance().addVenue(v, ctx, favoCounter);
         }
     }
 }
