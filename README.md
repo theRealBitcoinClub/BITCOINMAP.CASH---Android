@@ -20,7 +20,7 @@ Test coverage is low as I was working alone on that app! This should be improved
 
 All Pull requests are welcome! I will be travelling for a long time, I hope someone takes over this project!
 
-
+````
 <item>Bitcoin</item>
         <item>Events</item>
         <item>Trading</item>
@@ -193,3 +193,4 @@ All Pull requests are welcome! I will be travelling for a long time, I hope some
 	<!--164--><item>Matcha</item>
   <item>CBD</item>
   <item>Latte</item>
+ ```
