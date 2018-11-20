@@ -12,9 +12,16 @@ https://realbitcoinclub.firebaseapp.com/places8.json
 If you want to add more places, just make a pull request on the other repository:
 https://github.com/theRealBitcoinClub/realbitcoinclub-website/blob/master/places8.json
 
+And you would have to add a .gif and .webp in the dimensions 640x480 here with (p:) being the filename:
+https://github.com/theRealBitcoinClub/realbitcoinclub-website/tree/master/img/app
+
 The JSON file can be read like this:
 ```
 [{"p(ID)":"trbc", "x":"41.406595", "y":"2.16655","n(NAME)":"TRBC - The Real Bitcoin Club", "t(TYPE/ICON)":"99","c(REVIEW COUNT)":"3","s(REVIEW STARS)":"5.0", "d(DISCOUNT TYPE)":"3", "a(TAGS)":"0,1,2,34", "l(LOCATION)":"Barcelona, Spain, Europe"}
+
+So for this place there exist images here:
+https://github.com/theRealBitcoinClub/realbitcoinclub-website/tree/master/img/app/trbc.webp
+https://github.com/theRealBitcoinClub/realbitcoinclub-website/tree/master/img/app/trbc.gif
 ```
 
 See below to find a reference for the tags/attributes (a:) and discount texts (d:) which are stored as numbers in the json file.
