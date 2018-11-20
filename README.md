@@ -12,7 +12,12 @@ https://realbitcoinclub.firebaseapp.com/places8.json
 If you want to add more places, just make a pull request on the other repository:
 https://github.com/theRealBitcoinClub/realbitcoinclub-website/blob/master/places8.json
 
-See below to find a reference for the tags which are stored as numbers in the json file.
+The JSON file can be read like this:
+```
+[{"p(ID)":"trbc", "x":"41.406595", "y":"2.16655","n(NAME)":"TRBC - The Real Bitcoin Club", "t(TYPE/ICON)":"99","c(REVIEW COUNT)":"3","s(REVIEW STARS)":"5.0", "d(DISCOUNT TYPE)":"3", "a(TAGS)":"0,1,2,34", "l(LOCATION)":"Barcelona, Spain, Europe"}
+```
+
+See below to find a reference for the tags/attributes (a:) and discount texts (d:) which are stored as numbers in the json file.
 
 ACRA Crash reports are hosted on tracepot.
 
@@ -20,7 +25,20 @@ Test coverage is low as I was working alone on that app! This should be improved
 
 All Pull requests are welcome! I will be travelling for a long time, I hope someone takes over this project!
 
+```
+DISCOUNT TEXT
+ <string name="discount0">10% discount on first Bitcoin payment</string>
+    <string name="discount1">20% discount on first Bitcoin payment</string>
+    <string name="discount2">Accepting Bitcoin payments soon</string>
+    <string name="discount3">Trade Bitcoin here with 0.0% fee</string>
+    <string name="discount4">DASH, BCH, BTC accepted here</string>
+    <string name="discount5">Information from discoverdash.com</string>
+```
+
+
 ````
+TAGS/ATTRIBUTES
+
 <item>Bitcoin</item>
         <item>Events</item>
         <item>Trading</item>
