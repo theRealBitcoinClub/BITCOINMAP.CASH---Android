@@ -53,9 +53,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
-    public static final String TRBC_VENUES_QUERY = "http://therealbitcoin.club/places8.json";
+    public static final String TRBC_VENUES_QUERY = "https://realbitcoinclub.firebaseapp.com/places8.json";
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
-    public static final String URI_CLICK_LOGO = "http://bitcoinmap.cash";
+    public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
     public static final String CAM = "cam";
     public static final String SHARED_PREF_CAM_POSITION = "hjadsbfzurzu23";
     public static final String KEY_CAM_POS = "fdgnjerngui3w";
@@ -261,6 +261,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     void syncVenueMarkersDataWithMap(boolean moveCamera) {
+        if (mMap == null)
+            return;
+
         mMap.clear();
         //initMarkersList();
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
