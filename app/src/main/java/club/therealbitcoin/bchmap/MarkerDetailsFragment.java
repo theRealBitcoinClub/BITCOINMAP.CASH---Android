@@ -295,7 +295,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	private void openMapsRoute(Venue v) {
 
 		Intent i = new Intent(Intent.ACTION_VIEW,
-				Uri.parse(Venue.BASE_URI + v.placesId));
+				Uri.parse(Venue.REDIRECT_URI + v.placesId));
 		startActivity(i);
 
 	}
