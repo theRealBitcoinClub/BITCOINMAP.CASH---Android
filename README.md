@@ -17,15 +17,20 @@ https://github.com/theRealBitcoinClub/realbitcoinclub-website/tree/master/img/ap
 
 You can use the https://ezgif.com/webp-maker and the settings are explained in the following pictures:
 We use fading for the WEBP images and we use the exact same settings which create a fading effect while keeping the file size as small as possible.
-(https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/images/webpmakersettings.JPG)
+![Image of WEBP Maker settings]
+(https://bitcoinmap.cash/images/webpmakersettings.JPG)
 Do not use fading for the GIFs
-(https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/images/gifmakersettings.JPG)
+![Image of GIF Maker settings]
+(https://bitcoinmap.cash/images/gifmakersettings.JPG)
 Always compress the GIF with a lossy algorithm of 30%
+![Image of GIF Maker settings]
 (https://bitcoinmap.cash/images/gifmakersettings2.JPG)
-(https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/images/gifmakersettings3.JPG)
+![Image of GIF Maker settings]
+(https://bitcoinmap.cash/images/gifmakersettings3.JPG)
 
 Each WEBP/GIF has 3 images of the shop and one promo image as the last frame:
-(https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/bitcoincashmaplogo640x480.jpg)
+![Promo Image 640x480]
+(https://bitcoinmap.cash/bitcoincashmaplogo640x480.jpg)
 
 The JSON file can be read like this:
 ```
