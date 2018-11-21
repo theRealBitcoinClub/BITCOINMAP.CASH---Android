@@ -21,7 +21,7 @@ We use fading for the WEBP images and we use the exact same settings which creat
 Do not use fading for the GIFs
 (https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/images/gifmakersettings.JPG)
 Always compress the GIF with a lossy algorithm of 30%
-(https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/images/gifmakersettings2.JPG)
+(https://bitcoinmap.cash/images/gifmakersettings2.JPG)
 (https://github.com/theRealBitcoinClub/BITCOINMAP.CASH---Browser-PWA/blob/master/public/images/gifmakersettings3.JPG)
 
 Each WEBP/GIF has 3 images of the shop and one promo image as the last frame:
