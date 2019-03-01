@@ -3,9 +3,11 @@ package club.therealbitcoin.bchmap;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,29 +19,35 @@ import club.therealbitcoin.bchmap.persistence.VenueFacade;
 @RunWith(RobolectricTestRunner.class)
 public class VenueFacadeTest {
 
+    Venue v = null;
+
+    @Before
+    public void setUp() {
+        v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5), 0, null, null);
+    }
+
     @Test
-    public void testAddFavorite() throws IOException {
-        Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5), 0);
-        VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v);
+    public void testAddFavorite() {
+        VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
         Assert.assertEquals(1, favoriteVenues.size());
     }
 
 
     @Test
-    public void testAddMoreFavorites() throws IOException {
-        Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5), 0);
-        VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v);
+    public void testAddMoreFavorites() {
+        VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
         Assert.assertEquals(1,favoriteVenues.size());
     }
 
     @Test
-    public void testGetVenueTitles() throws IOException {
-        Venue v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5), 0);
+    public void testGetVenueTitles() {
         ArrayList<String> venueTitles = VenueFacade.getInstance().getVenueTitles();
         Assert.assertEquals(0,venueTitles.size());
-        VenueFacade.getInstance().addVenue(v);
+        ArrayList<Venue> venues = new ArrayList<Venue>();
+        venues.add(v);
+        VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application);
         venueTitles = VenueFacade.getInstance().getVenueTitles();
         Assert.assertEquals(1,venueTitles.size());
     }

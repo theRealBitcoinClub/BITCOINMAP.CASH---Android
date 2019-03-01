@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -26,10 +27,15 @@ public class VenueTest {
     int rev = 234;
     double stras = 4.8;
 
+    @Before
+    public void setUp () {
+        VenueFacade.getInstance().clearCache(RuntimeEnvironment.application);
+    }
+
     @Test
-    public void testIsFavorite() throws IOException {
-        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
-        VenueFacade.getInstance().addFavoriteVenue(v);
+    public void testIsFavorite() {
+        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
+        VenueFacade.getInstance().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
         Assert.assertEquals(1, favoriteVenues.size());
         v.setFavorite(true, RuntimeEnvironment.application);
@@ -39,8 +45,8 @@ public class VenueTest {
 
     @Test
     public void testEquals() {
-        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
-        Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
+        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
+        Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
         Assert.assertTrue(v.equals(v2));
         v.placesId = "dfdsfds";
         Assert.assertFalse(v.equals(v2));
@@ -48,7 +54,7 @@ public class VenueTest {
 
     @Test
     public void createVenue() {
-        Venue venue = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0);
+        Venue venue = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
         Assert.assertEquals(testName, venue.name);
         Assert.assertNotSame(testName + "fdsfds", venue.name);
         Assert.assertEquals(testIconRes, venue.iconRes);

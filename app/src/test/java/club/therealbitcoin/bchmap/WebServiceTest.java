@@ -42,11 +42,12 @@ public class WebServiceTest {
         String testLat = "41.4067273";
         String testReviews = "180";
         String testStars = "4.8";
-        String venueJson = "[{\"p\":\"ChIJEUo5JceipBIRlw3IsieB6Sg\", \"x\":\"41.406599\", \"y\":\"2.1621726\",\"n\":\"" + testName + "\", \"t\":\"0\",\"c\":\"1\",\"s\":\"5.0\"}\n" +
-                ",{\"p\":\"" + testId + "\", \"x\":\"41.4038493\",\"y\":\"2.1583495\",\"n\":\"La Besneta\",\"t\":\"1\",\"c\":\"84\",\"s\":\"4.7\"}\n" +
-                ",{\"p\":\"ChIJXSD0a9uipBIRwD4vX_u1enY\", \"x\":\"" + testLat + "\",\"y\":\"2.1738323\",\"n\":\"Molsa Sagrada Familia\",\"t\":\"2\",\"c\":\"11\",\"s\":\"4.2\"}\n" +
-                ",{\"p\":\"ChIJY_ZMtr6ipBIRVC0WRH76Txc\", \"x\":\"41.4027627\",\"y\":\"2.1578416\",\"n\":\"Cara B\",\"t\":\"3\",\"c\":\"" + testReviews + "\",\"s\":\"4.1\"}\n" +
-                ",{\"p\":\"ChIJh2A7VL2ipBIRIxR3Ylnot50\", \"x\":\"41.4006381\",\"y\":\"2.1537003\",\"n\":\"Sincronia Yoga\",\"t\":\"4\",\"c\":\"18\",\"s\":\"" + testStars + "\"}]";
+
+        String venueJson = "[{\"p\":\"trbc\", \"x\":\"41.406595\", \"y\":\"2.16655\",\"n\":\"" + testName + "\", \"t\":\"99\",\"c\":\"3\",\"s\":\"5.0\", \"d\":\"3\", \"a\":\"0,1,2,34\", \"l\":\"Barcelona, Spain, Europe\"}" +
+                ",{\"p\":\"" + testId + "\", \"x\":\"41.4059946\",\"y\":\"2.1567663\",\"n\":\"La Lima - comedor vegano asociacion\",\"t\":\"0\",\"c\":\"9\",\"s\":\"5.0\", \"d\":\"0\", \"a\":\"3,5,6,13\", \"l\":\"Barcelona, Spain, Europe\"}" +
+                ",{\"p\":\"pasticceria\", \"x\":\"" + testLat + "\",\"y\":\"2.1559692\",\"n\":\"La Pasticceria di Gracia\",\"t\":\"1\",\"c\":\"32\",\"s\":\"4.6\", \"d\":\"0\", \"a\":\"9,10,12,13\", \"l\":\"Barcelona, Spain, Europe\"}" +
+                ",{\"p\":\"lavermu\", \"x\":\"41.4000891\",\"y\":\"2.1568007\",\"n\":\"La Vermu - Bar and Tapas\",\"t\":\"2\",\"c\":\"" + testReviews + "\",\"s\":\"4.2\", \"d\":\"0\", \"a\":\"31,32,33,36\", \"l\":\"Barcelona, Spain, Europe\"}" +
+                ",{\"p\":\"ChIJayYeJpaipBIR8ZbTZO4x7dM\", \"x\":\"41.4006901\",\"y\":\"2.1579717\",\"n\":\"Gelatology - We make Gelato great again!\",\"t\":\"1\",\"c\":\"49\",\"s\":\"" + testStars + "\", \"d\":\"1\", \"a\":\"18,29,32,33\", \"l\":\"Barcelona, Spain, Europe\"}]";
         List<Venue> venues = WebService.parseVenues(venueJson);
 
         Assert.assertEquals(5, venues.size());
@@ -62,6 +63,6 @@ public class WebServiceTest {
     public void testReadJsonFromInputStream() throws IOException, JSONException {
         String s = WebService.readJsonFromInputStream(openFile("places.json"));
         List<Venue> venues = WebService.parseVenues(s);
-        Assert.assertEquals(20, venues.size());
+        Assert.assertEquals(233, venues.size());
     }
 }
