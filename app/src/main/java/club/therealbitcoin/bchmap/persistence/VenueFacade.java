@@ -225,6 +225,9 @@ public class VenueFacade {
     }
 
     public int getTheme(Context ctx) {
+        if (ctx == null)
+            return 0;
+
         if (theme == -1) {
             SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
             theme = sharedPreferences.getInt(THEME, 0);

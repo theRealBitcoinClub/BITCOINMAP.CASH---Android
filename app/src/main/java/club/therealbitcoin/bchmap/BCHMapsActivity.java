@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
@@ -55,7 +56,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final String TRBC_VENUES_QUERY_PREFIX = "https://realbitcoinclub-";
     public static final String TRBC_VENUES_QUERY_SUFFIX = ".firebaseapp.com/places.json";
-    public static final String TRBC_VENUES_QUERY = "https://realbitcoinclub.firebaseapp.com/places8.json";
+    public static final String TRBC_VENUES_QUERY = "https://realbitcoinclub.firebaseapp.com/places9.json";
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
     public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
     public static final String CAM = "cam";
@@ -350,7 +351,27 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void callWebservice(boolean moveCam) {
-        new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
+        try {
+            String s = WebService.readJsonFromInputStream(getResources().openRawResource(R.raw.places));
+            List<Venue> venues = WebService.parseVenues(s);
+            VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
+
+            //Log.d(TAG, "responseData: " + s);
+
+            restoreFilters();
+
+            if(mMap != null)
+                syncVenueMarkersDataWithMap(moveCam);
+
+            initAllListViews();
+        } catch (IOException e) {
+            Log.e(TAG, "IOException: " + e);
+            e.printStackTrace();
+        } catch (JSONException e) {
+            Log.e(TAG, "JSONException: " + e);
+            e.printStackTrace();
+        }
+        /*new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String responseData) {
                 try {
@@ -377,7 +398,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 Toast.makeText(BCHMapsActivity.this,R.string.error_con_webservice,Toast.LENGTH_LONG).show();
                 Log.e(TAG,"errrrror");
             }
-        }).execute();
+        }).execute();*/
     }
 
     private void restoreFilters() {
