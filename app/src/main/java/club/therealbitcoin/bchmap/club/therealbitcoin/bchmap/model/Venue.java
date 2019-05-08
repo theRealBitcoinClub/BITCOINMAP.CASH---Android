@@ -100,10 +100,10 @@ public class Venue implements Parcelable {
         int rev = venue.getInt(VenueJson.reviews.toString());
         LatLng latLng = WebService.parseLatLng(venue);
         int type = venue.getInt(VenueJson.type.toString());
-        String placesId = venue.getString(VenueJson.placesId.toString());
+        String id = venue.getString(VenueJson.id.toString());
         int dscnt = venue.getInt(VenueJson.discount.toString());
         String[] atribs = parseAttributes(venue);
-        return new Venue(name, VenueType.getIconResource(type), type, placesId, rev, stars, latLng, dscnt, atribs, loc);
+        return new Venue(name, VenueType.getIconResource(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
     }
 
     private static String[] parseAttributes(JSONObject vJson) {
@@ -130,7 +130,7 @@ public class Venue implements Parcelable {
     //{"p":"ChIJEUo5JceipBIRlw3IsieB6Sg","x":"41.406599", "y":"2.1621726","n":"The Real Bitcoin Club", "t":"0","c":"1","s":"5.0"}
     public String toJson() {
         StringBuilder sb = new StringBuilder("{\"");
-        appendData(sb, VenueJson.placesId.toString(), placesId);
+        appendData(sb, VenueJson.id.toString(), placesId);
         appendData(sb, VenueJson.lat.toString(), coordinates.latitude);
         appendData(sb, VenueJson.lon.toString(), coordinates.longitude);
         appendData(sb, VenueJson.name.toString(), name);

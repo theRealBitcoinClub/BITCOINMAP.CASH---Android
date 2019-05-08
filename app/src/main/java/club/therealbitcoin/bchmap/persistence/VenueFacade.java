@@ -177,7 +177,7 @@ public class VenueFacade {
         favorites.add(v);
         v.setFavorite(true,ctx);
         //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        //sharedPreferences.edit().putBoolean(v.placesId, true).commit();
+        //sharedPreferences.edit().putBoolean(v.id, true).commit();
 
         hasChangedFavoList = true;
     }
@@ -205,7 +205,7 @@ public class VenueFacade {
         Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
         favorites.remove(item.favoListIndex);
         //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        //sharedPreferences.edit().remove(item.placesId).commit();
+        //sharedPreferences.edit().remove(item.id).commit();
         item.setFavorite(false,ctx);
         hasChangedFavoList = true;
     }

@@ -45,7 +45,6 @@ import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
-import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
@@ -102,7 +101,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        callWebservice(true);
+        loadAssets(true);
 
         Log.d(TAG,"FINISH ON CREATE");
     }
@@ -282,7 +281,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             Log.d(TAG, "venue: " + v);
             Marker marker = addMarker(v);
             //markersListMap.get(v.type).add(marker);
-            //markerMap.put(v.placesId, marker);
+            //markerMap.put(v.id, marker);
         }
         if (moveCamera)
            moveCameraToLastLocation();
@@ -350,7 +349,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL_DETAIL_CLICK));
     }
 
-    private void callWebservice(boolean moveCam) {
+    private void loadAssets(boolean moveCam) {
         try {
             String s = WebService.readJsonFromInputStream(getResources().openRawResource(R.raw.places));
             List<Venue> venues = WebService.parseVenues(s);
