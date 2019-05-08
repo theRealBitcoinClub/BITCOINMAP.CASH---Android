@@ -53,6 +53,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
+    public static final String TRBC_VENUES_QUERY_PREFIX = "https://realbitcoinclub-";
+    public static final String TRBC_VENUES_QUERY_SUFFIX = ".firebaseapp.com/places.json";
     public static final String TRBC_VENUES_QUERY = "https://realbitcoinclub.firebaseapp.com/places8.json";
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
     public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
@@ -164,8 +166,17 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            //moveCameraToLastLocation();
+            Toast.makeText(getBaseContext(), getString(R.string.toast_restart_app_for_permission_take_effect), Toast.LENGTH_LONG).show();
+            finish();
+            Intent intent = new Intent(this, BCHMapsActivity.class);
+            startActivity(intent);
+        }
+        //initMap(mMap);
         Log.d(TAG,"onRequestPermissionsResult");
-        if (requestCode == MY_LOCATION_REQUEST_CODE) {
+        /*if (requestCode == MY_LOCATION_REQUEST_CODE) {
             if (permissions.length == 1 &&
                     permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -179,7 +190,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             } else {
                 Log.d(TAG, "permission denied");
             }
-        }
+        }*/
     }
 
 

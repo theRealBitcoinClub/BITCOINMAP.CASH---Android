@@ -14,19 +14,12 @@
             <item name="colorAccent">@color/colorAccent</item>
         </style>
 
-
     <style name="ImageStyle">
         <item name="android:layout_width">400dp</item>
         <item name="android:layout_height">300dp</item>
     </style>
 
-    <style name="TagStyle">
-        <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:textColor">@color/colorTextDarkTheme</item>
-        <item name="android:gravity">center</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:layout_marginLeft">0dp</item>
+    <style name="TagStyle" parent="TagStyleParent">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 </resources>

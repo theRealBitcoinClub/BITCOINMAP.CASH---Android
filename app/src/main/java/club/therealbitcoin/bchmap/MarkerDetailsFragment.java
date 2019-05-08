@@ -69,7 +69,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
 		ImageView img = view.findViewById(R.id.img);
 		img.setOnClickListener(this);
-		String imgUri = venue.IMG_FOLDER + venue.placesId + ".webp";
+		String imgUri = venue.IMG_FOLDER + venue.placesId + ".gif";
 		Log.d(TAG,imgUri);
 
 		RequestOptions options = new RequestOptions();
@@ -105,12 +105,12 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
     }
 
     private void initDiscountText(View view, Venue venue) {
-        int discountText = venue.getDiscountText();
+        /*int discountText = venue.getDiscountText();
         if (discountText != -1)
             ((TextView)view.findViewById(R.id.dialog_discount)).setText(discountText);
-        else {
-            ((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
-        }
+        else {*/
+            //((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
+        //}
     }
 
     private void initTagValues(View view, Venue venue) {
@@ -278,7 +278,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	private void switchColor(View btn, boolean onOff, Animator.AnimatorListener afterAnim) {
 		if (accent == null) {
 			accentColor = getResources().getColor(R.color.colorAccent);
-			primaryColor = getResources().getColor(R.color.colorPrimary);
+			primaryColor = getResources().getColor(R.color.colorPrimaryDark);
 			accent = "#" + Integer.toHexString(accentColor).substring(2);
 			primary = "#" + Integer.toHexString(primaryColor).substring(2);
 

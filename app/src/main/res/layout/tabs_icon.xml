@@ -5,7 +5,7 @@
 
     <ImageView
         android:id="@android:id/icon"
-        android:padding="8dp"
+        android:padding="10dp"
         android:layout_width="@dimen/details_fragment_icon_size"
         android:layout_height="@dimen/details_fragment_icon_size"
         android:layout_centerInParent="true"/>

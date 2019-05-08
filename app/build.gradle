@@ -8,7 +8,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 27
-        versionName "21.11.2018"
+        versionName "08.05.2019"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

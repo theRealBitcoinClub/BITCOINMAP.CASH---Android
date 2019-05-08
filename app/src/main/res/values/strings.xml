@@ -39,7 +39,184 @@
     <string name="discount5">Information from discoverdash.com</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
     <string name="browser">BITCOINMAP.CASH</string>
+    <string name="toast_restart_app_for_permission_take_effect">The app was restarted for the permission to take effect.</string>
     <string-array name="location_attributes">
+    <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Bitcoin</item>
+    <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Events</item>
+    <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Trading</item>
+    <item>Organic 🐵</item>
+    <item>Vegetarian 🥕</item>
+    <item>Vegan 🐮</item>
+    <item>Healthy 💓</item>
+    <item>Burger 🍔</item>
+    <item>Sandwich 🥪</item>
+    <item>Muffin 🧁</item> //The muffin icon is invisible
+    <item>Brownie 🥮</item>//Brownie is invisible too
+    <item>Cake 🎂</item>
+    <item>Cookie 🍪</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,12Tiramisu</item>
+    <item>Pizza 🍕</item>
+    <item>Salad 🥗</item>
+    <item>Smoothie 🥤</item>
+    <item>Fruit 🍓</item>
+    <item>IceCream 🍦</item>
+    <item>Raw 🥦</item>
+    <item>Handbag 👜</item>
+    <item>Cosmetic 💅</item>
+    <item>Tattoo ♣</item>
+    <item>Piercing 🌀</item>
+    <item>Souvenir 🎁</item>
+    <item>Hatha 🧘</item>
+    <item>Vinyasa 🧘</item>
+    <item>Massage 💆</item>
+    <item>Upcycled 🌲</item>
+    <item>Coffee ☕</item>
+    <item>NoGluten 🌽</item>
+    <item>Cocktails 🍹</item>
+    <item>Beer 🍺</item>
+    <item>Music 🎵</item>
+    <item>🎸🎧🎁-.,1xProjects</item>
+    <item>🎸🎧🎁-.,1xElectro</item>
+    <item>Rock 🎸</item>
+    <item>LiveDJ 🎧</item>
+    <item>Terrace ☀️</item>
+    <item>Seeds 🌱</item>
+    <item>Grinder 🍌</item>
+    <item>Papers 🚬</item>
+    <item>Advice 🌴</item>
+    <item>Calzone 🥟</item>
+    <item>🎸🎧🎁-.,1Suppli</item>
+    <item>MakeUp 🤡</item>
+    <item>Gifts 🎁</item>
+    <item>Tapas 🍠</item>
+    <item>Copas 🍹</item>
+    <item>Piadina 🌮</item>
+    <item>🎸🎧🎁-.,1sHerbs 🌿</item>
+    <item>Grains 🌾</item>
+    <item>Fashion 👗</item>
+    <item>Fair 🤗</item>
+    <item>Women 👩</item>
+    <item>Drinks 🍹</item>
+    <item>TV 📺</item>
+    <item>Retro 🦄</item>
+    <item>🎸🎧🎁-.,1xColor</item>
+    <item>🎸🎧🎁-.,1xBW</item>
+    <item>BTC ₿</item>
+    <item>BCH ₿</item>
+    <item>🎸🎧🎁-.,1xOnline 🖥️</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,2xBooking</item>
+    <item>HotDog 🌭</item>
+    <item>Fast ⏩</item>
+    <item>Kosher 🦄</item>
+    <item>Sushi 🍣</item>
+    <item>Moto 🛵</item>
+    <item>Coche 🚘</item>
+    <item>🎸🎧🎁-.,1xTablet</item>
+    <item>Chicken 🐔</item>
+    <item>Rabbit 🐰</item>
+    <item>Potato 🥔</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,1xDASH</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,1xETH</item>
+    <item>ATM 🏦</item>
+    <item>🎸🎧🎁-.,1yDisco</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger2</item>
+    <item>ToGo 📦</item>
+    <item>Meditation 🧘</item>
+    <item>Wine 🍷</item>
+    <item>Champagne 🥂</item>
+    <item>Alcohol 🍾</item>
+    <item>Booze 🥃</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger</item> //You cant remove because we use fixed indexes, but replace with another string that is unlikely to be typed in by the user
+    <item>🎸🎧🎁🎸🎧🎁-.,dfxgr</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,kmvdf</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,1xParty</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger5</item>
+    <item>BnB 🛏️</item>
+    <item>Haircut ✂️</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,,12xNails 💅</item>
+    <item>Beauty 💅</item>
+    <item>Miso 🍱</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger3</item>
+    <item>Rice 🍚</item>
+    <item>Seafood 🦀</item>
+    <item>Hostel 🛏️</item>
+    <item>Fries 🍟</item>
+    <item>Fish 🐟</item>
+    <item>🎸🎧🎁-.,12xChips</item>
+    <item>Italian 🇮🇹</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,123Karaoke 🎤</item>
+    <item> </item> //This is number 114 the no tag text
+    <item>🎸🎧🎁🎸🎧🎁-.,123Battery</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,123Wheels</item>
+    <item>Men ♂️</item>
+    <item>Pasta 🍝</item>
+    <item>Dessert 🍬</item>
+    <item>Starter 🥠</item>
+    <item>BBQ 🍗</item>
+    <item>Noodle 🍜</item>
+    <item>Korean 🥟</item>
+    <item>Market 🧺</item> //invisible item
+    <item>Bread 🥖</item>
+    <item>Bakery 🥨</item>
+    <item>Cafe ☕</item>
+    <item>Games 🎮</item>
+    <item>Snacks 🍿</item>
+    <item>Elegant 🕴️</item>
+    <item>Piano 🎹</item>
+    <item>Brunch 🍱</item>
+    <item>Nachos 🌽</item>
+    <item>Lunch 🥡</item>
+    <item>Breakfast 🥐</item>
+    <item>HappyHour 🥳</item> //hidden item
+    <item>LateNight 🌜</item>
+    <item>Mexican 🇲🇽</item>
+    <item>Burrito 🌯</item>
+    <item>Tortilla 🌮</item>
+    <item>Indonesian 🇮🇩</item>
+    <item>Sports 🏆</item>
+    <item>Pastry 🥧</item>
+    <item>Bistro 🍲</item>
+    <item>Soup 🥣</item>
+    <item>Tea 🍵</item>
+    <item>Onion</item>
+    <item>Steak 🥩</item>
+    <item>Shakes 🥤</item>
+    <item>Empanadas 🥟</item>
+    <item>Dinner 🍽️</item>
+    <item>Sweet 🍭</item>
+    <item>Fried 🍳</item>
+    <item>Omelette 🥚</item>
+    <item>Gin 🍸</item>
+    <item>Donut 🍩</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,12cDelivery 🚚</item>
+    <item>Cups ☕</item>
+    <item>Filter</item>
+    <item>Juice 🍊</item>
+    <item>Vietnamese 🇻🇳</item>
+    <item>Pie 🥮</item> //invisible item
+    <item>Unagi 🐡</item>
+    <item>Greek 🇬🇷</item>
+    <item>Japanese 🇯🇵</item>
+    <item>Tacos 🌮</item>
+    <item>Kombucha 🍵</item>
+    <item>Indian 🇮🇳</item>
+    <item>Nan 🥪</item>
+    <item>Club 🎶</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,1xLiquor</item>
+    <item>Pool 🎱</item>
+    <item>Hotel 🏨</item>
+    <item>Pork 🥓</item>
+    <item>Ribs 🍖</item>
+    <item>Kava 🍵</item>
+    <item>Chai 🍵</item>
+    <item>Izzy 🍵</item>
+    <item>Matcha 🍵</item>
+    <item>🎸🎧🎁🎸🎧🎁-.,12xCBD</item>
+    <item>Latte ☕</item>
+    </string-array>
+
+
+    <string-array name="location_attributes_old">
         <item>Bitcoin</item>
         <item>Events</item>
         <item>Trading</item>
@@ -48,7 +225,7 @@
         <item>Vegan</item>
         <item>Healthy</item>
         <item>Burger</item>
-        <item>Sandwich</item>
+        <item>Sandwich 🥪</item>
         <!--9--><item>Muffin</item>
         <item>Brownie</item>
         <item>Cake</item>
