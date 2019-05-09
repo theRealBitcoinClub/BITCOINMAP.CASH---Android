@@ -41,7 +41,7 @@ public class WebService extends AsyncTask<String, Void, String> {
         return new LatLng(lat,lon);
     }
 
-    public static String readJsonFromInputStream(InputStream is) throws IOException {
+    public static String convertStreamToString(InputStream is) throws IOException {
         Writer writer = new StringWriter();
         char[] buffer = new char[1024];
         try {

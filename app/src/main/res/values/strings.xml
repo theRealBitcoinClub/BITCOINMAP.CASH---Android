@@ -16,12 +16,13 @@
     <string name="type_sweet">Take-Away-Food</string>
     <string name="type_tattoo">Tattoo-Piercing</string>
     <string name="type_place">Place</string>
-    <string name="recommendation">Bitcoin Map: http://BITCOINMAP.CASH, Android App: http://therealbitcoin.club/android</string>
+    <string name="recommendation">Visit: http://BITCOINMAP.CASH or download the Android App: https://play.google.com/store/apps/details?id=club.therealbitcoin.bchmap</string>
     <string name="thank_you">Tell your friends!</string>
     <string name="toolbar">BITCOINMAP.CASH</string>
     <string name="preference_file_key">favoriiiiits</string>
     <string name="reviews">Reviews:</string>
     <string name="reviewsNotAvailable">Write history!! Spend Bitcoins!!</string>
+    <string name="toast_enable_location_enjoy_all_features">Give permission to access your location to enjoy all the features of this app!</string>
     <string name="toast_enable_location">Please enable your location in the device settings.</string>
     <string name="toast_moving_location">Moving to last known location.</string>
     <string name="switch_style">Switch Color Theme</string>
@@ -40,6 +41,9 @@
     <string name="error_empty_list">Update available! Open Play Store!</string>
     <string name="browser">BITCOINMAP.CASH</string>
     <string name="toast_restart_app_for_permission_take_effect">The app was restarted for the permission to take effect.</string>
+    <string name="toast_missing_google_maps_information">Google Maps link missing! Please provide the information to: trbc@bitcoinmap.cash</string>
+    <string name="toast_image_unavailable">The image is currently not available! Please report that issue to trbc@bitcoinmap.cash</string>
+    <string name="toast_no_internet">\"No internet connection available! You can still use the app without images or cached images. Hurray!\"</string>
     <string-array name="location_attributes">
     <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Bitcoin</item>
     <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Events</item>

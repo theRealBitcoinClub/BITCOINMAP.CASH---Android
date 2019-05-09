@@ -5,10 +5,14 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,14 +24,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.interfaces.AnimatorEndAbstract;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
+import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class MarkerDetailsFragment extends DialogFragment implements View.OnClickListener {
 
@@ -72,14 +87,63 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		String imgUri = venue.IMG_FOLDER + venue.placesId + ".gif";
 		Log.d(TAG,imgUri);
 
-		RequestOptions options = new RequestOptions();
-		//options.centerCrop(); This freezes, makes the webp not load
-		options.diskCacheStrategy(DiskCacheStrategy.ALL);
+		if (!hasInternetConnection()) {
+			showToast(R.string.toast_no_internet);
+			//img.setBackgroundResource(R.drawable.placeholder);
+			//return view; let it try to load from cache
+			loadImage(img, imgUri, null);
+		} else {
+			loadImage(img, imgUri, new RequestListener<Drawable>() {
+				@Override
+				public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+					showToast(R.string.toast_image_unavailable);
+					return false;
+				}
 
-		Glide.with(this).load(imgUri).apply(options).into(img).getView().setBackgroundResource(R.drawable.placeholder);
+				@Override
+				public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+					return false;
+				}
+			});
+		}
 
 		return view;
     }
+
+	private void loadImage(ImageView img, String imgUri, RequestListener<Drawable> listener) {
+		Glide.with(this)
+				.load(imgUri)
+				.addListener(listener)
+				.apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
+				.into(img).getView().setBackgroundResource(R.drawable.placeholder);
+	}
+
+	private void showToast(int stringId) {
+		Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
+	}
+
+	private void executeReq(URL urlObject) throws IOException{
+		HttpURLConnection conn = null;
+
+		conn = (HttpURLConnection) urlObject.openConnection();
+		conn.setReadTimeout(1500); //Milliseconds
+		conn.setConnectTimeout(1500); //Milliseconds
+		conn.setRequestMethod("GET");
+		conn.setDoInput(true);
+
+		// Start connect
+		conn.connect();
+		String response = WebService.convertStreamToString(conn.getInputStream());
+		Log.d("Response:", response);
+	}
+
+	private boolean hasInternetConnection() {
+		ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null &&
+				activeNetwork.isConnectedOrConnecting();
+		return isConnected;
+	}
 
 
 
@@ -164,7 +228,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		btn_route.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
 				switchColor(btn_route, true, null);
 				openMapsRoute(venue);
 				resetColorWithDelay(btn_route);
@@ -293,13 +356,26 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
     }
 
 	private void openMapsRoute(Venue v) {
-
-		Intent i = new Intent(Intent.ACTION_VIEW,
-				Uri.parse(Venue.REDIRECT_URI + v.placesId));
-		startActivity(i);
+		try {
+			String shareId = BCHMapsActivity.getShareId(getActivity(),v.placesId);
+			if (shareId == null) {
+				Toast.makeText(getActivity(),R.string.toast_missing_google_maps_information,Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
+				Intent i = new Intent(Intent.ACTION_VIEW,
+						Uri.parse(Venue.REDIRECT_URI + shareId));
+				startActivity(i);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
+
+	//TODO share detailed address information with a link to google maps for that place
 	private void shareDeepLink() {
 		Intent share = new Intent(Intent.ACTION_SEND);
 		share.setType("text/plain");

@@ -3,13 +3,13 @@ package club.therealbitcoin.bchmap;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -35,14 +35,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
 
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
@@ -166,31 +167,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.d(TAG,"onRequestPermissionsResult");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            //moveCameraToLastLocation();
-            Toast.makeText(getBaseContext(), getString(R.string.toast_restart_app_for_permission_take_effect), Toast.LENGTH_LONG).show();
+            showToast(R.string.toast_restart_app_for_permission_take_effect);
             finish();
             Intent intent = new Intent(this, BCHMapsActivity.class);
             startActivity(intent);
         }
-        //initMap(mMap);
-        Log.d(TAG,"onRequestPermissionsResult");
-        /*if (requestCode == MY_LOCATION_REQUEST_CODE) {
-            if (permissions.length == 1 &&
-                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                try {
-                    mMap.setMyLocationEnabled(true);
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, Log.getStackTraceString(e));
-                }
-            } else {
-                Log.d(TAG, "permission denied");
-            }
-        }*/
     }
 
 
@@ -295,22 +279,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private void moveCameraToLastLocation() {
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
-                    .addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                Location lastCoordinates = task.getResult();
-                                LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
-                                Log.d(TAG,latLng.latitude + "" + latLng.longitude);
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
-                                Toast.makeText(BCHMapsActivity.this,R.string.toast_moving_location, Toast.LENGTH_LONG).show();
-
-                                //TODO FIX LOCATION BUG, if location is not available on startup but afterwards it keeps saying enable location
-                                //isLocationAvailable = true;
-                            } else {
-                                Toast.makeText(BCHMapsActivity.this,R.string.toast_enable_location, Toast.LENGTH_LONG).show();
-                                Log.d(TAG, "getLastLocation:exception", task.getException());
-                            }
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            Location lastCoordinates = task.getResult();
+                            LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+                            Log.d(TAG,latLng.latitude + "" + latLng.longitude);
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
+                            showToastMovingLocation();
+                        } else {
+                            showToast(R.string.toast_enable_location_enjoy_all_features);
+                            Log.d(TAG, "getLastLocation:exception", task.getException());
                         }
                     });
         } catch (SecurityException e){
@@ -349,9 +327,30 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL_DETAIL_CLICK));
     }
 
+    static JSONArray jsonArrayPlaces;
+
+    public static String getShareId(Context ctx, String paramId) throws JSONException, IOException {
+        if (jsonArrayPlaces == null)
+            jsonArrayPlaces = new JSONArray(WebService.convertStreamToString(ctx.getResources().openRawResource(R.raw.places_id)));
+
+        for (int i=0; i<jsonArrayPlaces.length(); i++) {
+            Log.d("TRBC","checka:" );
+
+            JSONObject obj = jsonArrayPlaces.getJSONObject(i);
+            String itemIdP = obj.getString(VenueJson.id.toString());
+
+            if (itemIdP.equals(paramId))
+                return obj.getString("shareId");
+        }
+        return null;
+    }
+
     private void loadAssets(boolean moveCam) {
         try {
-            String s = WebService.readJsonFromInputStream(getResources().openRawResource(R.raw.places));
+            Log.d("TRBC","parseVenues");
+
+            String s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
+
             List<Venue> venues = WebService.parseVenues(s);
             VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
 
@@ -434,7 +433,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     public boolean onOptionsItemSelected(MenuItem item) {
         if (viewPager.getCurrentItem() == 2 && item.getItemId() != android.R.id.home && item.getItemId() != R.id.menu_switch) {
             viewPager.setCurrentItem(1);
-            Toast.makeText(this, R.string.toast_favorites_not_affected_by_filter, Toast.LENGTH_LONG).show();
+            showToast(R.string.toast_favorites_not_affected_by_filter);
         }
 
         switchCheck(item);
@@ -444,7 +443,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 openWebsite();
                 return true;
             case android.R.id.home:
-                //Toast.makeText(this, R.string.toast_go_to_website, Toast.LENGTH_LONG).show();
                 openWebsite();
                 return true;
             case R.id.menu_bar:
@@ -544,16 +542,33 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public boolean onMyLocationButtonClick() {
         Log.d(TAG,"onMyLocationButtonClick");
-        //if (!isLocationAvailable) { //TODO FIX LOCATION NOT AVAILABLE MESSAGE if necessary at all because maybe the location button is simply not available
-           // Toast.makeText(this, R.string.toast_enable_location, Toast.LENGTH_SHORT).show();
-        //} else {
-            Toast.makeText(this, R.string.toast_moving_location, Toast.LENGTH_LONG).show();
-        //}
+        try {
+            LocationServices.getFusedLocationProviderClient(this).getLastLocation()
+                    .addOnCompleteListener(this, task -> {
+                        if (task.getResult() != null) {
+                            showToastMovingLocation();
+                        } else {
+                            showToast(R.string.toast_enable_location);
+                        }
+                    });
+        } catch (SecurityException e){
+            Log.d(TAG,"SECURITYEXCEPTION onMyLocationButtonClick");
+        }
         return false;
+    }
+
+    private void showToastMovingLocation() {
+        showToast(R.string.toast_moving_location);
+    }
+
+    private void showToast(int p) {
+        Toast.makeText(BCHMapsActivity.this, p, Toast.LENGTH_LONG).show();
     }
 /*
     @Override
     public void onCameraMove() {
+      TODO save the current position in shared preferences to initialize from this value on app restart
+
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
         sharedPreferences.edit().putString(KEY_CAM_POS, mMap.getCameraPosition().target.toString()).commit();
         Toast.makeText(this,"dsfds" + mMap.getCameraPosition().target.toString(),Toast.LENGTH_SHORT).show();

@@ -24,7 +24,7 @@ public class Venue implements Parcelable {
     public int type;
     public String placesId;
     public static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
-    public static String REDIRECT_URI = "https://therealbitcoin.club/";
+    public static String REDIRECT_URI = "https://goo.gl/maps/";
     public static String IMG_FOLDER =  BASE_URI + "img/app/";
     public int reviews;
     public double stars;

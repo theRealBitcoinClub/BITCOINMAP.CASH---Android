@@ -7,8 +7,8 @@ android {
         applicationId "club.therealbitcoin.bchmap"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 27
-        versionName "08.05.2019"
+        versionCode 29
+        versionName "09.05.2019"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
