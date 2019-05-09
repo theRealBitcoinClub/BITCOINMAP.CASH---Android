@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -54,14 +55,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
-    public static final String TRBC_VENUES_QUERY_PREFIX = "https://realbitcoinclub-";
-    public static final String TRBC_VENUES_QUERY_SUFFIX = ".firebaseapp.com/places.json";
-    public static final String TRBC_VENUES_QUERY = "https://realbitcoinclub.firebaseapp.com/places9.json";
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
     public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
-    public static final String CAM = "cam";
-    public static final String SHARED_PREF_CAM_POSITION = "hjadsbfzurzu23";
-    public static final String KEY_CAM_POS = "fdgnjerngui3w";
     private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
@@ -80,7 +75,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private Toolbar tb;
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
-    private boolean isLocationAvailable = false;
     public static final int NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS = 0;
 
 
@@ -96,13 +90,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         initActionBar();
 
-        mapFragment = (SupportMapFragment) SupportMapFragment.newInstance();
+        mapFragment = SupportMapFragment.newInstance();
         mapFragment.setRetainInstance(true);
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        loadAssets(true);
+        loadAssets();
 
         Log.d(TAG,"FINISH ON CREATE");
     }
@@ -131,17 +125,17 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private void initActionBar() {
         setSupportActionBar(tb);
         ActionBar bar = getSupportActionBar();
+        if (bar == null)
+            return;
+
         bar.setIcon(R.drawable.logo_action_bar);
-        //bar.setHomeButtonEnabled(true);
-        //bar.setHomeAsUpIndicator(R.drawable.ic_action_home);
-        //bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle("");
     }
 
     private void findViewsById() {
-        tb = (Toolbar) findViewById(R.id.toolbar);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tb = findViewById(R.id.toolbar);
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tabs);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -166,7 +160,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG,"onRequestPermissionsResult");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -242,7 +236,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                         this, x));
     }
 
-    private void switchMapStyle(MenuItem item){
+    private void switchMapStyle(){
         VenueFacade facade = VenueFacade.getInstance();
         int theme = facade.getTheme(this);
         theme++;
@@ -260,20 +254,12 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             return;
 
         mMap.clear();
-        //initMarkersList();
         for (Venue v: VenueFacade.getInstance().getVenuesList()) {
             Log.d(TAG, "venue: " + v);
-            Marker marker = addMarker(v);
-            //markersListMap.get(v.type).add(marker);
-            //markerMap.put(v.id, marker);
+            addMarker(v);
         }
         if (moveCamera)
            moveCameraToLastLocation();
-        //moveCameraToQuinoa();
-    }
-
-    private void moveCameraToQuinoa() {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.4027984,2.1600427),MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
     }
 
     private void moveCameraToLastLocation() {
@@ -345,7 +331,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         return null;
     }
 
-    private void loadAssets(boolean moveCam) {
+    private void loadAssets() {
         try {
             Log.d("TRBC","parseVenues");
 
@@ -359,7 +345,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             restoreFilters();
 
             if(mMap != null)
-                syncVenueMarkersDataWithMap(moveCam);
+                syncVenueMarkersDataWithMap(true);
 
             initAllListViews();
         } catch (IOException e) {
@@ -465,7 +451,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);
-                switchMapStyle(item);
+                switchMapStyle();
 
                 //updateSwitchThemeIcon(item);
 
@@ -516,13 +502,12 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             item.setChecked(true);
     }
 
-    private Marker addMarker(Venue v) {
+    private void addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
 
         Log.d(TAG,"addMarker lat:" + v.getCoordinates().latitude + " lon:" + v.getCoordinates().longitude);
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
-        return marker;
     }
 
     @Override

@@ -44,6 +44,8 @@
     <string name="toast_missing_google_maps_information">Google Maps link missing! Please provide the information to: trbc@bitcoinmap.cash</string>
     <string name="toast_image_unavailable">The image is currently not available! Please report that issue to trbc@bitcoinmap.cash</string>
     <string name="toast_no_internet">\"No internet connection available! You can still use the app without images or cached images. Hurray!\"</string>
+    <string name="toast_removed_favorite">Removed from favorite list:</string>
+    <string name="toast_added_favorite">Added to favorite list:</string>
     <string-array name="location_attributes">
     <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Bitcoin</item>
     <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Events</item>

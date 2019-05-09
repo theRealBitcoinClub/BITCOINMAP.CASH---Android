@@ -127,7 +127,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	        return false;
 
 		ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-		
+
 		if (cm == null)
 		    return false;
 
@@ -241,40 +241,34 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	private void initMapButton(View dialog) {
 		final View btn_map = dialog.findViewById(R.id.dialog_button_map);
 		btn_map.setVisibility(View.VISIBLE);
-		btn_map.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dismiss();
-				MarkerDetailsFragment.this.cb.switchTabZoomCamera();
-			}
+		btn_map.setOnClickListener(v -> {
+			dismiss();
+			MarkerDetailsFragment.this.cb.switchTabZoomCamera();
 		});
 	}
 
 	private void clickedFavoButton(Venue venue, View btn_favo, Context ctx) {
-		btn_favo.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (isFavo) {
-					//Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
-					VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
-					isFavo = false;
-				} else {
-					//Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
-					VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
-					isFavo = true;
-				}
-
-				//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
-
-				switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
-					@Override
-					public void onAnimationEnd(Animator animation) {
-
-						venue.setFavorite(isFavo, ctx);
-						cb.initAllListViews();
-					}
-				});
+		btn_favo.setOnClickListener(v -> {
+			if (isFavo) {
+				Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
+				VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
+				isFavo = false;
+			} else {
+				Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
+				VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
+				isFavo = true;
 			}
+
+			//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
+
+			switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+
+					venue.setFavorite(isFavo, ctx);
+					cb.initAllListViews();
+				}
+			});
 		});
 	}
 
@@ -293,15 +287,13 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		valueAnimator.setDuration(300);
 
 		final float[] hsv  = new float[3];
-		valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener(){
-			@Override public void onAnimationUpdate(ValueAnimator animation) {
-				// Transition along each axis of HSV (hue, saturation, value)
-				hsv[0] = from[0] + (to[0] - from[0])*animation.getAnimatedFraction();
-				hsv[1] = from[1] + (to[1] - from[1])*animation.getAnimatedFraction();
-				hsv[2] = from[2] + (to[2] - from[2])*animation.getAnimatedFraction();
+		valueAnimator.addUpdateListener(animation -> {
+			// Transition along each axis of HSV (hue, saturation, value)
+			hsv[0] = from[0] + (to[0] - from[0])*animation.getAnimatedFraction();
+			hsv[1] = from[1] + (to[1] - from[1])*animation.getAnimatedFraction();
+			hsv[2] = from[2] + (to[2] - from[2])*animation.getAnimatedFraction();
 
-				view.setBackgroundColor(Color.HSVToColor(hsv));
-			}
+			view.setBackgroundColor(Color.HSVToColor(hsv));
 		});
 
 		if (afterAnim != null)
@@ -311,13 +303,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	}
 
 	private void resetColorWithDelay(View btn_route) {
-		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            	//btn_route.clearAnimation();
-                switchColor(btn_route, false, null);
-            }
-        },300L);
+		new Handler(Looper.getMainLooper()).postDelayed(() -> switchColor(btn_route, false, null),300L);
 	}
 
 	@Override
