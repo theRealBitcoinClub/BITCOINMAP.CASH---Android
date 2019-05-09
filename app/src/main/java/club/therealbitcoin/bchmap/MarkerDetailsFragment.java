@@ -122,27 +122,17 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
 	}
 
-	private void executeReq(URL urlObject) throws IOException{
-		HttpURLConnection conn = null;
-
-		conn = (HttpURLConnection) urlObject.openConnection();
-		conn.setReadTimeout(1500); //Milliseconds
-		conn.setConnectTimeout(1500); //Milliseconds
-		conn.setRequestMethod("GET");
-		conn.setDoInput(true);
-
-		// Start connect
-		conn.connect();
-		String response = WebService.convertStreamToString(conn.getInputStream());
-		Log.d("Response:", response);
-	}
-
 	private boolean hasInternetConnection() {
+	    if (getContext() == null)
+	        return false;
+
 		ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		if (cm == null)
+		    return false;
+
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		boolean isConnected = activeNetwork != null &&
-				activeNetwork.isConnectedOrConnecting();
-		return isConnected;
+		return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 	}
 
 
@@ -197,10 +187,10 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
     }
 
     private void initTagViews(View view) {
-		tags[0] = (TextView)view.findViewById(R.id.tag0);
-		tags[1] = (TextView)view.findViewById(R.id.tag1);
-		tags[2] = (TextView)view.findViewById(R.id.tag2);
-		tags[3] = (TextView)view.findViewById(R.id.tag3);
+		tags[0] = view.findViewById(R.id.tag0);
+		tags[1] = view.findViewById(R.id.tag1);
+		tags[2] = view.findViewById(R.id.tag2);
+		tags[3] = view.findViewById(R.id.tag3);
 	}
 
 	private void initClickListener(final Venue venue, View dialog) {

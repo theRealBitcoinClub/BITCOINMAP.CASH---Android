@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
@@ -13,28 +12,26 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import club.therealbitcoin.bchmap.R;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class Venue implements Parcelable {
-    public static final String YAYAYA = "YAYAYA";
+    private static final String SHARED_PREF_ID = "SHARED_PREF_ID";
     public int favoListIndex =-1;
     public String name;
     public int iconRes;
     public int type;
     public String placesId;
-    public static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
+    private static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
     public static String REDIRECT_URI = "https://goo.gl/maps/";
     public static String IMG_FOLDER =  BASE_URI + "img/app/";
     public int reviews;
     public double stars;
     public String location;
     private Boolean isFavorite = null;
-    LatLng coordinates;
-    private boolean filtered = false;
+    private LatLng coordinates;
     public int listIndex = -1;
     public View listItem;
-    private int discountLevel = -1;
+    private int discountLevel;
     private String[] attributes;
 
     public String[] getAttributes() {
@@ -58,17 +55,16 @@ public class Venue implements Parcelable {
         isFavorite = favorite;
 
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                YAYAYA, Context.MODE_PRIVATE);
-        sharedPref.edit().putBoolean(placesId,favorite).commit();
+                SHARED_PREF_ID, Context.MODE_PRIVATE);
+        sharedPref.edit().putBoolean(placesId,favorite).apply();
     }
 
-    @Nullable
-    public Boolean isFavorite(Context ctx) {
+    public boolean isFavorite(Context ctx) {
         Log.d("TRBC","isFavorite");
         if (isFavorite == null && ctx != null) {
             Log.d("TRBC","isFavorite null");
             SharedPreferences sharedPref = ctx.getSharedPreferences(
-                    YAYAYA, Context.MODE_PRIVATE);
+                    SHARED_PREF_ID, Context.MODE_PRIVATE);
             isFavorite = sharedPref.getBoolean(placesId, false);
             Log.d("TRBC","isFavorite null" + isFavorite);
         }
@@ -119,16 +115,15 @@ public class Venue implements Parcelable {
             return null;
         }
 
-        String[] split = attribs.split(",");
-        return split;
+        return attribs.split(",");
     }
 
     @Override
     public String toString() {
         return toJson();
     }
-    //{"p":"ChIJEUo5JceipBIRlw3IsieB6Sg","x":"41.406599", "y":"2.1621726","n":"The Real Bitcoin Club", "t":"0","c":"1","s":"5.0"}
-    public String toJson() {
+
+    private String toJson() {
         StringBuilder sb = new StringBuilder("{\"");
         appendData(sb, VenueJson.id.toString(), placesId);
         appendData(sb, VenueJson.lat.toString(), coordinates.latitude);
@@ -167,10 +162,7 @@ public class Venue implements Parcelable {
 
         Venue venue = (Venue) o;
 
-        if (placesId.equals(venue.placesId))
-            return true;
-        else
-            return false;
+        return placesId.equals(venue.placesId);
     }
 
     @Override
@@ -228,15 +220,7 @@ public class Venue implements Parcelable {
         dest.writeParcelable(coordinates, flags);
     }
 
-    public void setFiltered(boolean b) {
-        filtered = b;
-    }
-
-    public boolean isFiltered() {
-        return filtered;
-    }
-
-    public int getDiscountText() {
+    /*public int getDiscountText() {
         switch (discountLevel) {
             case 0: return R.string.discount0;
             case 1: return R.string.discount1;
@@ -246,5 +230,5 @@ public class Venue implements Parcelable {
             case 5: return R.string.discount5;
             default: return -1;
         }
-    }
+    }*/
 }
