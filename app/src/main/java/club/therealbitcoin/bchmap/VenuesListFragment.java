@@ -188,7 +188,7 @@ class PopupAdapter extends ArrayAdapter<String> {
 
         Venue venue = getVenueByIndex(position);
 
-        if (venue == null || venue.isFiltered()) {
+        if (venue == null) {
             return null;
         }
 

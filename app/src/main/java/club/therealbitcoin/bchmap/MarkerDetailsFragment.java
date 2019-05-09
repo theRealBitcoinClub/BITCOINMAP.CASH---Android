@@ -250,11 +250,11 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	private void clickedFavoButton(Venue venue, View btn_favo, Context ctx) {
 		btn_favo.setOnClickListener(v -> {
 			if (isFavo) {
-				Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + " " + venue.name, Toast.LENGTH_SHORT).show();
+                showToast(R.string.toast_removed_favorite);
 				VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
 				isFavo = false;
 			} else {
-				Toast.makeText(ctx,getString(R.string.toast_added_favorite) + " " +  venue.name,Toast.LENGTH_SHORT).show();
+			    showToast(R.string.toast_added_favorite);
 				VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
 				isFavo = true;
 			}
