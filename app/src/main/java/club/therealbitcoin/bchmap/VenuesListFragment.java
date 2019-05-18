@@ -28,15 +28,15 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     private static final String BUNDLE = "bvdsfedss";
     private static String
             ONLY_FAVOS = "ONLY_FAVOS";
-    private static UpdateActivityCallback callback;
+    private UpdateActivityCallback callback;
     private boolean showOnlyFavos;
 
     public static VenuesListFragment newInstance(boolean onlyFavs, UpdateActivityCallback cb) {
-        VenuesListFragment.callback = cb;
         Log.d("TRBC","VenuesListFragment, newInstance only favos:" + onlyFavs);
         Bundle args = new Bundle();
         args.putBoolean(ONLY_FAVOS,onlyFavs);
         VenuesListFragment fragment = new VenuesListFragment();
+        fragment.callback = cb;
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +44,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     @Override
     public void onDestroy() {
         super.onDestroy();
-        callback = null;
+        //callback = null;
     }
 
     @Override
