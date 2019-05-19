@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="ImageStyle">
+        <item name="android:layout_width">216dp</item>
+        <item name="android:layout_height">162dp</item>
+    </style>
+
+</resources>
