@@ -44,10 +44,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
+import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
@@ -56,7 +57,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
-    public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
+    public static final String URI_CLICK_LOGO = "http://bitcoinmap.cash";
     private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
     private GoogleMap mMap;
     private static final String TAG = "TRBC";
@@ -313,31 +314,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL_DETAIL_CLICK));
     }
 
-    static JSONArray jsonArrayPlaces;
-
-    public static String getShareId(Context ctx, String paramId) throws JSONException, IOException {
-        if (jsonArrayPlaces == null)
-            jsonArrayPlaces = new JSONArray(WebService.convertStreamToString(ctx.getResources().openRawResource(R.raw.places_id)));
-
-        for (int i=0; i<jsonArrayPlaces.length(); i++) {
-            Log.d("TRBC","checka:" );
-
-            JSONObject obj = jsonArrayPlaces.getJSONObject(i);
-            String itemIdP = obj.getString(VenueJson.id.toString());
-
-            if (itemIdP.equals(paramId))
-                return obj.getString("shareId");
-        }
-        return null;
-    }
-
     private void loadAssets() {
         try {
             Log.d("TRBC","parseVenues");
 
             String s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
 
-            List<Venue> venues = WebService.parseVenues(s);
+            List<Venue> venues = JsonParser.parseVenues(s);
             VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
 
             //Log.d(TAG, "responseData: " + s);
@@ -360,7 +343,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             public void onTaskDone(String responseData) {
                 try {
                     Log.d(TAG, "onTaskDone: ");
-                    List<Venue> venues = WebService.parseVenues(responseData);
+                    List<Venue> venues = JsonParser.parseVenues(responseData);
                     VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
 
                     Log.d(TAG, "responseData: " + responseData);

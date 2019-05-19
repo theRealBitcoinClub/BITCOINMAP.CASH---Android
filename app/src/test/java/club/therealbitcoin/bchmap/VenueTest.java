@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import java.io.IOException;
 import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
@@ -48,7 +47,7 @@ public class VenueTest {
         Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
         Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
         Assert.assertTrue(v.equals(v2));
-        v.placesId = "dfdsfds";
+        v.id = "dfdsfds";
         Assert.assertFalse(v.equals(v2));
     }
 
@@ -59,7 +58,7 @@ public class VenueTest {
         Assert.assertNotSame(testName + "fdsfds", venue.name);
         Assert.assertEquals(testIconRes, venue.iconRes);
         Assert.assertEquals(type, venue.type);
-        Assert.assertEquals(placesId, venue.placesId);
+        Assert.assertEquals(placesId, venue.id);
         Assert.assertEquals(rev, venue.reviews);
         Assert.assertEquals(stras, venue.stars);
     }

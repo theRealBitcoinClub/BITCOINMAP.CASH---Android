@@ -21,9 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
+import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
 
 public class WebService extends AsyncTask<String, Void, String> {
 

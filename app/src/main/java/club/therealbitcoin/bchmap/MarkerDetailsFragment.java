@@ -1,5 +1,5 @@
 package club.therealbitcoin.bchmap;
- 
+
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -34,29 +34,27 @@ import com.bumptech.glide.request.target.Target;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.interfaces.AnimatorEndAbstract;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
+import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
-import club.therealbitcoin.bchmap.persistence.WebService;
 
 public class MarkerDetailsFragment extends DialogFragment implements View.OnClickListener {
 
 	public static final String PARCEL_ID = "dsjlkfndsjkf";
 	private static final String TAG = "TRBCDialog";
 	private static final String IS_ON_MAP_VIEW = "dfdsfn34fn";
-	private static UpdateActivityCallback cb;
+	private UpdateActivityCallback updateActivityCallback;
 	private int accentColor;
 	private int primaryColor;
 	private String accent;
 	private String primary;
 	private TextView[] tags = new TextView[10];
 	private boolean isMapView;
-
+	private Venue venue;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,9 +63,9 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
         setCancelable(true);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        final Venue venue = getArguments().getParcelable(PARCEL_ID);
+        venue = getArguments().getParcelable(PARCEL_ID);
 		isMapView = getArguments().getBoolean(IS_ON_MAP_VIEW);
-        initClickListener(venue, view);
+        initButtons(venue, view);
 
         initReviewText(view, venue);
         ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
@@ -84,7 +82,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
 		ImageView img = view.findViewById(R.id.img);
 		img.setOnClickListener(this);
-		String imgUri = venue.IMG_FOLDER + venue.placesId + ".gif";
+		String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
 		Log.d(TAG,imgUri);
 
 		if (!hasInternetConnection()) {
@@ -193,25 +191,30 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		tags[3] = view.findViewById(R.id.tag3);
 	}
 
-	private void initClickListener(final Venue venue, View dialog) {
+	private void initButtons(final Venue venue, View dialog) {
 		final View btn_route = dialog.findViewById(R.id.dialog_button_route);
 
 		clickedRouteButton(venue, btn_route);
 		if (isMapView) {
-			initShareButton(dialog);
+			initReviewButton(dialog);
 		} else {
 			initMapButton(dialog);
 		}
 
-		final View btn_favo = dialog.findViewById(R.id.dialog_button_favo);
+		final View btn_favo_selected = dialog.findViewById(R.id.dialog_button_favo_selected);
+		final View btn_favo_unselected = dialog.findViewById(R.id.dialog_button_favo_unselected);
 
 		Context ctx = getContext();
 		if (venue.isFavorite(ctx)) {
-			switchColor(btn_favo, true, null);
+			btn_favo_selected.setVisibility(View.VISIBLE);
+			switchColor(btn_favo_selected, true, null);
 			isFavo = true;
+		} else {
+			btn_favo_unselected.setVisibility(View.VISIBLE);
 		}
 
-		clickedFavoButton(venue, btn_favo, ctx);
+		clickedFavoButtonSelected(venue, btn_favo_selected, btn_favo_unselected, ctx);
+		clickedFavoButtonUnselected(venue, btn_favo_selected, btn_favo_unselected, ctx);
 	}
 
 	private void clickedRouteButton(Venue venue, View btn_route) {
@@ -224,51 +227,102 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 			}
 		});
 	}
-
-	private void initShareButton(View dialog) {
-		final View btn_share = dialog.findViewById(R.id.dialog_button_share);
-		btn_share.setVisibility(View.VISIBLE);
-		btn_share.setOnClickListener(new View.OnClickListener() {
+	private void initReviewButton(View dialog) {
+		final View btn_review = dialog.findViewById(R.id.dialog_button_review);
+		btn_review.setVisibility(View.VISIBLE);
+		btn_review.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
-				switchColor(btn_share, true, null);
-				shareDeepLink();
-				resetColorWithDelay(btn_share);
+			public void onClick(View v) {
+				try {
+					String placesId = JsonParser.getPlacesId(getActivity(),venue.id);
+					String targetURL = "https://search.google.com/local/writereview?placeid=" + placesId;
+					Log.d("TRBC","targetURL: " + targetURL);
+					if (placesId == null) {
+						Toast.makeText(getContext(),R.string.missing_places_id,Toast.LENGTH_LONG).show();
+						//btn_review.setEnabled(false);
+						switchColor(btn_review, true, new AnimatorEndAbstract() {
+							@Override
+							public void onAnimationEnd(Animator animation) {
+								switchColor(btn_review, false, null);
+							}
+						});
+						btn_review.setAlpha(0.5f);
+						return;
+					}
+
+					Toast.makeText(getContext(),R.string.found_places_id,Toast.LENGTH_LONG).show();
+					Intent i = new Intent(Intent.ACTION_VIEW,
+							Uri.parse(targetURL));
+					switchColor(btn_review, true, null);
+					startActivity(i);
+					resetColorWithDelay(btn_review);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
-
+/*
+	private void initShareButton(View dialog) {
+		final View btn_review = dialog.findViewById(R.id.dialog_button_review);
+		btn_review.setVisibility(View.VISIBLE);
+		btn_review.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
+				switchColor(btn_review, true, null);
+				shareDeepLink();
+				resetColorWithDelay(btn_review);
+			}
+		});
+	}
+*/
 	private void initMapButton(View dialog) {
 		final View btn_map = dialog.findViewById(R.id.dialog_button_map);
 		btn_map.setVisibility(View.VISIBLE);
 		btn_map.setOnClickListener(v -> {
 			dismiss();
-			MarkerDetailsFragment.this.cb.switchTabZoomCamera();
+			MarkerDetailsFragment.this.updateActivityCallback.switchTabZoomCamera();
 		});
 	}
 
-	private void clickedFavoButton(Venue venue, View btn_favo, Context ctx) {
-		btn_favo.setOnClickListener(v -> {
-			if (isFavo) {
-                showToast(R.string.toast_removed_favorite);
-				VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
-				isFavo = false;
-			} else {
-			    showToast(R.string.toast_added_favorite);
-				VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
-				isFavo = true;
-			}
 
+private void clickedFavoButtonUnselected(Venue venue, View btn_favo_selected,  View btn_favo_unselected, Context ctx) {
+		btn_favo_unselected.setOnClickListener(v -> {
+			showToast(R.string.toast_added_favorite);
+			VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
+			isFavo = true;
 			//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
 
-			switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
-				@Override
-				public void onAnimationEnd(Animator animation) {
+			btn_favo_selected.setVisibility(View.VISIBLE);
+			btn_favo_unselected.setVisibility(View.GONE);
+			toggleBackgroundColor(venue, btn_favo_selected, ctx);
+		});
+		}
 
-					venue.setFavorite(isFavo, ctx);
-					cb.initAllListViews();
-				}
-			});
+
+private void clickedFavoButtonSelected(Venue venue, View btn_favo_selected,  View btn_favo_unselected, Context ctx) {
+	btn_favo_selected.setOnClickListener(v -> {
+			showToast(R.string.toast_removed_favorite);
+			VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
+			isFavo = false;
+			//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
+
+			btn_favo_selected.setVisibility(View.GONE);
+			btn_favo_unselected.setVisibility(View.VISIBLE);
+			toggleBackgroundColor(venue, btn_favo_unselected, ctx);
+		});
+	}
+
+	private void toggleBackgroundColor(Venue venue, View btn_favo, Context ctx) {
+		switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				venue.setFavorite(isFavo, ctx);
+				updateActivityCallback.initAllListViews();
+			}
 		});
 	}
 
@@ -309,7 +363,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	@Override
     public void onDestroy() {
         super.onDestroy();
-        cb = null;
+        updateActivityCallback = null;
     }
 
 	private boolean isFavo = false;
@@ -333,15 +387,21 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
 	private void openMapsRoute(Venue v) {
 		try {
-			String shareId = BCHMapsActivity.getShareId(getActivity(),v.placesId);
-			if (shareId == null) {
-				Toast.makeText(getActivity(),R.string.toast_missing_google_maps_information,Toast.LENGTH_LONG).show();
-			} else {
-				Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
-				Intent i = new Intent(Intent.ACTION_VIEW,
-						Uri.parse(Venue.REDIRECT_URI + shareId));
-				startActivity(i);
+			String placesId = JsonParser.getPlacesId(getActivity(),v.id);
+			String targetURL;
+			targetURL = "http://www.google.com/maps/search/?api=1&query=" +
+					v.getCoordinates().latitude +
+					"," +
+					v.getCoordinates().longitude;
+			if (placesId != null) {
+				targetURL += "&query_place_id=" + placesId;
 			}
+			Log.d("TRBC","targetURL: " + targetURL);
+
+			Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
+			Intent i = new Intent(Intent.ACTION_VIEW,
+					Uri.parse(targetURL));
+			startActivity(i);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -350,7 +410,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
 	}
 
-
+/*
 	//TODO share detailed address information with a link to google maps for that place
 	private void shareDeepLink() {
 		Intent share = new Intent(Intent.ACTION_SEND);
@@ -358,10 +418,10 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
 		startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
 	}
-
+*/
 	public static MarkerDetailsFragment newInstance(Venue v, UpdateActivityCallback cb, boolean isOnMapView) {
-        MarkerDetailsFragment.cb = cb;
         MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
+		myFragment.updateActivityCallback = cb;
 		Bundle args = new Bundle();
 		args.putParcelable(PARCEL_ID, v);
 		args.putBoolean(IS_ON_MAP_VIEW, isOnMapView);

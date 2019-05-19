@@ -189,16 +189,26 @@
                 android:background="@color/colorPrimaryDark"
                 android:src="@drawable/ic_action_map"/>
             <ImageButton
-                android:id="@+id/dialog_button_share"
+                android:id="@+id/dialog_button_review"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:padding="16dp"
                 android:visibility="gone"
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryDark"
-                android:src="@drawable/ic_action_share"/>
+                android:src="@drawable/ic_action_review"/>
             <ImageButton
-                android:id="@+id/dialog_button_favo"
+                android:id="@+id/dialog_button_favo_selected"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/details_fragment_icon_size"
+                android:padding="16dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:background="@color/colorPrimaryDark"
+                android:src="@drawable/ic_action_favorite_white_selected"/>
+            <ImageButton
+                android:visibility="gone"
+                android:id="@+id/dialog_button_favo_unselected"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:padding="16dp"

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import club.therealbitcoin.bchmap.BCHMapsActivity;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
@@ -149,7 +148,7 @@ public class VenueFacade {
     private void addVenue(Venue v, Context ctx, int favoCounter) {
         hasChangedList = true;
         Log.d("TRBC","addVenue" + v);
-       if (venuesMap.put(v.placesId, v) == null) {
+       if (venuesMap.put(v.id, v) == null) {
            venuesList.add(v);
        }
 

@@ -48,12 +48,12 @@ public class WebServiceTest {
                 ",{\"p\":\"pasticceria\", \"x\":\"" + testLat + "\",\"y\":\"2.1559692\",\"n\":\"La Pasticceria di Gracia\",\"t\":\"1\",\"c\":\"32\",\"s\":\"4.6\", \"d\":\"0\", \"a\":\"9,10,12,13\", \"l\":\"Barcelona, Spain, Europe\"}" +
                 ",{\"p\":\"lavermu\", \"x\":\"41.4000891\",\"y\":\"2.1568007\",\"n\":\"La Vermu - Bar and Tapas\",\"t\":\"2\",\"c\":\"" + testReviews + "\",\"s\":\"4.2\", \"d\":\"0\", \"a\":\"31,32,33,36\", \"l\":\"Barcelona, Spain, Europe\"}" +
                 ",{\"p\":\"ChIJayYeJpaipBIR8ZbTZO4x7dM\", \"x\":\"41.4006901\",\"y\":\"2.1579717\",\"n\":\"Gelatology - We make Gelato great again!\",\"t\":\"1\",\"c\":\"49\",\"s\":\"" + testStars + "\", \"d\":\"1\", \"a\":\"18,29,32,33\", \"l\":\"Barcelona, Spain, Europe\"}]";
-        List<Venue> venues = WebService.parseVenues(venueJson);
+        List<Venue> venues = JsonParser.parseVenues(venueJson);
 
         Assert.assertEquals(5, venues.size());
         Assert.assertEquals(venues.get(0).name,testName);
         Assert.assertNotSame(venues.get(1).name,testName);
-        Assert.assertEquals(venues.get(1).placesId,testId);
+        Assert.assertEquals(venues.get(1).id,testId);
         Assert.assertEquals(venues.get(2).getCoordinates().latitude,Double.valueOf(testLat));
         Assert.assertEquals(venues.get(3).reviews,(int)Integer.valueOf(testReviews));
         Assert.assertEquals(venues.get(4).stars,Double.valueOf(testStars));
@@ -62,7 +62,7 @@ public class WebServiceTest {
     @Test
     public void testReadJsonFromInputStream() throws IOException, JSONException {
         String s = WebService.convertStreamToString(openFile("places.json"));
-        List<Venue> venues = WebService.parseVenues(s);
+        List<Venue> venues = JsonParser.parseVenues(s);
         Assert.assertEquals(233, venues.size());
     }
 }

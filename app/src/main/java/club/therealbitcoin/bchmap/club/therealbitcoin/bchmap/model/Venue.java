@@ -20,7 +20,7 @@ public class Venue implements Parcelable {
     public String name;
     public int iconRes;
     public int type;
-    public String placesId;
+    public String id;
     private static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
     public static String REDIRECT_URI = "https://goo.gl/maps/";
     public static String IMG_FOLDER =  BASE_URI + "img/app/";
@@ -56,7 +56,7 @@ public class Venue implements Parcelable {
 
         SharedPreferences sharedPref = ctx.getSharedPreferences(
                 SHARED_PREF_ID, Context.MODE_PRIVATE);
-        sharedPref.edit().putBoolean(placesId,favorite).apply();
+        sharedPref.edit().putBoolean(id,favorite).apply();
     }
 
     public boolean isFavorite(Context ctx) {
@@ -65,7 +65,7 @@ public class Venue implements Parcelable {
             Log.d("TRBC","isFavorite null");
             SharedPreferences sharedPref = ctx.getSharedPreferences(
                     SHARED_PREF_ID, Context.MODE_PRIVATE);
-            isFavorite = sharedPref.getBoolean(placesId, false);
+            isFavorite = sharedPref.getBoolean(id, false);
             Log.d("TRBC","isFavorite null" + isFavorite);
         }
 
@@ -82,7 +82,7 @@ public class Venue implements Parcelable {
         this.name = name;
         this.iconRes = iconRes;
         this.type = type;
-        this.placesId = placesId;
+        this.id = placesId;
         this.stars = stras;
         this.reviews = rev;
         this.coordinates = cord;
@@ -125,7 +125,7 @@ public class Venue implements Parcelable {
 
     private String toJson() {
         StringBuilder sb = new StringBuilder("{\"");
-        appendData(sb, VenueJson.id.toString(), placesId);
+        appendData(sb, VenueJson.id.toString(), id);
         appendData(sb, VenueJson.lat.toString(), coordinates.latitude);
         appendData(sb, VenueJson.lon.toString(), coordinates.longitude);
         appendData(sb, VenueJson.name.toString(), name);
@@ -162,7 +162,7 @@ public class Venue implements Parcelable {
 
         Venue venue = (Venue) o;
 
-        return placesId.equals(venue.placesId);
+        return id.equals(venue.id);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class Venue implements Parcelable {
         result = name != null ? name.hashCode() : 0;
         result = 31 * result + iconRes;
         result = 31 * result + type;
-        result = 31 * result + (placesId != null ? placesId.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + reviews;
         temp = Double.doubleToLongBits(stars);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
@@ -195,7 +195,7 @@ public class Venue implements Parcelable {
         name = in.readString();
         iconRes = in.readInt();
         type = in.readInt();
-        placesId = in.readString();
+        id = in.readString();
         reviews = in.readInt();
         stars = in.readDouble();
         byte tmpIsFavorite = in.readByte();
@@ -213,7 +213,7 @@ public class Venue implements Parcelable {
         dest.writeString(name);
         dest.writeInt(iconRes);
         dest.writeInt(type);
-        dest.writeString(placesId);
+        dest.writeString(id);
         dest.writeInt(reviews);
         dest.writeDouble(stars);
         dest.writeByte((byte) (isFavorite == null ? 0 : isFavorite ? 1 : 2));

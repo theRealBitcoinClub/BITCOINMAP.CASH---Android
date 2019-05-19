@@ -3,8 +3,9 @@ package club.therealbitcoin.bchmap;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
-import org.acra.*;
-import org.acra.annotation.*;
+import org.acra.ACRA;
+import org.acra.annotation.AcraCore;
+import org.acra.annotation.AcraHttpSender;
 import org.acra.data.StringFormat;
 import org.acra.sender.HttpSender;
 
