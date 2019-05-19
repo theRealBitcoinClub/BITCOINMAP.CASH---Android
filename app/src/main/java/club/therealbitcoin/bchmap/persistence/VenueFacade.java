@@ -52,7 +52,7 @@ public class VenueFacade {
 
     public void restoreFilteredVenues(VenueType t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("filter"+t.getIndex(), false).commit();
+        sharedPreferences.edit().putBoolean("filter"+t.getIndex(), false).apply();
         Log.d(TAG,"restoreFilteredVenues" + t);
         ArrayList<Venue> venues = filteredVenuesMap.remove(""+t.getIndex());
         if (venues == null || venues.size() == 0)
@@ -75,7 +75,7 @@ public class VenueFacade {
 
     public void filterListByType(VenueType t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("filter"+t.getIndex(), true).commit();
+        sharedPreferences.edit().putBoolean("filter"+t.getIndex(), true).apply();
 
         int initialSize = venuesList.size();
         for (int i = 0; i< initialSize; i++) {
@@ -202,7 +202,8 @@ public class VenueFacade {
 
     public void removeFavoriteVenue(Venue item, Context ctx) {
         Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
-        favorites.remove(item.favoListIndex);
+        if (favorites.size() != 0)
+            favorites.remove(item.favoListIndex);
         //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         //sharedPreferences.edit().remove(item.id).commit();
         item.setFavorite(false,ctx);
@@ -220,7 +221,7 @@ public class VenueFacade {
     public void setTheme(int theme, Context ctx) {
         this.theme = theme;
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putInt(THEME, theme).commit();
+        sharedPreferences.edit().putInt(THEME, theme).apply();
     }
 
     public int getTheme(Context ctx) {
@@ -229,6 +230,9 @@ public class VenueFacade {
 
         if (theme == -1) {
             SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+            if (sharedPreferences == null)
+                return 0;
+
             theme = sharedPreferences.getInt(THEME, 0);
         }
 

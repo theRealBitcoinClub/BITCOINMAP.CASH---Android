@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.acra.ACRA;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -318,7 +319,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void switchTabZoomCamera() {
         viewPager.setCurrentItem(0);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL_DETAIL_CLICK));
+        try {
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL_DETAIL_CLICK));
+        } catch (java.lang.NullPointerException e) {
+            /*java.lang.NullPointerException: CameraUpdateFactory is not initialized
+            at com.google.android.gms.common.internal.Preconditions.checkNotNull(Unknown Source)
+            at com.google.android.gms.maps.CameraUpdateFactory.zzc(Unknown Source)
+            at com.google.android.gms.maps.CameraUpdateFactory.zoomTo(Unknown Source)
+            at club.therealbitcoin.bchmap.BCHMapsActivity.switchTabZoomCamera(BCHMapsActivity.java:313)
+            */
+        }
     }
 
     private void loadAssets() {
