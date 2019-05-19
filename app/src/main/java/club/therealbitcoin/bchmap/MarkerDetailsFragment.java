@@ -85,7 +85,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 		String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
 		Log.d(TAG,imgUri);
 
-		if (!hasInternetConnection()) {
+		if (!ConnectionChecker.hasInternetConnection(getContext())) {
 			showToast(R.string.toast_no_internet);
 			//img.setBackgroundResource(R.drawable.placeholder);
 			//return view; let it try to load from cache
@@ -119,21 +119,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 	private void showToast(int stringId) {
 		Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
 	}
-
-	private boolean hasInternetConnection() {
-	    if (getContext() == null)
-	        return false;
-
-		ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		if (cm == null)
-		    return false;
-
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-	}
-
-
 
 	@Override
 	public void onClick(View v) {

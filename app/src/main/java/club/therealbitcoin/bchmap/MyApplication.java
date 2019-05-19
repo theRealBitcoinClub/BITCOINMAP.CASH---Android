@@ -3,6 +3,8 @@ package club.therealbitcoin.bchmap;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.onesignal.OneSignal;
+
 import org.acra.ACRA;
 import org.acra.annotation.AcraCore;
 import org.acra.annotation.AcraHttpSender;
@@ -19,5 +21,17 @@ public class MyApplication extends MultiDexApplication {
 
         // The following line triggers the initialization of ACRA
         ACRA.init(this);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG, OneSignal.LOG_LEVEL.DEBUG);
+        OneSignal.setLocationShared(true);
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
     }
 }

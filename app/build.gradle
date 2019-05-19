@@ -1,3 +1,4 @@
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 
 android {
@@ -18,6 +19,11 @@ android {
         }
     }
     defaultConfig {
+            manifestPlaceholders = [
+                    onesignal_app_id: 'd4cfeb3e-d0ea-48bf-a08f-5da924a842b2',
+                    // Project number pulled from dashboard, local value is ignored.
+                    onesignal_google_project_number: 'REMOTE'
+            ]
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {
@@ -47,6 +53,7 @@ android {
 
 
 dependencies {
+    implementation 'com.onesignal:OneSignal:3.10.5'
     implementation "ch.acra:acra-http:5.1.1"
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -63,6 +70,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.google.android.gms:play-services-base:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.android.support:multidex:1.0.3'
@@ -72,3 +80,5 @@ dependencies {
     testImplementation "org.robolectric:shadows-multidex:4.0.1"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
+
+//apply plugin: 'com.google.gms:google-services'

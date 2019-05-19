@@ -98,8 +98,15 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         tabLayout.setupWithViewPager(viewPager);
 
         loadAssets();
+        checkConnectionShowToast();
 
         Log.d(TAG,"FINISH ON CREATE");
+    }
+
+    private void checkConnectionShowToast() {
+        if (!ConnectionChecker.hasInternetConnection(this)) {
+            showToast(R.string.toast_no_internet);
+        }
     }
 
     @SuppressLint("MissingSuperCall")
@@ -527,6 +534,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void showToastMovingLocation() {
         showToast(R.string.toast_moving_location);
+        checkConnectionShowToast();
     }
 
     private void showToast(int p) {
