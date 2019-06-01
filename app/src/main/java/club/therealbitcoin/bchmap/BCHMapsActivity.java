@@ -257,7 +257,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         if (moveCamera)
             moveCameraToLastLocation();
     }
+
     LatLng latLng;
+
     private void moveCameraToLastLocation() {
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()

@@ -74,9 +74,9 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
                 || (getArguments() != null && getArguments().getBoolean(key));
     }
 
-        private double getArgDouble(Bundle savedInstanceState, String key) {
-            double str = getDouble(savedInstanceState, key);
-            return str == -1 ? getDouble(getArguments(), key) : -1;
+    private double getArgDouble(Bundle savedInstanceState, String key) {
+        double str = getDouble(savedInstanceState, key);
+        return str == -1 ? getDouble(getArguments(), key) : -1;
     }
 
     private double getDouble(Bundle savedInstanceState, String key) {
@@ -206,7 +206,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
     static Float calcDistancBetweenTwoPoints(double lat1, double lon1, double lat2, double lon2) {
         float[] distance = new float[2];
-        Location.distanceBetween( lat1, lon1, lat2, lon2, distance);
+        Location.distanceBetween(lat1, lon1, lat2, lon2, distance);
         return distance[0];
     }
 

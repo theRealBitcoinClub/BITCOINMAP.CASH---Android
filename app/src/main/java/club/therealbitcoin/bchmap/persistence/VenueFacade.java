@@ -2,7 +2,6 @@ package club.therealbitcoin.bchmap.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -16,15 +15,11 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
 public class VenueFacade {
-    public static final String TAG = "TRBC";
-    public static final String THEME = "THEME";
-    public static final int ONE_HOUR = 60 * 60 * 1000;
-    public static final int ONE_DAY = ONE_HOUR * 24;
+    private static final String THEME = "THEME";
     private static VenueFacade ourInstance = new VenueFacade();
-    private static long nextUpdateClearCache = System.currentTimeMillis() + ONE_HOUR;
     private static String SHARED_PREF = "SDfdsfds";
-    boolean hasChangedList = true;
-    boolean hasChangedFavoList = true;
+    private boolean hasChangedList = true;
+    private boolean hasChangedFavoList = true;
     private Map<String, Venue> venuesMap = new HashMap<String, Venue>();
     private List<Venue> venuesList = new ArrayList<Venue>();
     private List<String> titles = new ArrayList<String>();
@@ -106,19 +101,17 @@ public class VenueFacade {
             return venuesList;
 
         List<Venue> results = new ArrayList<Venue>();
-        synchronized (results) {
-            for (int i = 0; i < venuesList.size(); i++) {
-                Venue currentVenue = venuesList.get(i);
-                int y = 0;
-                for (; y < results.size(); ) {
-                    Venue currentResult = results.get(y);
-                    if (calcDistance(userPosition, currentVenue) < calcDistance(userPosition, currentResult)) {
-                        break;
-                    }
-                    y++;
+        for (int i = 0; i < venuesList.size(); i++) {
+            Venue currentVenue = venuesList.get(i);
+            int y = 0;
+            for (; y < results.size(); ) {
+                Venue currentResult = results.get(y);
+                if (calcDistance(userPosition, currentVenue) < calcDistance(userPosition, currentResult)) {
+                    break;
                 }
-                results.add(y, currentVenue);
+                y++;
             }
+            results.add(y, currentVenue);
         }
         return results;
     }
