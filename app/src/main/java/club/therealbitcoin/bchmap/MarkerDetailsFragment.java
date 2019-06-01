@@ -44,19 +44,40 @@ import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
 public class MarkerDetailsFragment extends DialogFragment implements View.OnClickListener {
 
-	public static final String PARCEL_ID = "dsjlkfndsjkf";
-	private static final String TAG = "TRBCDialog";
-	private static final String IS_ON_MAP_VIEW = "dfdsfn34fn";
-	private UpdateActivityCallback updateActivityCallback;
-	private int accentColor;
-	private int primaryColor;
-	private String accent;
-	private String primary;
-	private TextView[] tags = new TextView[10];
-	private boolean isMapView;
-	private Venue venue;
+    public static final String PARCEL_ID = "dsjlkfndsjkf";
+    private static final String TAG = "TRBCDialog";
+    private static final String IS_ON_MAP_VIEW = "dfdsfn34fn";
+    private UpdateActivityCallback updateActivityCallback;
+    private int accentColor;
+    private int primaryColor;
+    private String accent;
+    private String primary;
+    private TextView[] tags = new TextView[10];
+    private boolean isMapView;
+    private Venue venue;
+    private boolean isFavo = false;
 
-	@Override
+    /*
+        //TODO share detailed address information with a link to google maps for that place
+        private void shareDeepLink() {
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
+            startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
+        }
+    */
+    public static MarkerDetailsFragment newInstance(Venue v, UpdateActivityCallback cb, boolean isOnMapView) {
+        MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
+        myFragment.updateActivityCallback = cb;
+        Bundle args = new Bundle();
+        args.putParcelable(PARCEL_ID, v);
+        args.putBoolean(IS_ON_MAP_VIEW, isOnMapView);
+        myFragment.setArguments(args);
+
+        return myFragment;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.marker_detail_fragment, container, true);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -64,81 +85,81 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         setCancelable(true);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         venue = getArguments().getParcelable(PARCEL_ID);
-		isMapView = getArguments().getBoolean(IS_ON_MAP_VIEW);
+        isMapView = getArguments().getBoolean(IS_ON_MAP_VIEW);
         initButtons(venue, view);
 
         initReviewText(view, venue);
-        ((TextView)view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
+        ((TextView) view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
 
-		TextView header = view.findViewById(R.id.dialog_header);
-		View closeContainer = view.findViewById(R.id.close_details_dialog);
-		header.setText(venue.name);
-		header.setSelected(true);
-		closeContainer.setOnClickListener(this);
+        TextView header = view.findViewById(R.id.dialog_header);
+        View closeContainer = view.findViewById(R.id.close_details_dialog);
+        header.setText(venue.name);
+        header.setSelected(true);
+        closeContainer.setOnClickListener(this);
         initTagValues(view, venue);
 
 
         initDiscountText(view, venue);
 
-		ImageView img = view.findViewById(R.id.img);
-		img.setOnClickListener(this);
-		String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
-		Log.d(TAG,imgUri);
+        ImageView img = view.findViewById(R.id.img);
+        img.setOnClickListener(this);
+        String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
+        Log.d(TAG, imgUri);
 
-		if (!ConnectionChecker.hasInternetConnection(getContext())) {
-			showToast(R.string.toast_no_internet);
-			//img.setBackgroundResource(R.drawable.placeholder);
-			//return view; let it try to load from cache
-			loadImage(img, imgUri, null);
-		} else {
-			loadImage(img, imgUri, new RequestListener<Drawable>() {
-				@Override
-				public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-					showToast(R.string.toast_image_unavailable);
-					return false;
-				}
+        if (!ConnectionChecker.hasInternetConnection(getContext())) {
+            showToast(R.string.toast_no_internet);
+            //img.setBackgroundResource(R.drawable.placeholder);
+            //return view; let it try to load from cache
+            loadImage(img, imgUri, null);
+        } else {
+            loadImage(img, imgUri, new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    showToast(R.string.toast_image_unavailable);
+                    return false;
+                }
 
-				@Override
-				public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-					return false;
-				}
-			});
-		}
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    return false;
+                }
+            });
+        }
 
-		return view;
+        return view;
     }
 
-	private void loadImage(ImageView img, String imgUri, RequestListener<Drawable> listener) {
-		Glide.with(this)
-				.load(imgUri)
-				.addListener(listener)
-				.apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
-				.into(img).getView().setBackgroundResource(R.drawable.placeholder);
-	}
+    private void loadImage(ImageView img, String imgUri, RequestListener<Drawable> listener) {
+        Glide.with(this)
+                .load(imgUri)
+                .addListener(listener)
+                .apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(img).getView().setBackgroundResource(R.drawable.placeholder);
+    }
 
-	private void showToast(int stringId) {
-		Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
-	}
+    private void showToast(int stringId) {
+        Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
+    }
 
-	@Override
-	public void onClick(View v) {
-		dismiss();
-	}
+    @Override
+    public void onClick(View v) {
+        dismiss();
+    }
 
     private void initReviewText(View view, Venue venue) {
-		StringBuilder builder = new StringBuilder();
-		if (venue.reviews == 0) {
-			builder.append(getString(R.string.reviewsNotAvailable));
-		} else {
-			builder.append(getString(R.string.reviews));
-			builder.append(" ");
-			builder.append(venue.stars);
-			builder.append(" (");
-			builder.append(venue.reviews);
-			builder.append(")");
-		}
+        StringBuilder builder = new StringBuilder();
+        if (venue.reviews == 0) {
+            builder.append(getString(R.string.reviewsNotAvailable));
+        } else {
+            builder.append(getString(R.string.reviews));
+            builder.append(" ");
+            builder.append(venue.stars);
+            builder.append(" (");
+            builder.append(venue.reviews);
+            builder.append(")");
+        }
 
-        ((TextView)view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
+        ((TextView) view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
     }
 
     private void initDiscountText(View view, Venue venue) {
@@ -146,272 +167,249 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         if (discountText != -1)
             ((TextView)view.findViewById(R.id.dialog_discount)).setText(discountText);
         else {*/
-            //((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
+        //((TextView)view.findViewById(R.id.dialog_discount)).setVisibility(View.INVISIBLE);
         //}
     }
 
     private void initTagValues(View view, Venue venue) {
         String[] attribs = venue.getAttributes();
-        Log.d("TRBC","attribs:" + attribs);
+        Log.d("TRBC", "attribs:" + attribs);
         if (attribs != null) {
-		initTagViews(view);
-		int i = 0;
-		Log.d("TRBC","itTagVie:");
-		for (String a : attribs
-			) {
-			if (a == null || a.trim().length() == 0)
-			break;
+            initTagViews(view);
+            int i = 0;
+            Log.d("TRBC", "itTagVie:");
+            for (String a : attribs
+            ) {
+                if (a == null || a.trim().length() == 0)
+                    break;
 
-			Log.d("TRBC","aaaaaaaaaaaa:" + a);
-			String[] array = getResources().getStringArray(R.array.location_attributes);
-			tags[i++].setText(array[Integer.valueOf(a)]);
-			}
-		}
+                Log.d("TRBC", "aaaaaaaaaaaa:" + a);
+                String[] array = getResources().getStringArray(R.array.location_attributes);
+                tags[i++].setText(array[Integer.valueOf(a)]);
+            }
+        }
     }
 
     private void initTagViews(View view) {
-		tags[0] = view.findViewById(R.id.tag0);
-		tags[1] = view.findViewById(R.id.tag1);
-		tags[2] = view.findViewById(R.id.tag2);
-		tags[3] = view.findViewById(R.id.tag3);
-	}
+        tags[0] = view.findViewById(R.id.tag0);
+        tags[1] = view.findViewById(R.id.tag1);
+        tags[2] = view.findViewById(R.id.tag2);
+        tags[3] = view.findViewById(R.id.tag3);
+    }
 
-	private void initButtons(final Venue venue, View dialog) {
-		final View btn_route = dialog.findViewById(R.id.dialog_button_route);
+    private void initButtons(final Venue venue, View dialog) {
+        final View btn_route = dialog.findViewById(R.id.dialog_button_route);
 
-		clickedRouteButton(venue, btn_route);
-		if (isMapView) {
-			initReviewButton(dialog);
-		} else {
-			initMapButton(dialog);
-		}
+        clickedRouteButton(venue, btn_route);
+        if (isMapView) {
+            initReviewButton(dialog);
+        } else {
+            initMapButton(dialog);
+        }
 
-		final View btn_favo_selected = dialog.findViewById(R.id.dialog_button_favo_selected);
-		final View btn_favo_unselected = dialog.findViewById(R.id.dialog_button_favo_unselected);
+        final View btn_favo_selected = dialog.findViewById(R.id.dialog_button_favo_selected);
+        final View btn_favo_unselected = dialog.findViewById(R.id.dialog_button_favo_unselected);
 
-		Context ctx = getContext();
-		if (venue.isFavorite(ctx)) {
-			btn_favo_selected.setVisibility(View.VISIBLE);
-			switchColor(btn_favo_selected, true, null);
-			isFavo = true;
-		} else {
-			btn_favo_unselected.setVisibility(View.VISIBLE);
-		}
+        Context ctx = getContext();
+        if (venue.isFavorite(ctx)) {
+            btn_favo_selected.setVisibility(View.VISIBLE);
+            switchColor(btn_favo_selected, true, null);
+            isFavo = true;
+        } else {
+            btn_favo_unselected.setVisibility(View.VISIBLE);
+        }
 
-		clickedFavoButtonSelected(venue, btn_favo_selected, btn_favo_unselected, ctx);
-		clickedFavoButtonUnselected(venue, btn_favo_selected, btn_favo_unselected, ctx);
-	}
+        clickedFavoButtonSelected(venue, btn_favo_selected, btn_favo_unselected, ctx);
+        clickedFavoButtonUnselected(venue, btn_favo_selected, btn_favo_unselected, ctx);
+    }
 
-	private void clickedRouteButton(Venue venue, View btn_route) {
-		btn_route.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				switchColor(btn_route, true, null);
-				openMapsRoute(venue);
-				resetColorWithDelay(btn_route);
-			}
-		});
-	}
-	private void initReviewButton(View dialog) {
-		final View btn_review = dialog.findViewById(R.id.dialog_button_review);
-		btn_review.setVisibility(View.VISIBLE);
-		btn_review.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					String placesId = JsonParser.getPlacesId(getActivity(),venue.id);
-					String targetURL = "https://search.google.com/local/writereview?placeid=" + placesId;
-					Log.d("TRBC","targetURL: " + targetURL);
-					if (placesId == null) {
-						Toast.makeText(getContext(),R.string.missing_places_id,Toast.LENGTH_LONG).show();
-						//btn_review.setEnabled(false);
-						switchColor(btn_review, true, new AnimatorEndAbstract() {
-							@Override
-							public void onAnimationEnd(Animator animation) {
-								switchColor(btn_review, false, null);
-							}
-						});
-						btn_review.setAlpha(0.5f);
-						return;
-					}
+    private void clickedRouteButton(Venue venue, View btn_route) {
+        btn_route.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchColor(btn_route, true, null);
+                openMapsRoute(venue);
+                resetColorWithDelay(btn_route);
+            }
+        });
+    }
 
-					Toast.makeText(getContext(),R.string.found_places_id,Toast.LENGTH_LONG).show();
-					Intent i = new Intent(Intent.ACTION_VIEW,
-							Uri.parse(targetURL));
-					switchColor(btn_review, true, null);
-					startActivity(i);
-					resetColorWithDelay(btn_review);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-/*
-	private void initShareButton(View dialog) {
-		final View btn_review = dialog.findViewById(R.id.dialog_button_review);
-		btn_review.setVisibility(View.VISIBLE);
-		btn_review.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
-				switchColor(btn_review, true, null);
-				shareDeepLink();
-				resetColorWithDelay(btn_review);
-			}
-		});
-	}
-*/
-	private void initMapButton(View dialog) {
-		final View btn_map = dialog.findViewById(R.id.dialog_button_map);
-		btn_map.setVisibility(View.VISIBLE);
-		btn_map.setOnClickListener(v -> {
-			dismiss();
-			MarkerDetailsFragment.this.updateActivityCallback.switchTabZoomCamera();
-		});
-	}
+    private void initReviewButton(View dialog) {
+        final View btn_review = dialog.findViewById(R.id.dialog_button_review);
+        btn_review.setVisibility(View.VISIBLE);
+        btn_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String placesId = JsonParser.getPlacesId(getActivity(), venue.id);
+                    String targetURL = "https://search.google.com/local/writereview?placeid=" + placesId;
+                    Log.d("TRBC", "targetURL: " + targetURL);
+                    if (placesId == null) {
+                        Toast.makeText(getContext(), R.string.missing_places_id, Toast.LENGTH_LONG).show();
+                        //btn_review.setEnabled(false);
+                        switchColor(btn_review, true, new AnimatorEndAbstract() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                switchColor(btn_review, false, null);
+                            }
+                        });
+                        btn_review.setAlpha(0.5f);
+                        return;
+                    }
 
+                    Toast.makeText(getContext(), R.string.found_places_id, Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(targetURL));
+                    switchColor(btn_review, true, null);
+                    startActivity(i);
+                    resetColorWithDelay(btn_review);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-private void clickedFavoButtonUnselected(Venue venue, View btn_favo_selected,  View btn_favo_unselected, Context ctx) {
-		btn_favo_unselected.setOnClickListener(v -> {
-			showToast(R.string.toast_added_favorite);
-			VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
-			isFavo = true;
-			//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
+    /*
+        private void initShareButton(View dialog) {
+            final View btn_review = dialog.findViewById(R.id.dialog_button_review);
+            btn_review.setVisibility(View.VISIBLE);
+            btn_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), getString(R.string.toast_sharing_venue), Toast.LENGTH_SHORT).show();
+                    switchColor(btn_review, true, null);
+                    shareDeepLink();
+                    resetColorWithDelay(btn_review);
+                }
+            });
+        }
+    */
+    private void initMapButton(View dialog) {
+        final View btn_map = dialog.findViewById(R.id.dialog_button_map);
+        btn_map.setVisibility(View.VISIBLE);
+        btn_map.setOnClickListener(v -> {
+            dismiss();
+            MarkerDetailsFragment.this.updateActivityCallback.switchTabZoomCamera();
+        });
+    }
 
-			btn_favo_selected.setVisibility(View.VISIBLE);
-			btn_favo_unselected.setVisibility(View.GONE);
-			toggleBackgroundColor(venue, btn_favo_selected, ctx);
-		});
-		}
+    private void clickedFavoButtonUnselected(Venue venue, View btn_favo_selected, View btn_favo_unselected, Context ctx) {
+        btn_favo_unselected.setOnClickListener(v -> {
+            showToast(R.string.toast_added_favorite);
+            VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
+            isFavo = true;
+            //FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
 
+            btn_favo_selected.setVisibility(View.VISIBLE);
+            btn_favo_unselected.setVisibility(View.GONE);
+            toggleBackgroundColor(venue, btn_favo_selected, ctx);
+        });
+    }
 
-private void clickedFavoButtonSelected(Venue venue, View btn_favo_selected,  View btn_favo_unselected, Context ctx) {
-	btn_favo_selected.setOnClickListener(v -> {
-			showToast(R.string.toast_removed_favorite);
-			VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
-			isFavo = false;
-			//FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
+    private void clickedFavoButtonSelected(Venue venue, View btn_favo_selected, View btn_favo_unselected, Context ctx) {
+        btn_favo_selected.setOnClickListener(v -> {
+            showToast(R.string.toast_removed_favorite);
+            VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
+            isFavo = false;
+            //FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
 
-			btn_favo_selected.setVisibility(View.GONE);
-			btn_favo_unselected.setVisibility(View.VISIBLE);
-			toggleBackgroundColor(venue, btn_favo_unselected, ctx);
-		});
-	}
+            btn_favo_selected.setVisibility(View.GONE);
+            btn_favo_unselected.setVisibility(View.VISIBLE);
+            toggleBackgroundColor(venue, btn_favo_unselected, ctx);
+        });
+    }
 
-	private void toggleBackgroundColor(Venue venue, View btn_favo, Context ctx) {
-		switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				venue.setFavorite(isFavo, ctx);
-				updateActivityCallback.initAllListViews();
-			}
-		});
-	}
+    private void toggleBackgroundColor(Venue venue, View btn_favo, Context ctx) {
+        switchColor(btn_favo, isFavo, new AnimatorEndAbstract() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                venue.setFavorite(isFavo, ctx);
+                updateActivityCallback.initAllListViews();
+            }
+        });
+    }
 
+    private void animateColorChange(View view, String fromColor, String toColor, Animator.AnimatorListener afterAnim) {
+        final float[] from = new float[3];
+        final float[] to = new float[3];
 
-	private void animateColorChange(View view, String fromColor, String toColor, Animator.AnimatorListener afterAnim) {
-		final float[] from = new float[3];
-		final float[] to = new float[3];
+        Log.d("TRBC", "fromColor:" + fromColor);
+        Log.d("TRBC", "toColor:" + toColor);
 
-		Log.d("TRBC", "fromColor:" + fromColor);
-		Log.d("TRBC", "toColor:" + toColor);
+        Color.colorToHSV(Color.parseColor(fromColor), from);
+        Color.colorToHSV(Color.parseColor(toColor), to);
 
-		Color.colorToHSV(Color.parseColor(fromColor), from);
-		Color.colorToHSV(Color.parseColor(toColor), to);
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        valueAnimator.setDuration(300);
 
-		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
-		valueAnimator.setDuration(300);
+        final float[] hsv = new float[3];
+        valueAnimator.addUpdateListener(animation -> {
+            // Transition along each axis of HSV (hue, saturation, value)
+            hsv[0] = from[0] + (to[0] - from[0]) * animation.getAnimatedFraction();
+            hsv[1] = from[1] + (to[1] - from[1]) * animation.getAnimatedFraction();
+            hsv[2] = from[2] + (to[2] - from[2]) * animation.getAnimatedFraction();
 
-		final float[] hsv  = new float[3];
-		valueAnimator.addUpdateListener(animation -> {
-			// Transition along each axis of HSV (hue, saturation, value)
-			hsv[0] = from[0] + (to[0] - from[0])*animation.getAnimatedFraction();
-			hsv[1] = from[1] + (to[1] - from[1])*animation.getAnimatedFraction();
-			hsv[2] = from[2] + (to[2] - from[2])*animation.getAnimatedFraction();
+            view.setBackgroundColor(Color.HSVToColor(hsv));
+        });
 
-			view.setBackgroundColor(Color.HSVToColor(hsv));
-		});
+        if (afterAnim != null)
+            valueAnimator.addListener(afterAnim);
 
-		if (afterAnim != null)
-			valueAnimator.addListener(afterAnim);
+        valueAnimator.start();
+    }
 
-		valueAnimator.start();
-	}
+    private void resetColorWithDelay(View btn_route) {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> switchColor(btn_route, false, null), 300L);
+    }
 
-	private void resetColorWithDelay(View btn_route) {
-		new Handler(Looper.getMainLooper()).postDelayed(() -> switchColor(btn_route, false, null),300L);
-	}
-
-	@Override
+    @Override
     public void onDestroy() {
         super.onDestroy();
         updateActivityCallback = null;
     }
 
-	private boolean isFavo = false;
+    private void switchColor(View btn, boolean onOff, Animator.AnimatorListener afterAnim) {
+        if (accent == null) {
+            accentColor = getResources().getColor(R.color.colorAccent);
+            primaryColor = getResources().getColor(R.color.colorPrimaryDark);
+            accent = "#" + Integer.toHexString(accentColor).substring(2);
+            primary = "#" + Integer.toHexString(primaryColor).substring(2);
 
-	private void switchColor(View btn, boolean onOff, Animator.AnimatorListener afterAnim) {
-		if (accent == null) {
-			accentColor = getResources().getColor(R.color.colorAccent);
-			primaryColor = getResources().getColor(R.color.colorPrimaryDark);
-			accent = "#" + Integer.toHexString(accentColor).substring(2);
-			primary = "#" + Integer.toHexString(primaryColor).substring(2);
+            Log.d("TRBC", "accent:" + accent);
+            Log.d("TRBC", "primary:" + primary);
 
-			Log.d("TRBC", "accent:" + accent);
-			Log.d("TRBC", "primary:" + primary);
-
-		}
-	    if (onOff)
-			animateColorChange(btn, primary, accent, afterAnim);
-	    else
-	    	animateColorChange(btn, accent, primary, afterAnim);
+        }
+        if (onOff)
+            animateColorChange(btn, primary, accent, afterAnim);
+        else
+            animateColorChange(btn, accent, primary, afterAnim);
     }
 
-	private void openMapsRoute(Venue v) {
-		try {
-			String placesId = JsonParser.getPlacesId(getActivity(),v.id);
-			String targetURL;
-			targetURL = "http://www.google.com/maps/search/?api=1&query=" +
-					v.getCoordinates().latitude +
-					"," +
-					v.getCoordinates().longitude;
-			if (placesId != null) {
-				targetURL += "&query_place_id=" + placesId;
-			}
-			Log.d("TRBC","targetURL: " + targetURL);
+    private void openMapsRoute(Venue v) {
+        try {
+            String placesId = JsonParser.getPlacesId(getActivity(), v.id);
+            String targetURL;
+            targetURL = "http://www.google.com/maps/search/?api=1&query=" +
+                    v.getCoordinates().latitude +
+                    "," +
+                    v.getCoordinates().longitude;
+            if (placesId != null) {
+                targetURL += "&query_place_id=" + placesId;
+            }
+            Log.d("TRBC", "targetURL: " + targetURL);
 
-			Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
-			Intent i = new Intent(Intent.ACTION_VIEW,
-					Uri.parse(targetURL));
-			startActivity(i);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(targetURL));
+            startActivity(i);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	}
-
-/*
-	//TODO share detailed address information with a link to google maps for that place
-	private void shareDeepLink() {
-		Intent share = new Intent(Intent.ACTION_SEND);
-		share.setType("text/plain");
-		share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
-		startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
-	}
-*/
-	public static MarkerDetailsFragment newInstance(Venue v, UpdateActivityCallback cb, boolean isOnMapView) {
-        MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
-		myFragment.updateActivityCallback = cb;
-		Bundle args = new Bundle();
-		args.putParcelable(PARCEL_ID, v);
-		args.putBoolean(IS_ON_MAP_VIEW, isOnMapView);
-		myFragment.setArguments(args);
-
-		return myFragment;
-	}
+    }
 }

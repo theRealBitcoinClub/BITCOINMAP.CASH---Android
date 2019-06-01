@@ -15,17 +15,23 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 public class VenueFacade {
     public static final String TAG = "TRBC";
     public static final String THEME = "THEME";
+    public static final int ONE_HOUR = 60 * 60 * 1000;
+    public static final int ONE_DAY = ONE_HOUR * 24;
     private static VenueFacade ourInstance = new VenueFacade();
-    private Map<String, Venue> venuesMap = new HashMap<String,Venue>();
+    private static long nextUpdateClearCache = System.currentTimeMillis() + ONE_HOUR;
+    private static String SHARED_PREF = "SDfdsfds";
+    boolean hasChangedList = true;
+    boolean hasChangedFavoList = true;
+    private Map<String, Venue> venuesMap = new HashMap<String, Venue>();
     private ArrayList<Venue> venuesList = new ArrayList<Venue>();
     private ArrayList<String> titles = new ArrayList<String>();
     private List<Venue> favorites = new ArrayList<Venue>();
     private ArrayList<String> titlesFavo = new ArrayList<String>();
-    private Map<String,ArrayList<Venue>> filteredVenuesMap = new HashMap<String,ArrayList<Venue>>();
+    private Map<String, ArrayList<Venue>> filteredVenuesMap = new HashMap<String, ArrayList<Venue>>();
     private int theme = -1;
-    public static final int ONE_HOUR = 60 * 60 * 1000;
-    public static final int ONE_DAY = ONE_HOUR * 24;
-    private static long nextUpdateClearCache = System.currentTimeMillis()+ ONE_HOUR;
+
+    private VenueFacade() {
+    }
 
     public static VenueFacade getInstance() {
         /*if (nextUpdateClearCache < System.currentTimeMillis()) {
@@ -35,13 +41,21 @@ public class VenueFacade {
         return ourInstance;
     }
 
+    /*
+    THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
+     */
+    public static VenueFacade createNewFacadeForTesting() {
+        ourInstance = new VenueFacade();
+        return ourInstance;
+    }
+
     public ArrayList<Venue> getVenuesList() {
         return venuesList;
     }
 
     public boolean isTypeFiltered(int t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean("filter"+t, false);
+        return sharedPreferences.getBoolean("filter" + t, false);
         /*ArrayList<Venue> venues = filteredVenuesMap.get(""+t);
         Log.d(TAG,"isTypeFiltered venues:" + venues);
         if (venues == null || venues.size() == 0)
@@ -52,9 +66,9 @@ public class VenueFacade {
 
     public void restoreFilteredVenues(VenueType t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("filter"+t.getIndex(), false).apply();
-        Log.d(TAG,"restoreFilteredVenues" + t);
-        ArrayList<Venue> venues = filteredVenuesMap.remove(""+t.getIndex());
+        sharedPreferences.edit().putBoolean("filter" + t.getIndex(), false).apply();
+        Log.d(TAG, "restoreFilteredVenues" + t);
+        ArrayList<Venue> venues = filteredVenuesMap.remove("" + t.getIndex());
         if (venues == null || venues.size() == 0)
             return;
 
@@ -63,8 +77,8 @@ public class VenueFacade {
             v.setFiltered(false);
         }*/
 
-        Log.d(TAG,"restoreFilteredVenues Yep" + t);
-        venuesList.addAll(0,venues);
+        Log.d(TAG, "restoreFilteredVenues Yep" + t);
+        venuesList.addAll(0, venues);
         hasChangedBothLists();
     }
 
@@ -75,24 +89,24 @@ public class VenueFacade {
 
     public void filterListByType(VenueType t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean("filter"+t.getIndex(), true).apply();
+        sharedPreferences.edit().putBoolean("filter" + t.getIndex(), true).apply();
 
         int initialSize = venuesList.size();
-        for (int i = 0; i< initialSize; i++) {
-            Log.d("TRBC","check type:" + t.toString() + " index:" + i);
+        for (int i = 0; i < initialSize; i++) {
+            Log.d("TRBC", "check type:" + t.toString() + " index:" + i);
             if (venuesList.size() == i) {
-                Log.d("TRBC","break:" + t.toString() + " index:" + i);
+                Log.d("TRBC", "break:" + t.toString() + " index:" + i);
                 break;
             }
 
             int typeIndex = t.getIndex();
             if (venuesList.get(i).type == typeIndex) {
-                Log.d("TRBC","remove item type:" + t.toString() + " index:" + i);
-                ArrayList<Venue> filteredVenues = filteredVenuesMap.get(""+typeIndex);
+                Log.d("TRBC", "remove item type:" + t.toString() + " index:" + i);
+                ArrayList<Venue> filteredVenues = filteredVenuesMap.get("" + typeIndex);
                 if (filteredVenues == null || filteredVenues.size() == 0) {
                     //for (VenueType x: VenueType.values()) {
                     filteredVenues = new ArrayList<Venue>();
-                        filteredVenuesMap.put(""+typeIndex, filteredVenues);
+                    filteredVenuesMap.put("" + typeIndex, filteredVenues);
                     //}
                     //filteredVenues = filteredVenuesMap.get(""+typeIndex);
                 }
@@ -109,55 +123,55 @@ public class VenueFacade {
     }
 
     public ArrayList<String> getVenueTitles() {
-        Log.d("TRBC","getVenueTitles");
+        Log.d("TRBC", "getVenueTitles");
         if (!hasChangedList && titles.size() > 0) {
             return titles;
         }
 
         titles.clear();
-        Log.d("TRBC","titles start");
-        for (Venue v: getVenuesList()
-             ) {
-            Log.d("TRBC","titlessssss" + v.name);
+        Log.d("TRBC", "titles start");
+        for (Venue v : getVenuesList()
+        ) {
+            Log.d("TRBC", "titlessssss" + v.name);
 
             titles.add(v.name);
         }
-        Log.d("TRBC","titles end");
+        Log.d("TRBC", "titles end");
         hasChangedList = false;
         return titles;
     }
 
     public ArrayList<String> getFavoTitles() {
-        Log.d("TRBC","getFavoTitles");
+        Log.d("TRBC", "getFavoTitles");
         if (!hasChangedFavoList && titlesFavo.size() > 0) {
             return titlesFavo;
         }
 
         titlesFavo.clear();
-        Log.d("TRBC","titlesfavos start");
-        for (Venue v: getFavoriteVenues()
-                ) {
-            Log.d("TRBC","favosssssssss" + v.name);
+        Log.d("TRBC", "titlesfavos start");
+        for (Venue v : getFavoriteVenues()
+        ) {
+            Log.d("TRBC", "favosssssssss" + v.name);
             titlesFavo.add(v.name);
         }
-        Log.d("TRBC","titlesfavos end");
+        Log.d("TRBC", "titlesfavos end");
         hasChangedFavoList = false;
         return titlesFavo;
     }
 
     private void addVenue(Venue v, Context ctx, int favoCounter) {
         hasChangedList = true;
-        Log.d("TRBC","addVenue" + v);
-       if (venuesMap.put(v.id, v) == null) {
-           venuesList.add(v);
-       }
+        Log.d("TRBC", "addVenue" + v);
+        if (venuesMap.put(v.id, v) == null) {
+            venuesList.add(v);
+        }
 
         if (v.isFavorite(ctx)) {
-            Log.d(TAG,"isFavorite true favorcounter:" + favoCounter);
+            Log.d(TAG, "isFavorite true favorcounter:" + favoCounter);
             v.favoListIndex = favoCounter;
             favorites.add(v);
         } else {
-            Log.d(TAG,"isFavorite false");
+            Log.d(TAG, "isFavorite false");
         }
     }
 
@@ -165,16 +179,11 @@ public class VenueFacade {
         return venuesMap.get(id);
     }
 
-    boolean hasChangedList = true;
-    boolean hasChangedFavoList = true;
-
-    private static String SHARED_PREF= "SDfdsfds";
-
     public void addFavoriteVenue(Venue v, Context ctx) {
         v.favoListIndex = favorites.size();
-        Log.d("TRBC","addFavoriteVenue persist:" + v);
+        Log.d("TRBC", "addFavoriteVenue persist:" + v);
         favorites.add(v);
-        v.setFavorite(true,ctx);
+        v.setFavorite(true, ctx);
         //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         //sharedPreferences.edit().putBoolean(v.id, true).commit();
 
@@ -192,21 +201,18 @@ public class VenueFacade {
         hasChangedList = true;
     }
 
-    public List<Venue> getFavoriteVenues () {
-        Log.d("TRBC","getFavoriteVenues :");
+    public List<Venue> getFavoriteVenues() {
+        Log.d("TRBC", "getFavoriteVenues :");
         return favorites;
     }
 
-    private VenueFacade() {
-    }
-
     public void removeFavoriteVenue(Venue item, Context ctx) {
-        Log.d("TRBC","removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
+        Log.d("TRBC", "removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
         if (favorites.size() != 0)
             favorites.remove(item.favoListIndex);
         //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         //sharedPreferences.edit().remove(item.id).commit();
-        item.setFavorite(false,ctx);
+        item.setFavorite(false, ctx);
         hasChangedFavoList = true;
     }
 
@@ -239,20 +245,12 @@ public class VenueFacade {
         return theme;
     }
 
-    /*
-    THIS IS FOR MAKING TESTING EASIER ONLY USE IN TESTS
-     */
-    public static VenueFacade createNewFacadeForTesting() {
-        ourInstance = new VenueFacade();
-        return ourInstance;
-    }
-
     public void initVenues(List<Venue> venues, Context ctx) {
-        Log.d(TAG,"initVenues");
+        Log.d(TAG, "initVenues");
         VenueFacade.getInstance().clearCache(ctx);
 
         int favoCounter = -1;
-        for (Venue v: venues) {
+        for (Venue v : venues) {
             if (v.isFavorite(ctx))
                 favoCounter++;
 

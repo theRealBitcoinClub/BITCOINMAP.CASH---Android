@@ -4,39 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BCHMapsActivity">
     <item
+        android:id="@+id/empty"
         android:icon="@drawable/ic_action_settings"
-        android:title="@string/filter"
-        android:id="@+id/empty">
+        android:title="@string/filter">
 
-            <group android:checkableBehavior="all">
-                <item android:id="@+id/menu_food"
-                    android:icon="@drawable/ic_map_food"
-                    android:title="@string/type_food"
-                    android:checkable="true"/>
-                <item android:id="@+id/menu_sweet"
-                    android:icon="@drawable/ic_map_sweet"
-                    android:title="@string/type_sweet"
-                    android:checkable="true"/>
-                <item android:id="@+id/menu_bar"
-                    android:icon="@drawable/ic_map_bar"
-                    android:title="@string/type_bar"
-                    android:checkable="true"/>
-                <item android:id="@+id/menu_shops"
-                    android:icon="@drawable/ic_map_shop"
-                    android:title="@string/type_super"
-                    android:checkable="true"/>
-                <item android:id="@+id/menu_fashion"
-                    android:icon="@drawable/ic_map_basket"
-                    android:title="@string/type_fashion"
-                    android:checkable="true"/>
-                <item android:id="@+id/menu_hotel"
-                    android:icon="@drawable/ic_map_hotel"
-                    android:title="@string/type_hotel"
-                    android:checkable="true"/>
-            </group>
-        <item android:id="@+id/menu_switch"
-            android:title="@string/switch_style"/>
-        <item android:id="@+id/menu_browser"
-            android:title="@string/browser"/>
+        <group android:checkableBehavior="all">
+            <item
+                android:id="@+id/menu_food"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_food"
+                android:title="@string/type_food" />
+            <item
+                android:id="@+id/menu_sweet"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_sweet"
+                android:title="@string/type_sweet" />
+            <item
+                android:id="@+id/menu_bar"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_bar"
+                android:title="@string/type_bar" />
+            <item
+                android:id="@+id/menu_shops"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_shop"
+                android:title="@string/type_super" />
+            <item
+                android:id="@+id/menu_fashion"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_basket"
+                android:title="@string/type_fashion" />
+            <item
+                android:id="@+id/menu_hotel"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_hotel"
+                android:title="@string/type_hotel" />
+        </group>
+        <item
+            android:id="@+id/menu_switch"
+            android:title="@string/switch_style" />
+        <item
+            android:id="@+id/menu_browser"
+            android:title="@string/browser" />
     </item>
 </menu>

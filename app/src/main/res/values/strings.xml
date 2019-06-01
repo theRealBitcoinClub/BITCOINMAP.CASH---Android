@@ -48,178 +48,185 @@
     <string name="toast_removed_favorite">Removed from favorite list!</string>
     <string name="toast_added_favorite">Added to favorite list!</string>
     <string-array name="location_attributes">
-    <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Bitcoin</item>
-    <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Events</item>
-    <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Trading</item>
-    <item>Organic 🐵</item>
-    <item>Vegetarian 🥕</item>
-    <item>Vegan 🐮</item>
-    <item>Healthy 💓</item>
-    <item>Burger 🍔</item>
-    <item>Sandwich 🥪</item>
-    <item>Muffin 🧁</item> //The muffin icon is invisible
-    <item>Brownie 🥮</item>//Brownie is invisible too
-    <item>Cake 🎂</item>
-    <item>Cookie 🍪</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,12Tiramisu</item>
-    <item>Pizza 🍕</item>
-    <item>Salad 🥗</item>
-    <item>Smoothie 🥤</item>
-    <item>Fruit 🍓</item>
-    <item>IceCream 🍦</item>
-    <item>Raw 🥦</item>
-    <item>Handbag 👜</item>
-    <item>Cosmetic 💅</item>
-    <item>Tattoo ♣</item>
-    <item>Piercing 🌀</item>
-    <item>Souvenir 🎁</item>
-    <item>Hatha 🧘</item>
-    <item>Vinyasa 🧘</item>
-    <item>Massage 💆</item>
-    <item>Upcycled 🌲</item>
-    <item>Coffee ☕</item>
-    <item>NoGluten 🌽</item>
-    <item>Cocktails 🍹</item>
-    <item>Beer 🍺</item>
-    <item>Music 🎵</item>
-    <item>🎸🎧🎁-.,1xProjects</item>
-    <item>🎸🎧🎁-.,1xElectro</item>
-    <item>Rock 🎸</item>
-    <item>LiveDJ 🎧</item>
-    <item>Terrace ☀️</item>
-    <item>Seeds 🌱</item>
-    <item>Grinder 🍌</item>
-    <item>Papers 🚬</item>
-    <item>Advice 🌴</item>
-    <item>Calzone 🥟</item>
-    <item>🎸🎧🎁-.,1Suppli</item>
-    <item>MakeUp 🤡</item>
-    <item>Gifts 🎁</item>
-    <item>Tapas 🍠</item>
-    <item>Copas 🍹</item>
-    <item>Piadina 🌮</item>
-    <item>🎸🎧🎁-.,1sHerbs 🌿</item>
-    <item>Grains 🌾</item>
-    <item>Fashion 👗</item>
-    <item>Fair 🤗</item>
-    <item>Women 👩</item>
-    <item>Drinks 🍹</item>
-    <item>TV 📺</item>
-    <item>Retro 🦄</item>
-    <item>🎸🎧🎁-.,1xColor</item>
-    <item>🎸🎧🎁-.,1xBW</item>
-    <item>BTC ₿</item>
-    <item>BCH ₿</item>
-    <item>🎸🎧🎁-.,1xOnline 🖥️</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,2xBooking</item>
-    <item>HotDog 🌭</item>
-    <item>Fast ⏩</item>
-    <item>Kosher 🦄</item>
-    <item>Sushi 🍣</item>
-    <item>Moto 🛵</item>
-    <item>Coche 🚘</item>
-    <item>🎸🎧🎁-.,1xTablet</item>
-    <item>Chicken 🐔</item>
-    <item>Rabbit 🐰</item>
-    <item>Potato 🥔</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,1xDASH</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,1xETH</item>
-    <item>ATM 🏦</item>
-    <item>🎸🎧🎁-.,1yDisco</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger2</item>
-    <item>ToGo 📦</item>
-    <item>Meditation 🧘</item>
-    <item>Wine 🍷</item>
-    <item>Champagne 🥂</item>
-    <item>Alcohol 🍾</item>
-    <item>Booze 🥃</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger</item> //You cant remove because we use fixed indexes, but replace with another string that is unlikely to be typed in by the user
-    <item>🎸🎧🎁🎸🎧🎁-.,dfxgr</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,kmvdf</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,1xParty</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger5</item>
-    <item>BnB 🛏️</item>
-    <item>Haircut ✂️</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,,12xNails 💅</item>
-    <item>Beauty 💅</item>
-    <item>Miso 🍱</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,ubfzger3</item>
-    <item>Rice 🍚</item>
-    <item>Seafood 🦀</item>
-    <item>Hostel 🛏️</item>
-    <item>Fries 🍟</item>
-    <item>Fish 🐟</item>
-    <item>🎸🎧🎁-.,12xChips</item>
-    <item>Italian 🇮🇹</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,123Karaoke 🎤</item>
-    <item> </item> //This is number 114 the no tag text
-    <item>🎸🎧🎁🎸🎧🎁-.,123Battery</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,123Wheels</item>
-    <item>Men ♂️</item>
-    <item>Pasta 🍝</item>
-    <item>Dessert 🍬</item>
-    <item>Starter 🥠</item>
-    <item>BBQ 🍗</item>
-    <item>Noodle 🍜</item>
-    <item>Korean 🥟</item>
-    <item>Market 🧺</item> //invisible item
-    <item>Bread 🥖</item>
-    <item>Bakery 🥨</item>
-    <item>Cafe ☕</item>
-    <item>Games 🎮</item>
-    <item>Snacks 🍿</item>
-    <item>Elegant 🕴️</item>
-    <item>Piano 🎹</item>
-    <item>Brunch 🍱</item>
-    <item>Nachos 🌽</item>
-    <item>Lunch 🥡</item>
-    <item>Breakfast 🥐</item>
-    <item>HappyHour 🥳</item> //hidden item
-    <item>LateNight 🌜</item>
-    <item>Mexican 🇲🇽</item>
-    <item>Burrito 🌯</item>
-    <item>Tortilla 🌮</item>
-    <item>Indonesian 🇮🇩</item>
-    <item>Sports 🏆</item>
-    <item>Pastry 🥧</item>
-    <item>Bistro 🍲</item>
-    <item>Soup 🥣</item>
-    <item>Tea 🍵</item>
-    <item>Onion</item>
-    <item>Steak 🥩</item>
-    <item>Shakes 🥤</item>
-    <item>Empanadas 🥟</item>
-    <item>Dinner 🍽️</item>
-    <item>Sweet 🍭</item>
-    <item>Fried 🍳</item>
-    <item>Omelette 🥚</item>
-    <item>Gin 🍸</item>
-    <item>Donut 🍩</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,12cDelivery 🚚</item>
-    <item>Cups ☕</item>
-    <item>Filter</item>
-    <item>Juice 🍊</item>
-    <item>Vietnamese 🇻🇳</item>
-    <item>Pie 🥮</item> //invisible item
-    <item>Unagi 🐡</item>
-    <item>Greek 🇬🇷</item>
-    <item>Japanese 🇯🇵</item>
-    <item>Tacos 🌮</item>
-    <item>Kombucha 🍵</item>
-    <item>Indian 🇮🇳</item>
-    <item>Nan 🥪</item>
-    <item>Club 🎶</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,1xLiquor</item>
-    <item>Pool 🎱</item>
-    <item>Hotel 🏨</item>
-    <item>Pork 🥓</item>
-    <item>Ribs 🍖</item>
-    <item>Kava 🍵</item>
-    <item>Chai 🍵</item>
-    <item>Izzy 🍵</item>
-    <item>Matcha 🍵</item>
-    <item>🎸🎧🎁🎸🎧🎁-.,12xCBD</item>
-    <item>Latte ☕</item>
+        <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Bitcoin</item>
+        <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Events</item>
+        <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Trading</item>
+        <item>Organic 🐵</item>
+        <item>Vegetarian 🥕</item>
+        <item>Vegan 🐮</item>
+        <item>Healthy 💓</item>
+        <item>Burger 🍔</item>
+        <item>Sandwich 🥪</item>
+        <item>Muffin 🧁</item>
+        //The muffin icon is invisible
+        <item>Brownie 🥮</item>//Brownie is invisible too
+        <item>Cake 🎂</item>
+        <item>Cookie 🍪</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,12Tiramisu</item>
+        <item>Pizza 🍕</item>
+        <item>Salad 🥗</item>
+        <item>Smoothie 🥤</item>
+        <item>Fruit 🍓</item>
+        <item>IceCream 🍦</item>
+        <item>Raw 🥦</item>
+        <item>Handbag 👜</item>
+        <item>Cosmetic 💅</item>
+        <item>Tattoo ♣</item>
+        <item>Piercing 🌀</item>
+        <item>Souvenir 🎁</item>
+        <item>Hatha 🧘</item>
+        <item>Vinyasa 🧘</item>
+        <item>Massage 💆</item>
+        <item>Upcycled 🌲</item>
+        <item>Coffee ☕</item>
+        <item>NoGluten 🌽</item>
+        <item>Cocktails 🍹</item>
+        <item>Beer 🍺</item>
+        <item>Music 🎵</item>
+        <item>🎸🎧🎁-.,1xProjects</item>
+        <item>🎸🎧🎁-.,1xElectro</item>
+        <item>Rock 🎸</item>
+        <item>LiveDJ 🎧</item>
+        <item>Terrace ☀️</item>
+        <item>Seeds 🌱</item>
+        <item>Grinder 🍌</item>
+        <item>Papers 🚬</item>
+        <item>Advice 🌴</item>
+        <item>Calzone 🥟</item>
+        <item>🎸🎧🎁-.,1Suppli</item>
+        <item>MakeUp 🤡</item>
+        <item>Gifts 🎁</item>
+        <item>Tapas 🍠</item>
+        <item>Copas 🍹</item>
+        <item>Piadina 🌮</item>
+        <item>🎸🎧🎁-.,1sHerbs 🌿</item>
+        <item>Grains 🌾</item>
+        <item>Fashion 👗</item>
+        <item>Fair 🤗</item>
+        <item>Women 👩</item>
+        <item>Drinks 🍹</item>
+        <item>TV 📺</item>
+        <item>Retro 🦄</item>
+        <item>🎸🎧🎁-.,1xColor</item>
+        <item>🎸🎧🎁-.,1xBW</item>
+        <item>BTC ₿</item>
+        <item>BCH ₿</item>
+        <item>🎸🎧🎁-.,1xOnline 🖥️</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,2xBooking</item>
+        <item>HotDog 🌭</item>
+        <item>Fast ⏩</item>
+        <item>Kosher 🦄</item>
+        <item>Sushi 🍣</item>
+        <item>Moto 🛵</item>
+        <item>Coche 🚘</item>
+        <item>🎸🎧🎁-.,1xTablet</item>
+        <item>Chicken 🐔</item>
+        <item>Rabbit 🐰</item>
+        <item>Potato 🥔</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,1xDASH</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,1xETH</item>
+        <item>ATM 🏦</item>
+        <item>🎸🎧🎁-.,1yDisco</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger2</item>
+        <item>ToGo 📦</item>
+        <item>Meditation 🧘</item>
+        <item>Wine 🍷</item>
+        <item>Champagne 🥂</item>
+        <item>Alcohol 🍾</item>
+        <item>Booze 🥃</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger</item>
+        //You cant remove because we use fixed indexes, but replace with another string that is
+        unlikely to be typed in by the user
+        <item>🎸🎧🎁🎸🎧🎁-.,dfxgr</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,kmvdf</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,1xParty</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger5</item>
+        <item>BnB 🛏️</item>
+        <item>Haircut ✂️</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,,12xNails 💅</item>
+        <item>Beauty 💅</item>
+        <item>Miso 🍱</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger3</item>
+        <item>Rice 🍚</item>
+        <item>Seafood 🦀</item>
+        <item>Hostel 🛏️</item>
+        <item>Fries 🍟</item>
+        <item>Fish 🐟</item>
+        <item>🎸🎧🎁-.,12xChips</item>
+        <item>Italian 🇮🇹</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,123Karaoke 🎤</item>
+        <item> </item>
+        //This is number 114 the no tag text
+        <item>🎸🎧🎁🎸🎧🎁-.,123Battery</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,123Wheels</item>
+        <item>Men ♂️</item>
+        <item>Pasta 🍝</item>
+        <item>Dessert 🍬</item>
+        <item>Starter 🥠</item>
+        <item>BBQ 🍗</item>
+        <item>Noodle 🍜</item>
+        <item>Korean 🥟</item>
+        <item>Market 🧺</item>
+        //invisible item
+        <item>Bread 🥖</item>
+        <item>Bakery 🥨</item>
+        <item>Cafe ☕</item>
+        <item>Games 🎮</item>
+        <item>Snacks 🍿</item>
+        <item>Elegant 🕴️</item>
+        <item>Piano 🎹</item>
+        <item>Brunch 🍱</item>
+        <item>Nachos 🌽</item>
+        <item>Lunch 🥡</item>
+        <item>Breakfast 🥐</item>
+        <item>HappyHour 🥳</item>
+        //hidden item
+        <item>LateNight 🌜</item>
+        <item>Mexican 🇲🇽</item>
+        <item>Burrito 🌯</item>
+        <item>Tortilla 🌮</item>
+        <item>Indonesian 🇮🇩</item>
+        <item>Sports 🏆</item>
+        <item>Pastry 🥧</item>
+        <item>Bistro 🍲</item>
+        <item>Soup 🥣</item>
+        <item>Tea 🍵</item>
+        <item>Onion</item>
+        <item>Steak 🥩</item>
+        <item>Shakes 🥤</item>
+        <item>Empanadas 🥟</item>
+        <item>Dinner 🍽️</item>
+        <item>Sweet 🍭</item>
+        <item>Fried 🍳</item>
+        <item>Omelette 🥚</item>
+        <item>Gin 🍸</item>
+        <item>Donut 🍩</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,12cDelivery 🚚</item>
+        <item>Cups ☕</item>
+        <item>Filter</item>
+        <item>Juice 🍊</item>
+        <item>Vietnamese 🇻🇳</item>
+        <item>Pie 🥮</item>
+        //invisible item
+        <item>Unagi 🐡</item>
+        <item>Greek 🇬🇷</item>
+        <item>Japanese 🇯🇵</item>
+        <item>Tacos 🌮</item>
+        <item>Kombucha 🍵</item>
+        <item>Indian 🇮🇳</item>
+        <item>Nan 🥪</item>
+        <item>Club 🎶</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,1xLiquor</item>
+        <item>Pool 🎱</item>
+        <item>Hotel 🏨</item>
+        <item>Pork 🥓</item>
+        <item>Ribs 🍖</item>
+        <item>Kava 🍵</item>
+        <item>Chai 🍵</item>
+        <item>Izzy 🍵</item>
+        <item>Matcha 🍵</item>
+        <item>🎸🎧🎁🎸🎧🎁-.,12xCBD</item>
+        <item>Latte ☕</item>
     </string-array>
 
 
@@ -228,173 +235,207 @@
         <item>Events</item>
         <item>Trading</item>
         <item>Organic</item>
-        <!--4--><item>Veggie</item>
+        <!--4-->
+        <item>Veggie</item>
         <item>Vegan</item>
         <item>Healthy</item>
         <item>Burger</item>
         <item>Sandwich 🥪</item>
-        <!--9--><item>Muffin</item>
+        <!--9-->
+        <item>Muffin</item>
         <item>Brownie</item>
         <item>Cake</item>
         <item>Cookie</item>
         <item>Tiramisu</item>
-        <!--14--><item>Pizza</item>
+        <!--14-->
+        <item>Pizza</item>
         <item>Salad</item>
         <item>Smoothie</item>
         <item>Fruit</item>
         <item>Gelato</item>
-        <!--19--><item>Raw</item>
+        <!--19-->
+        <item>Raw</item>
         <item>Handbag</item>
         <item>Cosmetic</item>
         <item>Tattoo</item>
         <item>Piercing</item>
-        <!--24--><item>Souvenir</item>
+        <!--24-->
+        <item>Souvenir</item>
         <item>Hatha</item>
         <item>Vinyasa</item>
         <item>Massage</item>
         <item>Upcycled</item>
-        <!--29--><item>Coffee</item>
+        <!--29-->
+        <item>Coffee</item>
         <item>NoGluten</item>
         <item>Cocktail</item>
         <item>Beer</item>
         <item>Music</item>
-        <!--34--><item>Projects</item>
+        <!--34-->
+        <item>Projects</item>
         <item>Electro</item>
         <item>Rock</item>
         <item>LiveDJ</item>
         <item>Terrace</item>
-        <!--39--><item>Seeds</item>
+        <!--39-->
+        <item>Seeds</item>
         <item>Grinder</item>
         <item>Papers</item>
         <item>Advice</item>
         <item>Calzone</item>
-        <!--44--><item>Suppli</item>
+        <!--44-->
+        <item>Suppli</item>
         <item>MakeUp</item>
         <item>Gifts</item>
         <item>Tapas</item>
         <item>Copas</item>
-        <!--49--><item>Piadina</item>
+        <!--49-->
+        <item>Piadina</item>
         <item>Hierba</item>
         <item>Cereales</item>
         <item>Fashion</item>
         <item>Fair</item>
-        <!--54--><item>Women</item>
+        <!--54-->
+        <item>Women</item>
         <item>Drinks</item>
         <item>TV</item>
         <item>Retro</item>
         <item>Color</item>
-        <!--59--><item>B/W</item>
+        <!--59-->
+        <item>B/W</item>
         <item>BTC</item>
         <item>BCH</item>
         <item>Online</item>
         <item>Booking</item>
-        <!--64--><item>HotDog</item>
+        <!--64-->
+        <item>HotDog</item>
         <item>Fast</item>
         <item>Kosher</item>
-	<item>Sushi</item>
-	<item>Moto</item>
-	<!--69--><item>Coche</item>
-	<item>Tablet</item>
-	<item>Chicken</item>
-	<item>Rabbit</item>
-	<item>Potatoe</item>
-	<!--74--><item>DASH</item>
-	<item>ETH</item>
-	<item>ATM</item>
-	<item>Club</item>
-	<item>Dance</item>
-	<!--79--><item>TakeAway</item>
-	<item>Meditation</item>
-	<item>Wine</item>
-	<item>Champagne</item>
-	<item>Alcohol</item>
-	<!--84--><item>Booze</item>
-	<item>Hookers</item>
-	<item>Girls</item>
-	<item>Gay</item>
-	<item>Party</item>
-	<!--89--><item>English</item>
-	<item>B&amp;B</item>
-	<item>Haircut</item>
-	<item>Nails</item>
-	<item>Beauty</item>
-	<!--94--><item>Miso</item>
-	<item>Teriyaki</item>
-	<item>Rice</item>
-	<item>Seafood</item>
-	<item>Hostel</item>
-	<!--99--><item>Fries</item>
-	<item>Fish</item>
-	<item>Chips</item>
-	<item>Italian</item>
-	<item>Karaoke</item>
-	<!--104--><item> x x x </item>
-	<item>Battery</item>
-	<item>Wheels</item>
-	<item>Men</item>
-  <item>Pasta</item>
-	<!--109--><item>Dessert</item>
-  <item>Starter</item>
-  <item>BBQ</item>
-  <item>Noodle</item>
-  <item>Korean</item>
-	<!--114--><item>Market</item>
-  <item>Bread</item>
-  <item>Bakery</item>
-  <item>Cafe</item>
-  <item>Games</item>
-	<!--119--><item>Snacks</item>
-  <item>Elegant</item>
-  <item>Piano</item>
-  <item>Brunch</item>
-  <item>Nachos</item>
-	<!--124--><item>Lunch</item>
-  <item>Breakfast</item>
-  <item>HappyHour</item>
-  <item>LateNight</item>
-  <item>Mexican</item>
-	<!--129--><item>Burrito</item>
-  <item>Tortilla</item>
-  <item>Indonesian</item>
-  <item>Sports</item>
-  <item>Pastry</item>
-	<!--134--><item>Bistro</item>
-  <item>Soup</item>
-  <item>Tea</item>
-  <item>Onion</item>
-  <item>Steak</item>
-	<!--139--><item>Shakes</item>
-  <item>Empanadas</item>
-  <item>Dinner</item>
-  <item>Sweet</item>
-  <item>Fried</item>
-	<!--144--><item>Omelette</item>
-  <item>Gin</item>
-  <item>Donut</item>
-  <item>Delivery</item>
-  <item>Cups</item>
-	<!--149--><item>Filter</item>
-  <item>Juice</item>
-  <item>Vietnamese</item>
-  <item>Pie</item>
-  <item>Unagi</item>
-	<!--154--><item>Greek</item>
-  <item>Japanese</item>
-  <item>Tacos</item>
-  <item>Kombucha</item>
-  <item>Indian</item>
-	<!--159--><item>Nan</item>
-  <item>Club</item>
-  <item>Liquor</item>
-  <item>Pool</item>
-  <item>Hotel</item>
-	<!--164--><item>Pork</item>
-  <item>Ribs</item>
-  <item>Kava</item>
-  <item>Chai</item>
-  <item>Izzy</item>
-	<!--164--><item>Matcha</item>
-  <item>CBD</item>
-  <item>Latte</item>
+        <item>Sushi</item>
+        <item>Moto</item>
+        <!--69-->
+        <item>Coche</item>
+        <item>Tablet</item>
+        <item>Chicken</item>
+        <item>Rabbit</item>
+        <item>Potatoe</item>
+        <!--74-->
+        <item>DASH</item>
+        <item>ETH</item>
+        <item>ATM</item>
+        <item>Club</item>
+        <item>Dance</item>
+        <!--79-->
+        <item>TakeAway</item>
+        <item>Meditation</item>
+        <item>Wine</item>
+        <item>Champagne</item>
+        <item>Alcohol</item>
+        <!--84-->
+        <item>Booze</item>
+        <item>Hookers</item>
+        <item>Girls</item>
+        <item>Gay</item>
+        <item>Party</item>
+        <!--89-->
+        <item>English</item>
+        <item>B&amp;B</item>
+        <item>Haircut</item>
+        <item>Nails</item>
+        <item>Beauty</item>
+        <!--94-->
+        <item>Miso</item>
+        <item>Teriyaki</item>
+        <item>Rice</item>
+        <item>Seafood</item>
+        <item>Hostel</item>
+        <!--99-->
+        <item>Fries</item>
+        <item>Fish</item>
+        <item>Chips</item>
+        <item>Italian</item>
+        <item>Karaoke</item>
+        <!--104-->
+        <item> x x x </item>
+        <item>Battery</item>
+        <item>Wheels</item>
+        <item>Men</item>
+        <item>Pasta</item>
+        <!--109-->
+        <item>Dessert</item>
+        <item>Starter</item>
+        <item>BBQ</item>
+        <item>Noodle</item>
+        <item>Korean</item>
+        <!--114-->
+        <item>Market</item>
+        <item>Bread</item>
+        <item>Bakery</item>
+        <item>Cafe</item>
+        <item>Games</item>
+        <!--119-->
+        <item>Snacks</item>
+        <item>Elegant</item>
+        <item>Piano</item>
+        <item>Brunch</item>
+        <item>Nachos</item>
+        <!--124-->
+        <item>Lunch</item>
+        <item>Breakfast</item>
+        <item>HappyHour</item>
+        <item>LateNight</item>
+        <item>Mexican</item>
+        <!--129-->
+        <item>Burrito</item>
+        <item>Tortilla</item>
+        <item>Indonesian</item>
+        <item>Sports</item>
+        <item>Pastry</item>
+        <!--134-->
+        <item>Bistro</item>
+        <item>Soup</item>
+        <item>Tea</item>
+        <item>Onion</item>
+        <item>Steak</item>
+        <!--139-->
+        <item>Shakes</item>
+        <item>Empanadas</item>
+        <item>Dinner</item>
+        <item>Sweet</item>
+        <item>Fried</item>
+        <!--144-->
+        <item>Omelette</item>
+        <item>Gin</item>
+        <item>Donut</item>
+        <item>Delivery</item>
+        <item>Cups</item>
+        <!--149-->
+        <item>Filter</item>
+        <item>Juice</item>
+        <item>Vietnamese</item>
+        <item>Pie</item>
+        <item>Unagi</item>
+        <!--154-->
+        <item>Greek</item>
+        <item>Japanese</item>
+        <item>Tacos</item>
+        <item>Kombucha</item>
+        <item>Indian</item>
+        <!--159-->
+        <item>Nan</item>
+        <item>Club</item>
+        <item>Liquor</item>
+        <item>Pool</item>
+        <item>Hotel</item>
+        <!--164-->
+        <item>Pork</item>
+        <item>Ribs</item>
+        <item>Kava</item>
+        <item>Chai</item>
+        <item>Izzy</item>
+        <!--164-->
+        <item>Matcha</item>
+        <item>CBD</item>
+        <item>Latte</item>
     </string-array>
 </resources>

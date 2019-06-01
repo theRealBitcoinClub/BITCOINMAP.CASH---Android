@@ -9,7 +9,7 @@ public enum VenueJson {
 
     String code;
 
-    VenueJson (String c) {
+    VenueJson(String c) {
         code = c;
     }
 

@@ -38,7 +38,7 @@ public class WebService extends AsyncTask<String, Void, String> {
     public static LatLng parseLatLng(JSONObject venue) throws JSONException {
         double lat = venue.getDouble(VenueJson.lat.toString());
         double lon = venue.getDouble(VenueJson.lon.toString());
-        return new LatLng(lat,lon);
+        return new LatLng(lat, lon);
     }
 
     public static String convertStreamToString(InputStream is) throws IOException {
@@ -55,6 +55,19 @@ public class WebService extends AsyncTask<String, Void, String> {
         }
 
         return writer.toString();
+    }
+
+    public static List<Venue> parseVenues(String responseData) throws JSONException {
+        Log.d("TRBC", "parseVenues");
+        JSONArray jsonArray = new JSONArray(responseData);
+        List<Venue> venues = new ArrayList<Venue>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Log.d("TRBC", "checka:" + jsonArray.getJSONObject(i));
+            venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
+        }
+
+        return venues;
     }
 
     @Override
@@ -101,17 +114,4 @@ public class WebService extends AsyncTask<String, Void, String> {
         } else
             onTaskDoneListener.onError();
     }
-
-         public static List<Venue> parseVenues(String responseData) throws JSONException {
-             Log.d("TRBC","parseVenues");
-             JSONArray jsonArray = new JSONArray(responseData);
-             List<Venue> venues = new ArrayList<Venue>();
-
-             for (int i=0; i<jsonArray.length(); i++) {
-                 Log.d("TRBC","checka:"  +jsonArray.getJSONObject(i));
-                 venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
-             }
-
-             return venues;
-        }
 }

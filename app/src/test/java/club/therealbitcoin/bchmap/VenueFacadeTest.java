@@ -23,7 +23,7 @@ public class VenueFacadeTest {
 
     @Before
     public void setUp() {
-        v = new Venue("name",1,2,"jkdhuifew",0,4.7,new LatLng(3.4,4.5), 0, null, null);
+        v = new Venue("name", 1, 2, "jkdhuifew", 0, 4.7, new LatLng(3.4, 4.5), 0, null, null);
     }
 
     @Test
@@ -38,17 +38,17 @@ public class VenueFacadeTest {
     public void testAddMoreFavorites() {
         VenueFacade.createNewFacadeForTesting().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
-        Assert.assertEquals(1,favoriteVenues.size());
+        Assert.assertEquals(1, favoriteVenues.size());
     }
 
     @Test
     public void testGetVenueTitles() {
         ArrayList<String> venueTitles = VenueFacade.getInstance().getVenueTitles();
-        Assert.assertEquals(0,venueTitles.size());
+        Assert.assertEquals(0, venueTitles.size());
         ArrayList<Venue> venues = new ArrayList<Venue>();
         venues.add(v);
         VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application);
         venueTitles = VenueFacade.getInstance().getVenueTitles();
-        Assert.assertEquals(1,venueTitles.size());
+        Assert.assertEquals(1, venueTitles.size());
     }
 }

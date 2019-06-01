@@ -9,27 +9,29 @@ public enum VenueType {
 
     private int index;
 
-    VenueType (int x) {
-        index =x;
-    }
-
-    public int getIndex() {
-        return index;
+    VenueType(int x) {
+        index = x;
     }
 
     public static VenueType getTypeByIndex(int i) {
         switch (i) {
-            case 0: return Food;
-            case 1: return Sweet;
-            case 2: return Bar;
-            case 3: return Super;
-            case 4: return Fashion;
-            case 5: return Hotel;
+            case 0:
+                return Food;
+            case 1:
+                return Sweet;
+            case 2:
+                return Bar;
+            case 3:
+                return Super;
+            case 4:
+                return Fashion;
+            case 5:
+                return Hotel;
         }
         throw new RuntimeException("VenueType with that index is not mapped yet");
     }
 
-    public static ArrayList<VenueType> getFilterableTypes () {
+    public static ArrayList<VenueType> getFilterableTypes() {
         ArrayList<VenueType> list = new ArrayList<VenueType>();
 
         list.add(Food);
@@ -105,5 +107,9 @@ public enum VenueType {
             return R.string.type_place;
 
         return -1;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }
