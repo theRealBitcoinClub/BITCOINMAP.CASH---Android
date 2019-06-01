@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -62,6 +63,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
     private static final String TAG = "TRBC";
+    private static final String SHARED_PREF_CAM_POSITION = "SHARED_PREF_CAM_POSITION";
+    private static final String KEY_CAM_POS = "KEY_CAM_POS";
     long backPressLastClick;
     private GoogleMap mMap;
     private int[] mapStyles = {R.raw.map_style_classic, R.raw.map_style_dark};
@@ -89,6 +92,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         fm = getSupportFragmentManager();
 
         initActionBar();
+
+        initLastKnowLocation();
 
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.setRetainInstance(true);
@@ -150,10 +155,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(mapFragment, "BLA");
         Log.d(TAG, "FRAGMENT");
-        listFragment = VenuesListFragment.newInstance(false, this);
+        listFragment = VenuesListFragment.newInstance(latLng, false, this);
         adapter.addFragment(listFragment, "BLUB");
         Log.d(TAG, "FRAGMENT22");
-        favosFragment = VenuesListFragment.newInstance(true, this);
+        favosFragment = VenuesListFragment.newInstance(latLng, true, this);
         adapter.addFragment(favosFragment, "FAVOS");
         Log.d(TAG, "ALL ADDED");
         viewPager.setAdapter(adapter);
@@ -267,14 +272,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         if (moveCamera)
             moveCameraToLastLocation();
     }
-
+    LatLng latLng;
     private void moveCameraToLastLocation() {
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             Location lastCoordinates = task.getResult();
-                            LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+                            persistLastKnowLocation(lastCoordinates);
                             Log.d(TAG, latLng.latitude + "" + latLng.longitude);
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
                             showToastMovingLocation();
@@ -286,6 +291,25 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         } catch (SecurityException e) {
             Log.d(TAG, "SECURITYEXCEPTION");
         }
+    }
+
+    private void initLastKnowLocation() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
+        String latestKnownPos = sharedPreferences.getString(KEY_CAM_POS, "");
+        if (latestKnownPos.equals(""))
+            return;
+
+        latLng = new LatLng(getPartialLatLng(latestKnownPos, 0), getPartialLatLng(latestKnownPos, 1));
+    }
+
+    private double getPartialLatLng(String latestKnownPos, int pos) {
+        return Double.parseDouble(latestKnownPos.split(";")[pos]);
+    }
+
+    private void persistLastKnowLocation(Location lastCoordinates) {
+        latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
+        sharedPreferences.edit().putString(KEY_CAM_POS, lastCoordinates.getLatitude() + ";" + lastCoordinates.getLongitude()).apply();
     }
 
     @Override
@@ -308,7 +332,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void updateCameraPosition(LatLng coordinates) {
         if (mMap != null)
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(coordinates));
     }
 //TODO SAVE LAST POSITION IN SHARED PREFERENCES,
 // TODO CALC DISTANCE AND SORT LIST BY DISTANCE

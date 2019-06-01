@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +39,12 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     private double latitude;
     private double longitude;
 
-    public static VenuesListFragment newInstance(double latitude, double longitude, boolean onlyFavs, UpdateActivityCallback cb) {
+    public static VenuesListFragment newInstance(LatLng coordinates, boolean onlyFavs, UpdateActivityCallback cb) {
         Log.d("TRBC", "VenuesListFragment, newInstance only favos:" + onlyFavs);
         Bundle args = new Bundle();
         args.putBoolean(ONLY_FAVOS, onlyFavs);
-        args.putDouble(LAT, latitude);
-        args.putDouble(LNG, longitude);
+        args.putDouble(LAT, coordinates.latitude);
+        args.putDouble(LNG, coordinates.longitude);
         VenuesListFragment fragment = new VenuesListFragment();
         fragment.callback = cb;
         fragment.setArguments(args);
@@ -267,7 +269,8 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             }
 
             //
-            holder.distance.setText(getDistancBetweenTwoPoints() + " km");
+            LatLng coordinates = venue.getCoordinates();
+            holder.distance.setText(getDistancBetweenTwoPoints(latitude, longitude, coordinates.latitude, coordinates.longitude) + " km");
 //TODO GET DISTANCE, USE LATITUDE AND LONGITUDE WHICH YOU JUST ADDED TO THE VIEWHOLDER
             venue.listItem = view;
             optimizeTouchArea(holder);
