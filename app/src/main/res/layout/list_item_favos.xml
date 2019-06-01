@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
+    android:layout_height="85dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -33,6 +33,19 @@
 
         <TextView
             android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:alpha="0.65"
+            android:ellipsize="end"
+            android:gravity="top"
+            android:maxLines="1"
+            android:paddingLeft="12dp"
+            android:paddingRight="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/distance"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"

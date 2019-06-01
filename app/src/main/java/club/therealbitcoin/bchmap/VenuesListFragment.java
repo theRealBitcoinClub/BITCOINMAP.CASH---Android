@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
@@ -43,8 +44,10 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         Log.d("TRBC", "VenuesListFragment, newInstance only favos:" + onlyFavs);
         Bundle args = new Bundle();
         args.putBoolean(ONLY_FAVOS, onlyFavs);
-        args.putDouble(LAT, coordinates.latitude);
-        args.putDouble(LNG, coordinates.longitude);
+        if (coordinates != null) {
+            args.putDouble(LAT, coordinates.latitude);
+            args.putDouble(LNG, coordinates.longitude);
+        }
         VenuesListFragment fragment = new VenuesListFragment();
         fragment.callback = cb;
         fragment.setArguments(args);
@@ -211,7 +214,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private float getDistancBetweenTwoPoints(double lat1,double lon1,double lat2,double lon2) {
+    private Float getDistancBetweenTwoPoints(double lat1,double lon1,double lat2,double lon2) {
         float[] distance = new float[2];
         Location.distanceBetween( lat1, lon1, lat2, lon2, distance);
         return distance[0];
@@ -268,10 +271,8 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
                     holder.location.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
             }
 
-            //
-            LatLng coordinates = venue.getCoordinates();
-            holder.distance.setText(getDistancBetweenTwoPoints(latitude, longitude, coordinates.latitude, coordinates.longitude) + " km");
-//TODO GET DISTANCE, USE LATITUDE AND LONGITUDE WHICH YOU JUST ADDED TO THE VIEWHOLDER
+            String distanceText = getDistanceText(venue.getCoordinates());
+            holder.distance.setText(distanceText);
             venue.listItem = view;
             optimizeTouchArea(holder);
             //int iconResource = VenueType.getIconResource(venue.type);
@@ -293,6 +294,19 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
             holder.button.setOnClickListener(VenuesListFragment.this);
             return view;
+        }
+
+        @NonNull
+        private String getDistanceText(LatLng coordinates) {
+            if (latitude == -1 || longitude == -1 || coordinates == null) {
+                return "";
+            }
+            Float distanceInFloat = getDistancBetweenTwoPoints(latitude, longitude, coordinates.latitude, coordinates.longitude);
+            Integer distanceInt = distanceInFloat.intValue();
+            if (distanceInt < 1000) {
+                return distanceInt + " meter";
+            }
+            return (String.format(Locale.ENGLISH, "%.2f", distanceInFloat / 1000.0)) + " km";
         }
     }
 
