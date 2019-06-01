@@ -24,8 +24,6 @@ public class JsonParser {
             jsonArrayPlaces = new JSONArray(WebService.convertStreamToString(ctx.getResources().openRawResource(R.raw.places_id)));
 
         for (int i = 0; i < jsonArrayPlaces.length(); i++) {
-            Log.d("TRBC", "checka:");
-
             JSONObject obj = jsonArrayPlaces.getJSONObject(i);
             String itemIdP = obj.getString(VenueJson.id.toString());
 
@@ -36,12 +34,10 @@ public class JsonParser {
     }
 
     public static List<Venue> parseVenues(String responseData) throws JSONException {
-        Log.d("TRBC", "parseVenues");
         JSONArray jsonArray = new JSONArray(responseData);
         List<Venue> venues = new ArrayList<Venue>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            Log.d("TRBC", "checka:" + jsonArray.getJSONObject(i));
             venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
         }
 

@@ -85,7 +85,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_bchmaps);
         findViewsById();
 
@@ -104,7 +103,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         loadAssets();
         checkConnectionShowToast();
 
-        Log.d(TAG, "FINISH ON CREATE");
     }
 
     private void checkConnectionShowToast() {
@@ -125,7 +123,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume isMapReady:" + mMap);
         if (mMap == null)
             mapFragment.getMapAsync(this);
     }
@@ -151,21 +148,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        Log.d(TAG, "VIEWPAGER");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(mapFragment, "BLA");
-        Log.d(TAG, "FRAGMENT");
         listFragment = VenuesListFragment.newInstance(latLng, false, this);
         adapter.addFragment(listFragment, "BLUB");
-        Log.d(TAG, "FRAGMENT22");
         favosFragment = VenuesListFragment.newInstance(latLng, true, this);
         adapter.addFragment(favosFragment, "FAVOS");
-        Log.d(TAG, "ALL ADDED");
         viewPager.setAdapter(adapter);
     }
 
     private void setupTabIcons() {
-        Log.d(TAG, "setupTabIcons");
         tabLayout.getTabAt(0).setIcon(tabIcons[0]).setCustomView(R.layout.tabs_icon);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]).setCustomView(R.layout.tabs_icon);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]).setCustomView(R.layout.tabs_icon);
@@ -173,7 +165,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             showToast(R.string.toast_restart_app_for_permission_take_effect);
@@ -190,7 +181,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady: ");
         initMap(googleMap);
         getPermissionAccessFineLocation();
         setMapStyle(mapStyles[VenueFacade.getInstance().getTheme(this)]);
@@ -203,7 +193,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void initListFragment(int index) {
-        Log.d(TAG, "initListFragment index" + index);
         if (index == 1 && listFragment != null) {
             listFragment.initAdapter(false);
         } else if (index == 2 && favosFragment != null) {
@@ -215,9 +204,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            Log.d(TAG, "setMyLocationEnabled: true ");
         } else {
-            Log.d(TAG, "setMyLocationEnabled false: ");
             getPermissions();
         }
     }
@@ -254,7 +241,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         if (theme >= mapStyles.length) {
             theme = 0;
         }
-        Log.d(TAG, "switchMapStyle" + theme);
         facade.setTheme(theme, this);
         setMapStyle(mapStyles[theme]);
         initAllListViews();
@@ -266,7 +252,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         mMap.clear();
         for (Venue v : VenueFacade.getInstance().getVenuesList()) {
-            Log.d(TAG, "venue: " + v);
             addMarker(v);
         }
         if (moveCamera)
@@ -280,16 +265,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                         if (task.isSuccessful() && task.getResult() != null) {
                             Location lastCoordinates = task.getResult();
                             persistLastKnowLocation(lastCoordinates);
-                            Log.d(TAG, latLng.latitude + "" + latLng.longitude);
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
                             showToastMovingLocation();
                         } else {
                             showToast(R.string.toast_enable_location_enjoy_all_features);
-                            Log.d(TAG, "getLastLocation:exception", task.getException());
                         }
                     });
         } catch (SecurityException e) {
-            Log.d(TAG, "SECURITYEXCEPTION");
         }
     }
 
@@ -314,7 +296,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void initAllListViews() {
-        Log.d(TAG, "updateListViews");
         initFavosList();
         initListView();
     }
@@ -354,14 +335,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void loadAssets() {
         try {
-            Log.d("TRBC", "parseVenues");
-
             String s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
 
             List<Venue> venues = JsonParser.parseVenues(s);
             VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
-
-            //Log.d(TAG, "responseData: " + s);
 
             restoreFilters();
 
@@ -380,11 +357,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             @Override
             public void onTaskDone(String responseData) {
                 try {
-                    Log.d(TAG, "onTaskDone: ");
                     List<Venue> venues = JsonParser.parseVenues(responseData);
                     VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
-
-                    Log.d(TAG, "responseData: " + responseData);
 
                     restoreFilters();
 
@@ -422,14 +396,11 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         //updateSwitchThemeIcon(menu.getItem(0));
 
         int size = menu.size();
-        Log.d(TAG, "menu size:" + size);
         for (int i = NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS; i < size; i++) {
             int realIndex = i - NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS;
             MenuItem item = menu.getItem(i);
-            Log.d(TAG, "item:" + item.getTitle());
             boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(realIndex, this);
 
-            Log.d(TAG, "onCreateOptionsMenu:" + i + ", isChecked:" + isChecked);
             item.setChecked(isChecked);
         }
 
@@ -524,18 +495,15 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private void addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
 
-        Log.d(TAG, "addMarker lat:" + v.getCoordinates().latitude + " lon:" + v.getCoordinates().longitude);
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.d(TAG, "markerclick:" + marker.getId());
 
         Venue v = (Venue) marker.getTag();
         if (v == null) {
-            Log.d(TAG, "venue:" + v);
             return false;
         }
 
@@ -545,7 +513,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Log.d(TAG, "onMyLocationButtonClick");
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnCompleteListener(this, task -> {
@@ -556,7 +523,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                         }
                     });
         } catch (SecurityException e) {
-            Log.d(TAG, "SECURITYEXCEPTION onMyLocationButtonClick");
         }
         return false;
     }

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import club.therealbitcoin.bchmap.VenuesListFragment;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
@@ -23,21 +26,17 @@ public class VenueFacade {
     boolean hasChangedList = true;
     boolean hasChangedFavoList = true;
     private Map<String, Venue> venuesMap = new HashMap<String, Venue>();
-    private ArrayList<Venue> venuesList = new ArrayList<Venue>();
-    private ArrayList<String> titles = new ArrayList<String>();
+    private List<Venue> venuesList = new ArrayList<Venue>();
+    private List<String> titles = new ArrayList<String>();
     private List<Venue> favorites = new ArrayList<Venue>();
-    private ArrayList<String> titlesFavo = new ArrayList<String>();
-    private Map<String, ArrayList<Venue>> filteredVenuesMap = new HashMap<String, ArrayList<Venue>>();
+    private List<String> titlesFavo = new ArrayList<String>();
+    private Map<String, List<Venue>> filteredVenuesMap = new HashMap<String, List<Venue>>();
     private int theme = -1;
 
     private VenueFacade() {
     }
 
     public static VenueFacade getInstance() {
-        /*if (nextUpdateClearCache < System.currentTimeMillis()) {
-            ourInstance = new VenueFacade();
-            nextUpdateClearCache = System.currentTimeMillis()+ONE_HOUR;
-        }*/
         return ourInstance;
     }
 
@@ -49,35 +48,22 @@ public class VenueFacade {
         return ourInstance;
     }
 
-    public ArrayList<Venue> getVenuesList() {
+    public List<Venue> getVenuesList() {
         return venuesList;
     }
 
     public boolean isTypeFiltered(int t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean("filter" + t, false);
-        /*ArrayList<Venue> venues = filteredVenuesMap.get(""+t);
-        Log.d(TAG,"isTypeFiltered venues:" + venues);
-        if (venues == null || venues.size() == 0)
-            return false;
-
-        return true;*/
     }
 
     public void restoreFilteredVenues(VenueType t, Context ctx) {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("filter" + t.getIndex(), false).apply();
-        Log.d(TAG, "restoreFilteredVenues" + t);
-        ArrayList<Venue> venues = filteredVenuesMap.remove("" + t.getIndex());
+        List<Venue> venues = filteredVenuesMap.remove("" + t.getIndex());
         if (venues == null || venues.size() == 0)
             return;
 
-        /*for (Venue v: venues
-             ) {
-            v.setFiltered(false);
-        }*/
-
-        Log.d(TAG, "restoreFilteredVenues Yep" + t);
         venuesList.addAll(0, venues);
         hasChangedBothLists();
     }
@@ -93,26 +79,19 @@ public class VenueFacade {
 
         int initialSize = venuesList.size();
         for (int i = 0; i < initialSize; i++) {
-            Log.d("TRBC", "check type:" + t.toString() + " index:" + i);
             if (venuesList.size() == i) {
-                Log.d("TRBC", "break:" + t.toString() + " index:" + i);
                 break;
             }
 
             int typeIndex = t.getIndex();
             if (venuesList.get(i).type == typeIndex) {
-                Log.d("TRBC", "remove item type:" + t.toString() + " index:" + i);
-                ArrayList<Venue> filteredVenues = filteredVenuesMap.get("" + typeIndex);
+                List<Venue> filteredVenues = filteredVenuesMap.get("" + typeIndex);
                 if (filteredVenues == null || filteredVenues.size() == 0) {
-                    //for (VenueType x: VenueType.values()) {
                     filteredVenues = new ArrayList<Venue>();
                     filteredVenuesMap.put("" + typeIndex, filteredVenues);
-                    //}
-                    //filteredVenues = filteredVenuesMap.get(""+typeIndex);
                 }
                 Venue filteredVenue = venuesList.remove(i);
                 if (filteredVenue != null) {
-                    //filteredVenue.setFiltered(true);
                     filteredVenues.add(filteredVenue);
                 }
                 i--;
@@ -122,71 +101,85 @@ public class VenueFacade {
         hasChangedBothLists();
     }
 
-    public ArrayList<String> getVenueTitles() {
-        Log.d("TRBC", "getVenueTitles");
-        if (!hasChangedList && titles.size() > 0) {
+    private List<Venue> sortListByDistance(LatLng userPosition, List<Venue> venuesList) {
+        if (userPosition == null || userPosition.latitude == -1 || userPosition.longitude == -1)
+            return venuesList;
+
+        List<Venue> results = new ArrayList<Venue>();
+        synchronized (results) {
+            for (int i = 0; i < venuesList.size(); i++) {
+                Venue currentVenue = venuesList.get(i);
+                int y = 0;
+                for (; y < results.size(); ) {
+                    Venue currentResult = results.get(y);
+                    if (calcDistance(userPosition, currentVenue) < calcDistance(userPosition, currentResult)) {
+                        break;
+                    }
+                    y++;
+                }
+                results.add(y, currentVenue);
+            }
+        }
+        return results;
+    }
+
+    private Float calcDistance(LatLng userPosition, Venue currentVenue) {
+        return VenuesListFragment.calcDistancToUserLocation(userPosition, currentVenue.getCoordinates());
+    }
+
+    public List<String> getVenueTitles(LatLng coords) {
+        venuesList = sortListByDistance(coords, venuesList);
+
+        if (hasCachedContent(hasChangedList, titles)) {
             return titles;
         }
 
-        titles.clear();
-        Log.d("TRBC", "titles start");
-        for (Venue v : getVenuesList()
-        ) {
-            Log.d("TRBC", "titlessssss" + v.name);
-
-            titles.add(v.name);
-        }
-        Log.d("TRBC", "titles end");
+        clearAndRefillList(titles, venuesList);
         hasChangedList = false;
         return titles;
     }
 
-    public ArrayList<String> getFavoTitles() {
-        Log.d("TRBC", "getFavoTitles");
-        if (!hasChangedFavoList && titlesFavo.size() > 0) {
+    private void clearAndRefillList(List<String> list, List<Venue> sourceList) {
+        list.clear();
+        for (Venue v : sourceList
+        ) {
+            list.add(v.name);
+        }
+    }
+
+    private boolean hasCachedContent(boolean hasChangedList, List<String> titles) {
+        return !hasChangedList && titles.size() > 0;
+    }
+
+    public List<String> getFavoTitles(LatLng coords) {
+        favorites = sortListByDistance(coords, favorites);
+
+        if (hasCachedContent(hasChangedFavoList, titlesFavo)) {
             return titlesFavo;
         }
 
-        titlesFavo.clear();
-        Log.d("TRBC", "titlesfavos start");
-        for (Venue v : getFavoriteVenues()
-        ) {
-            Log.d("TRBC", "favosssssssss" + v.name);
-            titlesFavo.add(v.name);
-        }
-        Log.d("TRBC", "titlesfavos end");
+        clearAndRefillList(titlesFavo, favorites);
         hasChangedFavoList = false;
         return titlesFavo;
     }
 
+
     private void addVenue(Venue v, Context ctx, int favoCounter) {
         hasChangedList = true;
-        Log.d("TRBC", "addVenue" + v);
         if (venuesMap.put(v.id, v) == null) {
             venuesList.add(v);
         }
 
         if (v.isFavorite(ctx)) {
-            Log.d(TAG, "isFavorite true favorcounter:" + favoCounter);
             v.favoListIndex = favoCounter;
             favorites.add(v);
-        } else {
-            Log.d(TAG, "isFavorite false");
         }
-    }
-
-    public Venue findVenueById(String id) {
-        return venuesMap.get(id);
     }
 
     public void addFavoriteVenue(Venue v, Context ctx) {
         v.favoListIndex = favorites.size();
-        Log.d("TRBC", "addFavoriteVenue persist:" + v);
         favorites.add(v);
         v.setFavorite(true, ctx);
-        //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        //sharedPreferences.edit().putBoolean(v.id, true).commit();
-
         hasChangedFavoList = true;
     }
 
@@ -202,16 +195,12 @@ public class VenueFacade {
     }
 
     public List<Venue> getFavoriteVenues() {
-        Log.d("TRBC", "getFavoriteVenues :");
         return favorites;
     }
 
     public void removeFavoriteVenue(Venue item, Context ctx) {
-        Log.d("TRBC", "removeFavoriteVenue :" + item + "index:" + item.favoListIndex);
         if (favorites.size() != 0)
             favorites.remove(item.favoListIndex);
-        //SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        //sharedPreferences.edit().remove(item.id).commit();
         item.setFavorite(false, ctx);
         hasChangedFavoList = true;
     }
@@ -246,7 +235,6 @@ public class VenueFacade {
     }
 
     public void initVenues(List<Venue> venues, Context ctx) {
-        Log.d(TAG, "initVenues");
         VenueFacade.getInstance().clearCache(ctx);
 
         int favoCounter = -1;

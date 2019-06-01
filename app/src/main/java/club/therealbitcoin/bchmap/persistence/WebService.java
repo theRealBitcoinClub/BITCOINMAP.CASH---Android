@@ -58,12 +58,10 @@ public class WebService extends AsyncTask<String, Void, String> {
     }
 
     public static List<Venue> parseVenues(String responseData) throws JSONException {
-        Log.d("TRBC", "parseVenues");
         JSONArray jsonArray = new JSONArray(responseData);
         List<Venue> venues = new ArrayList<Venue>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            Log.d("TRBC", "checka:" + jsonArray.getJSONObject(i));
             venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
         }
 

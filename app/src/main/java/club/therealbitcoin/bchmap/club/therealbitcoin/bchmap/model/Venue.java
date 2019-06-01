@@ -89,15 +89,12 @@ public class Venue implements Parcelable {
     }
 
     private static String[] parseAttributes(JSONObject vJson) {
-        Log.d("TRBC", "parseAttributes:" + vJson);
         String attribs = null;
         try {
             attribs = vJson.getString(VenueJson.attributes.toString());
-            Log.d("TRBC", "yyyy:" + attribs);
             if (attribs == null)
                 return null;
         } catch (JSONException e) {
-            Log.d("TRBC", "jjjjjjjjj:" + attribs);
             return null;
         }
 
@@ -109,7 +106,6 @@ public class Venue implements Parcelable {
     }
 
     public void setFavorite(Boolean favorite, Context ctx) {
-        Log.d("TRBC", "setFavorite");
         isFavorite = favorite;
 
         SharedPreferences sharedPref = ctx.getSharedPreferences(
@@ -118,13 +114,10 @@ public class Venue implements Parcelable {
     }
 
     public boolean isFavorite(Context ctx) {
-        Log.d("TRBC", "isFavorite");
         if (isFavorite == null && ctx != null) {
-            Log.d("TRBC", "isFavorite null");
             SharedPreferences sharedPref = ctx.getSharedPreferences(
                     SHARED_PREF_ID, Context.MODE_PRIVATE);
             isFavorite = sharedPref.getBoolean(id, false);
-            Log.d("TRBC", "isFavorite null" + isFavorite);
         }
 
         return isFavorite != null ? isFavorite : false;

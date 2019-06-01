@@ -37,11 +37,10 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             LNG = "LGN";
     private UpdateActivityCallback callback;
     private boolean showOnlyFavos;
-    private double latitude;
-    private double longitude;
+    private double latitude = -1;
+    private double longitude = -1;
 
     public static VenuesListFragment newInstance(LatLng coordinates, boolean onlyFavs, UpdateActivityCallback cb) {
-        Log.d("TRBC", "VenuesListFragment, newInstance only favos:" + onlyFavs);
         Bundle args = new Bundle();
         args.putBoolean(ONLY_FAVOS, onlyFavs);
         if (coordinates != null) {
@@ -52,12 +51,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         fragment.callback = cb;
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //callback = null;
     }
 
     @Override
@@ -74,7 +67,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         else
             setEmptyText(getResources().getString(R.string.error_empty_list));
 
-        Log.d("TRBC", "VenuesListFragment, onActivityCreated: onlyFavos:" + showOnlyFavos);
     }
 
     private boolean getArgBoolean(Bundle savedInstanceState, String key) {
@@ -102,28 +94,23 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     @Override
     public void onResume() {
         super.onResume();
-        //adapter.notifyDataSetChanged();
         initAdapter(showOnlyFavos);
-        Log.d("TRBC", "VenuesListFragment, onResume:  onlyFavos:" + showOnlyFavos);
     }
 
     public void initAdapter(boolean onlyFavorites) {
         switchBackground();
 
-        Log.d("TRBC", "VenuesListFragment, initAdapter favos:" + onlyFavorites);
-
         int itemRes;
-        ArrayList<String> venueTitles = null;
+        List<String> venueTitles = null;
         if (onlyFavorites) {
             itemRes = R.layout.list_item_favos;
-            venueTitles = VenueFacade.getInstance().getFavoTitles();
+            venueTitles = VenueFacade.getInstance().getFavoTitles(latitude == -1 ? null : new LatLng(latitude, longitude));
         } else {
             itemRes = R.layout.list_item;
-            venueTitles = VenueFacade.getInstance().getVenueTitles();
+            venueTitles = VenueFacade.getInstance().getVenueTitles(latitude == -1 ? null : new LatLng(latitude, longitude));
         }
         if (venueTitles != null && getActivity() != null) {
-            setListAdapter(new PopupAdapter(latitude, longitude, venueTitles, itemRes, getActivity()));
-            Log.d("TRBC", "venuetitles size:" + venueTitles.size() + " getListAdapter().getCount();" + getListAdapter().getCount());
+            setListAdapter(new PopupAdapter(venueTitles, itemRes, getActivity()));
         }
     }
 
@@ -158,7 +145,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     public void onClick(final View view) {
         final Venue v = (Venue) view.getTag();
         Context ctx = getContext();
-        Log.d("TRBC", "onClick item" + v);
 
         if (showOnlyFavos) {
             handleOnClickFavoView(v, ctx, view);
@@ -168,7 +154,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     }
 
     private void handleOnClickFavoView(Venue v, Context ctx, View view) {
-        Log.d("TRBC", "onClick item showOnlyFavos" + showOnlyFavos + v);
         Animation animation = AnimationUtils.loadAnimation(ctx, R.anim.animation_remove_favorite);
         animation.reset();
         v.listItem.startAnimation(animation);
@@ -185,11 +170,9 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     private void handleOnClickListView(Venue item, Context ctx, View button) {
         if (!item.isFavorite(ctx)) {
             item.setFavorite(true, ctx);
-            //Toast.makeText(ctx, getString(R.string.toast_added_favorite) + item.name, Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().addFavoriteVenue(item, getContext());
         } else {
             item.setFavorite(false, ctx);
-            //Toast.makeText(ctx, getString(R.string.toast_removed_favorite) + item.name, Toast.LENGTH_SHORT).show();
             VenueFacade.getInstance().removeFavoriteVenue(item, getContext());
         }
 
@@ -214,7 +197,14 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private Float getDistancBetweenTwoPoints(double lat1,double lon1,double lat2,double lon2) {
+    public static Float calcDistancToUserLocation(LatLng userPosition, LatLng coordTarget) {
+        if (userPosition == null || coordTarget == null)
+            return -1f;
+
+        return calcDistancBetweenTwoPoints(userPosition.latitude, userPosition.longitude, coordTarget.latitude, coordTarget.longitude);
+    }
+
+    static Float calcDistancBetweenTwoPoints(double lat1, double lon1, double lat2, double lon2) {
         float[] distance = new float[2];
         Location.distanceBetween( lat1, lon1, lat2, lon2, distance);
         return distance[0];
@@ -239,8 +229,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     }
 
     class PopupAdapter extends ArrayAdapter<String> {
-
-        PopupAdapter(double latitude, double longitude, List<String> venues, int listItemResource, Context ctx) {
+        PopupAdapter(List<String> venues, int listItemResource, Context ctx) {
             super(ctx, listItemResource, android.R.id.text1, venues);
         }
 
@@ -256,13 +245,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             }
 
             Venue venue = getVenueByIndex(position);
-
-            if (venue == null) {
-                return null;
-            }
-
-            //View view = super.getView(position, convertView, container);
-            Log.d("TRBC", "VenuesListFragment, getView" + showOnlyFavos + position);
 
             if (VenueFacade.getInstance().getTheme(getActivity()) != 0) {
                 view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
@@ -286,7 +268,6 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
             if (showOnlyFavos) {
                 venue.favoListIndex = position;
-                Log.d("TRBC", "showOnlyFavos: " + showOnlyFavos + position);
             } else {
                 venue.listIndex = position;
                 FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), holder.button, venue, false);
@@ -301,7 +282,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             if (latitude == -1 || longitude == -1 || coordinates == null) {
                 return "";
             }
-            Float distanceInFloat = getDistancBetweenTwoPoints(latitude, longitude, coordinates.latitude, coordinates.longitude);
+            Float distanceInFloat = calcDistancBetweenTwoPoints(latitude, longitude, coordinates.latitude, coordinates.longitude);
             Integer distanceInt = distanceInFloat.intValue();
             if (distanceInt < 1000) {
                 return distanceInt + " meter";

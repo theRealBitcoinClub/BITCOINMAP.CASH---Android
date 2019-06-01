@@ -104,7 +104,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         ImageView img = view.findViewById(R.id.img);
         img.setOnClickListener(this);
         String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
-        Log.d(TAG, imgUri);
 
         if (!ConnectionChecker.hasInternetConnection(getContext())) {
             showToast(R.string.toast_no_internet);
@@ -173,17 +172,14 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void initTagValues(View view, Venue venue) {
         String[] attribs = venue.getAttributes();
-        Log.d("TRBC", "attribs:" + attribs);
         if (attribs != null) {
             initTagViews(view);
             int i = 0;
-            Log.d("TRBC", "itTagVie:");
             for (String a : attribs
             ) {
                 if (a == null || a.trim().length() == 0)
                     break;
 
-                Log.d("TRBC", "aaaaaaaaaaaa:" + a);
                 String[] array = getResources().getStringArray(R.array.location_attributes);
                 tags[i++].setText(array[Integer.valueOf(a)]);
             }
@@ -243,7 +239,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
                 try {
                     String placesId = JsonParser.getPlacesId(getActivity(), venue.id);
                     String targetURL = "https://search.google.com/local/writereview?placeid=" + placesId;
-                    Log.d("TRBC", "targetURL: " + targetURL);
                     if (placesId == null) {
                         Toast.makeText(getContext(), R.string.missing_places_id, Toast.LENGTH_LONG).show();
                         //btn_review.setEnabled(false);
@@ -336,9 +331,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         final float[] from = new float[3];
         final float[] to = new float[3];
 
-        Log.d("TRBC", "fromColor:" + fromColor);
-        Log.d("TRBC", "toColor:" + toColor);
-
         Color.colorToHSV(Color.parseColor(fromColor), from);
         Color.colorToHSV(Color.parseColor(toColor), to);
 
@@ -378,9 +370,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             accent = "#" + Integer.toHexString(accentColor).substring(2);
             primary = "#" + Integer.toHexString(primaryColor).substring(2);
 
-            Log.d("TRBC", "accent:" + accent);
-            Log.d("TRBC", "primary:" + primary);
-
         }
         if (onOff)
             animateColorChange(btn, primary, accent, afterAnim);
@@ -399,7 +388,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             if (placesId != null) {
                 targetURL += "&query_place_id=" + placesId;
             }
-            Log.d("TRBC", "targetURL: " + targetURL);
 
             Toast.makeText(getContext(), getString(R.string.toast_route_button), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(Intent.ACTION_VIEW,
