@@ -319,7 +319,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     public void updateCameraPosition(LatLng coordinates) {
         if (mMap != null)
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(coordinates));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
     }
 //TODO SAVE LAST POSITION IN SHARED PREFERENCES,
 // TODO CALC DISTANCE AND SORT LIST BY DISTANCE
