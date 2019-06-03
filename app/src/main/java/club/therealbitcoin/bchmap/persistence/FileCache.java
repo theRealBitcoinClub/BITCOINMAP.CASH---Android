@@ -54,7 +54,7 @@ public class FileCache {
     }
 
     private static void loadCurrentVersionFromWebAndStoreItIncache(Context context, String fileName) {
-        new WebService("http://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/assets/" + fileName + ".json", new OnTaskDoneListener() {
+        new WebService("https://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/assets/" + fileName + ".json", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentData) {
                 if (currentData == null || currentData.isEmpty()) {
@@ -63,6 +63,7 @@ public class FileCache {
                 }
 
                 writeFileToCache(currentData, getFile(context, fileName));
+                cachedContents.put(fileName, currentData);
                 ACRA.log.d("TRBC", "success loadCurrentVersionFromWebAndStoreItIncache + filename:" + fileName);
             }
 
@@ -119,8 +120,8 @@ public class FileCache {
     }
 
 
-    private static boolean ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache(Context context) {
-        new WebService("http://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/dataUpdateIncrementVersion.txt", new OnTaskDoneListener() {
+    private static void ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache(Context context) {
+        new WebService("https://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/dataUpdateIncrementVersion.txt", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentVersion) {
                 ACRA.log.d("TRBC", "success fetching ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache");
@@ -142,7 +143,6 @@ public class FileCache {
                 ACRA.log.e("TRBC", "error fetching ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache");
             }
         }).execute();
-        return false;
     }
 
     private static void forceUpdateNextTime(Context context) {
@@ -150,27 +150,19 @@ public class FileCache {
     }
 
     private static int getAndPersistUpdatedVersionNumber(Context context, String currentVersion) {
-        String dataVersionCounter = cachedContents.get("dataVersionCounter");
-        if (dataVersionCounter != null) {
-            return Integer.parseInt(dataVersionCounter);
-        }
-
         File file = getFile(context, "dataVersionCounter");
         String versionNumber = readFileFromCache(file);
 
         if (versionNumber == null) {
             return persistNumberAndParseToInt(file, currentVersion);
         }
-        return persistNumberAndParseToInt(file, versionNumber);
+
+        int newVersion = Integer.parseInt(versionNumber)+1;
+        return persistNumberAndParseToInt(file, String.valueOf(newVersion));
     }
 
     private static int persistNumberAndParseToInt(File file, String versionNumber) {
-        persistUpdatedVersionNumber(versionNumber, file);
+        writeFileToCache(versionNumber, file);
         return Integer.parseInt(versionNumber);
-    }
-
-    private static void persistUpdatedVersionNumber(String currentVersion, File file) {
-        writeFileToCache(currentVersion, file);
-        cachedContents.put("dataVersionCounter", currentVersion);
     }
 }

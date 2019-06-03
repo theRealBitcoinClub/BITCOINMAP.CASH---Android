@@ -294,13 +294,9 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             if(total < 1)
                 return null;
 
-            Log.d("TRBC", "getSatisfactionIndex total " + total + " stars " + stars);
             double maximum = total * 5.0;
-            Log.d("TRBC", "getSatisfactionIndex maximum" + maximum);
             Double index = (total * stars) / maximum;
-            Log.d("TRBC", "getSatisfactionIndex index" + index);
             int percentage = Double.valueOf(index * 100.0).intValue();
-            Log.d("TRBC", "getSatisfactionIndex percentage" + percentage);
 
             StringBuilder result = new StringBuilder();
             if (percentage > 90) {
