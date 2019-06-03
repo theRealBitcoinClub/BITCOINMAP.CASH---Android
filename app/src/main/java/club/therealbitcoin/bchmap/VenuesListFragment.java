@@ -252,6 +252,8 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             if (VenueFacade.getInstance().getTheme(getActivity()) != 0) {
                 view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
                 holder.title.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
+                holder.distance.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
+                holder.rating.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
                 if (holder.location != null) //can be null on favo view
                     holder.location.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
             }
@@ -259,7 +261,12 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             String distanceText = getDistanceText(venue.getCoordinates());
             holder.distance.setText(distanceText);
             String satisfaction = getSatisfactionIndex(venue.reviews, venue.stars);
-            holder.rating.setText(satisfaction);
+            if (satisfaction == null) {
+                holder.rating.setVisibility(View.GONE);
+            } else {
+                holder.rating.setVisibility(View.VISIBLE);
+                holder.rating.setText(satisfaction);
+            }
 
             venue.listItem = view;
             optimizeTouchArea(holder);
@@ -284,9 +291,16 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         }
 
         private String getSatisfactionIndex(int total, double stars) {
+            if(total < 1)
+                return null;
+
+            Log.d("TRBC", "getSatisfactionIndex total " + total + " stars " + stars);
             double maximum = total * 5.0;
-            Double index = Double.valueOf(maximum / (total * stars));
+            Log.d("TRBC", "getSatisfactionIndex maximum" + maximum);
+            Double index = (total * stars) / maximum;
+            Log.d("TRBC", "getSatisfactionIndex index" + index);
             int percentage = Double.valueOf(index * 100.0).intValue();
+            Log.d("TRBC", "getSatisfactionIndex percentage" + percentage);
 
             StringBuilder result = new StringBuilder();
             if (percentage > 90) {
@@ -299,6 +313,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
                 result.append("☹️ ");
             }
             result.append(percentage);
+            result.append("%");
 
             return result.toString();
         }
