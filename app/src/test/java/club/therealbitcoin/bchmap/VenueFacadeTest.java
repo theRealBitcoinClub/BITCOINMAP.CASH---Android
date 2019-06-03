@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class VenueFacadeTest {
         Assert.assertEquals(0, venueTitles.size());
         ArrayList<Venue> venues = new ArrayList<Venue>();
         venues.add(v);
-        VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application);
+        VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application, coords);
         venueTitles = VenueFacade.getInstance().getVenueTitles(null);
         Assert.assertEquals(1, venueTitles.size());
     }

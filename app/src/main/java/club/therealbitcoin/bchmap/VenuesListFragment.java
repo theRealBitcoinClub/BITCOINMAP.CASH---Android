@@ -211,14 +211,14 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
     }
 
     private static class ViewHolder {
-        public TextView title;
-        public TextView location;
-        public TextView distance;
-        public View clickArea;
-        public View icon;
-        public View button;
+        private TextView title;
+        private TextView location;
+        private TextView distance;
+        private View clickArea;
+        private View icon;
+        private View button;
 
-        public ViewHolder(TextView title, TextView location, TextView distance, View clickArea, View button, View icon) {
+        private ViewHolder(TextView title, TextView location, TextView distance, View clickArea, View button, View icon) {
             this.title = title;
             this.location = location;
             this.distance = distance;
@@ -234,6 +234,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         }
 
         @Override
+        @NonNull
         public View getView(int position, View convertView, ViewGroup container) {
             ViewHolder holder;
             View view = super.getView(position, convertView, container);
@@ -283,7 +284,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
                 return "";
             }
             Float distanceInFloat = calcDistancBetweenTwoPoints(latitude, longitude, coordinates.latitude, coordinates.longitude);
-            Integer distanceInt = distanceInFloat.intValue();
+            int distanceInt = distanceInFloat.intValue();
             if (distanceInt < 1000) {
                 return distanceInt + " meter";
             }

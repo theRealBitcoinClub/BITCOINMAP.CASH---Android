@@ -28,10 +28,17 @@ public class VenueFacade {
     private Map<String, List<Venue>> filteredVenuesMap = new HashMap<String, List<Venue>>();
     private int theme = -1;
 
+    public static void close() {
+        ourInstance = null;
+    }
+
     private VenueFacade() {
     }
 
     public static VenueFacade getInstance() {
+        if (ourInstance == null)
+            ourInstance = new VenueFacade();
+
         return ourInstance;
     }
 
@@ -96,13 +103,13 @@ public class VenueFacade {
         hasChangedBothLists();
     }
 
-    private List<Venue> sortListByDistance(LatLng userPosition, List<Venue> venuesList) {
+    private List<Venue> sortListByDistance(LatLng userPosition, List<Venue> list) {
         if (userPosition == null || userPosition.latitude == -1 || userPosition.longitude == -1)
-            return venuesList;
+            return list;
 
         List<Venue> results = new ArrayList<Venue>();
-        for (int i = 0; i < venuesList.size(); i++) {
-            Venue currentVenue = venuesList.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            Venue currentVenue = list.get(i);
             int y = 0;
             for (; y < results.size(); ) {
                 Venue currentResult = results.get(y);
@@ -121,8 +128,6 @@ public class VenueFacade {
     }
 
     public List<String> getVenueTitles(LatLng coords) {
-        venuesList = sortListByDistance(coords, venuesList);
-
         if (hasCachedContent(hasChangedList, titles)) {
             return titles;
         }
@@ -130,6 +135,10 @@ public class VenueFacade {
         clearAndRefillList(titles, venuesList);
         hasChangedList = false;
         return titles;
+    }
+
+    public void sortVenuesByDistance(LatLng coords) {
+        venuesList = sortListByDistance(coords, venuesList);
     }
 
     private void clearAndRefillList(List<String> list, List<Venue> sourceList) {
@@ -145,8 +154,6 @@ public class VenueFacade {
     }
 
     public List<String> getFavoTitles(LatLng coords) {
-        favorites = sortListByDistance(coords, favorites);
-
         if (hasCachedContent(hasChangedFavoList, titlesFavo)) {
             return titlesFavo;
         }
@@ -154,6 +161,10 @@ public class VenueFacade {
         clearAndRefillList(titlesFavo, favorites);
         hasChangedFavoList = false;
         return titlesFavo;
+    }
+
+    public void sortFavoritesByDistance(LatLng coords) {
+        favorites = sortListByDistance(coords, favorites);
     }
 
 
@@ -227,7 +238,7 @@ public class VenueFacade {
         return theme;
     }
 
-    public void initVenues(List<Venue> venues, Context ctx) {
+    public void initVenues(List<Venue> venues, Context ctx, LatLng coords) {
         VenueFacade.getInstance().clearCache(ctx);
 
         int favoCounter = -1;
@@ -237,5 +248,7 @@ public class VenueFacade {
 
             VenueFacade.getInstance().addVenue(v, ctx, favoCounter);
         }
+        sortVenuesByDistance(coords);
+        sortFavoritesByDistance(coords);
     }
 }

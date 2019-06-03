@@ -37,17 +37,12 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.acra.ACRA;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.FileCache;
@@ -110,6 +105,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     protected void onDestroy() {
         FileCache.close();
         JsonParser.close();
+        VenueFacade.close();
         super.onDestroy();
     }
 
@@ -351,7 +347,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
 
             List<Venue> venues = JsonParser.parseVenues(s);
-            VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
+            VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this, latLng);
 
             restoreFilters();
 
