@@ -19,7 +19,7 @@ import club.therealbitcoin.bchmap.persistence.VenueFacade;
 @RunWith(RobolectricTestRunner.class)
 public class VenueFacadeTest {
 
-    Venue v = null;
+    private Venue v = null;
 
     @Before
     public void setUp() {
@@ -43,12 +43,12 @@ public class VenueFacadeTest {
 
     @Test
     public void testGetVenueTitles() {
-        ArrayList<String> venueTitles = VenueFacade.getInstance().getVenueTitles();
+        List<String> venueTitles = VenueFacade.getInstance().getVenueTitles(null);
         Assert.assertEquals(0, venueTitles.size());
         ArrayList<Venue> venues = new ArrayList<Venue>();
         venues.add(v);
         VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application);
-        venueTitles = VenueFacade.getInstance().getVenueTitles();
+        venueTitles = VenueFacade.getInstance().getVenueTitles(null);
         Assert.assertEquals(1, venueTitles.size());
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -12,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import club.therealbitcoin.bchmap.persistence.WebService;
+import club.therealbitcoin.bchmap.persistence.JsonParser;
 
 public class Venue implements Parcelable {
     public static final Creator<Venue> CREATOR = new Creator<Venue>() {
@@ -27,7 +26,6 @@ public class Venue implements Parcelable {
         }
     };
     private static final String SHARED_PREF_ID = "SHARED_PREF_ID";
-    public static String REDIRECT_URI = "https://goo.gl/maps/";
     private static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
     public static String IMG_FOLDER = BASE_URI + "img/app/";
     public int favoListIndex = -1;
@@ -45,6 +43,20 @@ public class Venue implements Parcelable {
     private int discountLevel;
     private String[] attributes;
 
+    public static Venue createInstance(JSONObject venue) throws JSONException {
+        String loc = venue.getString(VenueJson.location.toString());
+        String name = venue.getString(VenueJson.name.toString());
+        double stars = venue.getDouble(VenueJson.score.toString());
+        int rev = venue.getInt(VenueJson.reviews.toString());
+        LatLng latLng = JsonParser.parseLatLng(venue);
+        int type = venue.getInt(VenueJson.type.toString());
+        String id = venue.getString(VenueJson.id.toString());
+        int dscnt = venue.getInt(VenueJson.discount.toString());
+        String[] atribs = parseAttributes(venue);
+        return new Venue(name, VenueType.getIconResource(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
+    }
+
+    //constructor is public for testing purpose only
     public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc) {
         this.location = loc;
         this.discountLevel = dscnt;
@@ -75,21 +87,8 @@ public class Venue implements Parcelable {
         coordinates = in.readParcelable(LatLng.class.getClassLoader());
     }
 
-    public static Venue createInstance(JSONObject venue) throws JSONException {
-        String loc = venue.getString(VenueJson.location.toString());
-        String name = venue.getString(VenueJson.name.toString());
-        double stars = venue.getDouble(VenueJson.score.toString());
-        int rev = venue.getInt(VenueJson.reviews.toString());
-        LatLng latLng = WebService.parseLatLng(venue);
-        int type = venue.getInt(VenueJson.type.toString());
-        String id = venue.getString(VenueJson.id.toString());
-        int dscnt = venue.getInt(VenueJson.discount.toString());
-        String[] atribs = parseAttributes(venue);
-        return new Venue(name, VenueType.getIconResource(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
-    }
-
     private static String[] parseAttributes(JSONObject vJson) {
-        String attribs = null;
+        String attribs;
         try {
             attribs = vJson.getString(VenueJson.attributes.toString());
             if (attribs == null)

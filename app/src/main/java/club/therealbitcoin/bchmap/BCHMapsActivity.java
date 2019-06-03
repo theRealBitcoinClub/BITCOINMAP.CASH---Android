@@ -3,7 +3,6 @@ package club.therealbitcoin.bchmap;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -43,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -50,6 +50,7 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
+import club.therealbitcoin.bchmap.persistence.FileCache;
 import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
@@ -103,6 +104,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         loadAssets();
         checkConnectionShowToast();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        FileCache.close();
+        JsonParser.close();
+        super.onDestroy();
     }
 
     private void checkConnectionShowToast() {
@@ -337,7 +345,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void loadAssets() {
         try {
-            String s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
+            //this call goes to github.com/therealbitcoinclub/flutter_coinector/asset directory
+            String s = FileCache.getCachedContentTriggerInit(getBaseContext(),"places");
+            if (s == null)
+                s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
 
             List<Venue> venues = JsonParser.parseVenues(s);
             VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);

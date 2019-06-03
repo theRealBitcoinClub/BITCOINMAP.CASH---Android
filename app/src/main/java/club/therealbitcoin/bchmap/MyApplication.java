@@ -12,7 +12,7 @@ import org.acra.data.StringFormat;
 import org.acra.sender.HttpSender;
 
 @AcraCore(buildConfigClass = BuildConfig.class, reportFormat = StringFormat.JSON)
-@AcraHttpSender(uri = "https://collector.tracepot.com/c8b40d36",
+@AcraHttpSender(uri = "http://collector.tracepot.com/c8b40d36",
         httpMethod = HttpSender.Method.POST)
 public class MyApplication extends MultiDexApplication {
     @Override

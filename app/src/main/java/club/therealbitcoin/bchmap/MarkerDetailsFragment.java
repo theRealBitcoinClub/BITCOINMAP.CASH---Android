@@ -39,6 +39,7 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.interfaces.AnimatorEndAbstract;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
+import club.therealbitcoin.bchmap.persistence.FileCache;
 import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
@@ -237,8 +238,8 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             @Override
             public void onClick(View v) {
                 try {
-                    String placesId = JsonParser.getPlacesId(getActivity(), venue.id);
-                    String targetURL = "https://search.google.com/local/writereview?placeid=" + placesId;
+                    String placesId = getPlacesId(venue);
+                    String targetURL = "http://search.google.com/local/writereview?placeid=" + placesId;
                     if (placesId == null) {
                         Toast.makeText(getContext(), R.string.missing_places_id, Toast.LENGTH_LONG).show();
                         //btn_review.setEnabled(false);
@@ -265,6 +266,10 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
                 }
             }
         });
+    }
+
+    private String getPlacesId(Venue venue) throws JSONException, IOException {
+        return JsonParser.getPlacesId(getActivity(), venue.id);
     }
 
     /*
@@ -379,7 +384,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void openMapsRoute(Venue v) {
         try {
-            String placesId = JsonParser.getPlacesId(getActivity(), v.id);
+            String placesId = getPlacesId(v);
             String targetURL;
             targetURL = "http://www.google.com/maps/search/?api=1&query=" +
                     v.getCoordinates().latitude +

@@ -16,6 +16,7 @@ import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 @RunWith(RobolectricTestRunner.class)
@@ -30,7 +31,7 @@ public class WebServiceTest {
         double lat = 42.341234;
         double lon = 2.235432;
 
-        LatLng bla = WebService.parseLatLng(new JSONObject("{\"" + VenueJson.lat + "\":" + lat + ",\"" + VenueJson.lon + "\":" + lon + "}"));
+        LatLng bla = JsonParser.parseLatLng(new JSONObject("{\"" + VenueJson.lat + "\":" + lat + ",\"" + VenueJson.lon + "\":" + lon + "}"));
         Assert.assertEquals(bla.latitude, lat);
         Assert.assertEquals(bla.longitude, lon);
     }

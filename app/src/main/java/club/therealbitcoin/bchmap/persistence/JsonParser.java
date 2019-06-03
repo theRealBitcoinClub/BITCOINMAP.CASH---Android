@@ -1,7 +1,8 @@
 package club.therealbitcoin.bchmap.persistence;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +18,18 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 
 public class JsonParser {
 
-    static JSONArray jsonArrayPlaces;
+    private static JSONArray jsonArrayPlaces;
+
+    public static void close() {
+        jsonArrayPlaces = null;
+    }
 
     public static String getPlacesId(Context ctx, String paramId) throws JSONException, IOException {
+        String placesIdContent = FileCache.getCachedContentTriggerInit(ctx, "placesId");
+        if (jsonArrayPlaces == null && placesIdContent != null) {
+            jsonArrayPlaces = new JSONArray(placesIdContent);
+        }
+
         if (jsonArrayPlaces == null)
             jsonArrayPlaces = new JSONArray(WebService.convertStreamToString(ctx.getResources().openRawResource(R.raw.places_id)));
 
@@ -33,9 +43,15 @@ public class JsonParser {
         return null;
     }
 
+    public static LatLng parseLatLng(JSONObject venue) throws JSONException {
+        double lat = venue.getDouble(VenueJson.lat.toString());
+        double lon = venue.getDouble(VenueJson.lon.toString());
+        return new LatLng(lat, lon);
+    }
+
     public static List<Venue> parseVenues(String responseData) throws JSONException {
         JSONArray jsonArray = new JSONArray(responseData);
-        List<Venue> venues = new ArrayList<Venue>();
+        List<Venue> venues = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
