@@ -2,6 +2,7 @@ package club.therealbitcoin.bchmap.persistence;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import org.acra.ACRA;
 
@@ -27,12 +28,14 @@ public class FileCache {
     public static String getCachedContentTriggerInit(Context context, String fileName) {
         String cachedString = cachedContents.get(fileName);
         if (cachedString != null) {
+            ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache(context);
             return cachedString;
         }
         File file = getFile(context, fileName);
         if (file.exists()) {
             String cachedFileContent = readFileFromCache(file);
             cachedContents.put(fileName, cachedFileContent);
+            ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache(context);
             return cachedFileContent;
         }
         initFileCache(context, fileName);
@@ -64,6 +67,7 @@ public class FileCache {
 
                 writeFileToCache(currentData, getFile(context, fileName));
                 cachedContents.put(fileName, currentData);
+                //Toast.makeText(context, "App updated succesfully! Please restart!", Toast.LENGTH_LONG).show();
                 ACRA.log.d("TRBC", "success loadCurrentVersionFromWebAndStoreItIncache + filename:" + fileName);
             }
 
@@ -124,17 +128,24 @@ public class FileCache {
         new WebService("https://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/dataUpdateIncrementVersion.txt", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentVersion) {
+                currentVersion = currentVersion.replaceAll("\n","");
                 ACRA.log.d("TRBC", "success fetching ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache");
-                int latestVersion = getAndPersistUpdatedVersionNumber(context, currentVersion);
-                if (latestVersion < Integer.parseInt(currentVersion)) {
-                    try {
-                        loadCurrentVersionFromWebAndStoreItIncache(context, "places");
-                        loadCurrentVersionFromWebAndStoreItIncache(context, "placesId");
-                    } catch (Exception e) {
-                        forceUpdateNextTime(context);
+                try {
+                    int latestVersion = getAndPersistUpdatedVersionNumber(context, currentVersion);
+                    if (latestVersion < Integer.parseInt(currentVersion)) {
+                        try {
+                            loadCurrentVersionFromWebAndStoreItIncache(context, "places");
+                            loadCurrentVersionFromWebAndStoreItIncache(context, "placesId");
+                            persistVersionCounter(context, currentVersion);
+                        } catch (Exception e) {
+                            Toast.makeText(context, "App update failed! Please check your internet connection!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        ACRA.log.d("TRBC", "update not necessary ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache");
                     }
-                } else {
-                    ACRA.log.d("TRBC", "update not necessary ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache" );
+                }catch (Exception e) {
+                    ACRA.log.e("TRBC", "error forceUpdateNextTime");
+                    forceUpdateNextTime(context);
                 }
             }
 
@@ -145,20 +156,22 @@ public class FileCache {
         }).execute();
     }
 
+    private static void persistVersionCounter(Context context, String versionNumber) {
+        persistNumberAndParseToInt(getFile(context, "dataVersionCounter"), versionNumber);
+    }
+
     private static void forceUpdateNextTime(Context context) {
-        getAndPersistUpdatedVersionNumber(context,"0");
+        persistVersionCounter(context,"0");
     }
 
     private static int getAndPersistUpdatedVersionNumber(Context context, String currentVersion) {
         File file = getFile(context, "dataVersionCounter");
         String versionNumber = readFileFromCache(file);
 
-        if (versionNumber == null) {
+        if (versionNumber == null || versionNumber.isEmpty()) {
             return persistNumberAndParseToInt(file, currentVersion);
         }
-
-        int newVersion = Integer.parseInt(versionNumber)+1;
-        return persistNumberAndParseToInt(file, String.valueOf(newVersion));
+        return Integer.parseInt(versionNumber.replaceAll("\n",""));
     }
 
     private static int persistNumberAndParseToInt(File file, String versionNumber) {
