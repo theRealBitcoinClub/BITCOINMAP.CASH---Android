@@ -104,10 +104,10 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         List<String> venueTitles = null;
         if (onlyFavorites) {
             itemRes = R.layout.list_item_favos;
-            venueTitles = VenueFacade.getInstance().getFavoTitles(latitude == -1 ? null : new LatLng(latitude, longitude));
+            venueTitles = VenueFacade.getInstance().getFavoTitles();
         } else {
             itemRes = R.layout.list_item;
-            venueTitles = VenueFacade.getInstance().getVenueTitles(latitude == -1 ? null : new LatLng(latitude, longitude));
+            venueTitles = VenueFacade.getInstance().getVenueTitles();
         }
         if (venueTitles != null && getActivity() != null) {
             setListAdapter(new PopupAdapter(venueTitles, itemRes, getActivity()));

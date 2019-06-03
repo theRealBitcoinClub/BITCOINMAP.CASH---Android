@@ -127,7 +127,7 @@ public class VenueFacade {
         return VenuesListFragment.calcDistancToUserLocation(userPosition, currentVenue.getCoordinates());
     }
 
-    public List<String> getVenueTitles(LatLng coords) {
+    public List<String> getVenueTitles() {
         if (hasCachedContent(hasChangedList, titles)) {
             return titles;
         }
@@ -153,7 +153,7 @@ public class VenueFacade {
         return !hasChangedList && titles.size() > 0;
     }
 
-    public List<String> getFavoTitles(LatLng coords) {
+    public List<String> getFavoTitles() {
         if (hasCachedContent(hasChangedFavoList, titlesFavo)) {
             return titlesFavo;
         }
