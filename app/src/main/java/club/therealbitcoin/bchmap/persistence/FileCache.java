@@ -31,7 +31,7 @@ public class FileCache {
         }
         File file = getFile(context, fileName);
         if (file.exists()) {
-            String cachedFileContent = readFileFromCache(context, fileName);
+            String cachedFileContent = readFileFromCache(file);
             cachedContents.put(fileName, cachedFileContent);
             return cachedFileContent;
         }
@@ -57,7 +57,12 @@ public class FileCache {
         new WebService("http://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/assets/" + fileName + ".json", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentData) {
-                writeFileToCache(currentData, context, fileName);
+                if (currentData == null || currentData.isEmpty()) {
+                    ACRA.log.e("TRBC", "error loadCurrentVersionFromWebAndStoreItIncache + filename:" + fileName);
+                    return;
+                }
+
+                writeFileToCache(currentData, getFile(context, fileName));
                 ACRA.log.d("TRBC", "success loadCurrentVersionFromWebAndStoreItIncache + filename:" + fileName);
             }
 
@@ -70,8 +75,7 @@ public class FileCache {
 
 
 
-    private static String readFileFromCache(Context context, String fileName) {
-        File file = getFile(context, fileName);
+    private static String readFileFromCache(File file) {
         BufferedReader buf = null;
         try {
             buf = new BufferedReader(new FileReader(file));
@@ -85,32 +89,31 @@ public class FileCache {
 
             return sb.toString();
         } catch (Exception e) {
-            ACRA.log.e("TRBC", "Exception reader = new BufferedWriter(new FileWriter(file)) + fileName" + fileName);
+            ACRA.log.e("TRBC", "Exception reader = new BufferedWriter(new FileWriter(file)) + fileName" + file.getPath());
         } finally {
             try {
                 if (buf != null)
                     buf.close();
             } catch (Exception e) {
-                ACRA.log.e("TRBC", "Exception reader.close() + fileName" + fileName);
+                ACRA.log.e("TRBC", "Exception reader.close() + fileName" + file.getPath());
             }
         }
         return null;
     }
 
-    private static void writeFileToCache(String currentData, Context context, String fileName) {
-        File file = getFile(context, fileName);
+    private static void writeFileToCache(String currentData, File file) {
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(file));
             writer.write(currentData);
         } catch (Exception e) {
-            ACRA.log.e("TRBC", "Exception writer = new BufferedWriter(new FileWriter(file)) + fileName" + fileName);
+            ACRA.log.e("TRBC", "Exception writer = new BufferedWriter(new FileWriter(file)) + fileName" + file.getPath());
         } finally {
             try {
                 if (writer != null)
                     writer.close();
             } catch (Exception e) {
-                ACRA.log.e("TRBC", "Exception writer.close() + fileName" + fileName);
+                ACRA.log.e("TRBC", "Exception writer.close() + fileName" + file.getPath());
             }
         }
     }
@@ -143,10 +146,11 @@ public class FileCache {
             return Integer.parseInt(dataVersionCounter);
         }
 
-        String versionNumber = readFileFromCache(context, "dataVersionCounter");
+        File file = getFile(context, "dataVersionCounter");
+        String versionNumber = readFileFromCache(file);
 
         if (versionNumber == null) {
-            writeFileToCache(currentVersion,context,"dataVersionCounter");
+            writeFileToCache(currentVersion,file);
             cachedContents.put("dataVersionCounter", currentVersion);
             return Integer.parseInt(currentVersion);
         }
