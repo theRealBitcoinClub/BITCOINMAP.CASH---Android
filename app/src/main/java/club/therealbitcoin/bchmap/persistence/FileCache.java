@@ -41,7 +41,7 @@ public class FileCache {
     private static void initFileCache(Context context, String fileName) {
         File file = getFile(context, fileName);
         if (file.exists()) {
-            ifIsUpdatedDataAvailableLoadDataAndStoreInCache(context, fileName);
+            ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache(context);
         } else {
             loadCurrentVersionFromWebAndStoreItIncache(context, fileName);
         }
@@ -70,7 +70,7 @@ public class FileCache {
             public void onError() {
                 ACRA.log.e("TRBC", "error floadCurrentVersionFromWebAndStoreItIncache + filename:" + fileName);
             }
-        });
+        }).execute();
     }
 
 
@@ -119,28 +119,37 @@ public class FileCache {
     }
 
 
-    public static boolean ifIsUpdatedDataAvailableLoadDataAndStoreInCache(Context context, String fileName) {
+    private static boolean ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache(Context context) {
         new WebService("http://raw.githubusercontent.com/theRealBitcoinClub/flutter_coinector/master/dataUpdateIncrementVersion.txt", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentVersion) {
-                ACRA.log.d("TRBC", "success fetching dataUpdateIncrementVersion + filename:" + fileName);
-                int latestVersion = getLastUpdateVersionNumber(context, currentVersion);
+                ACRA.log.d("TRBC", "success fetching ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache");
+                int latestVersion = getAndPersistUpdatedVersionNumber(context, currentVersion);
                 if (latestVersion < Integer.parseInt(currentVersion)) {
-                    loadCurrentVersionFromWebAndStoreItIncache(context, fileName);
+                    try {
+                        loadCurrentVersionFromWebAndStoreItIncache(context, "places");
+                        loadCurrentVersionFromWebAndStoreItIncache(context, "placesId");
+                    } catch (Exception e) {
+                        forceUpdateNextTime(context);
+                    }
                 } else {
-                    ACRA.log.d("TRBC", "update not necessary fetching dataUpdateIncrementVersion + filename:" + fileName);
+                    ACRA.log.d("TRBC", "update not necessary ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache" );
                 }
             }
 
             @Override
             public void onError() {
-                ACRA.log.e("TRBC", "error fetching dataUpdateIncrementVersion + filename:" + fileName);
+                ACRA.log.e("TRBC", "error fetching ifIsUpdatedDataAvailableLoadAllDataAndStoreInCache");
             }
-        });
+        }).execute();
         return false;
     }
 
-    private static int getLastUpdateVersionNumber(Context context, String currentVersion) {
+    private static void forceUpdateNextTime(Context context) {
+        getAndPersistUpdatedVersionNumber(context,"0");
+    }
+
+    private static int getAndPersistUpdatedVersionNumber(Context context, String currentVersion) {
         String dataVersionCounter = cachedContents.get("dataVersionCounter");
         if (dataVersionCounter != null) {
             return Integer.parseInt(dataVersionCounter);
@@ -150,11 +159,18 @@ public class FileCache {
         String versionNumber = readFileFromCache(file);
 
         if (versionNumber == null) {
-            writeFileToCache(currentVersion,file);
-            cachedContents.put("dataVersionCounter", currentVersion);
-            return Integer.parseInt(currentVersion);
+            return persistNumberAndParseToInt(file, currentVersion);
         }
-        cachedContents.put("dataVersionCounter", versionNumber);
+        return persistNumberAndParseToInt(file, versionNumber);
+    }
+
+    private static int persistNumberAndParseToInt(File file, String versionNumber) {
+        persistUpdatedVersionNumber(versionNumber, file);
         return Integer.parseInt(versionNumber);
+    }
+
+    private static void persistUpdatedVersionNumber(String currentVersion, File file) {
+        writeFileToCache(currentVersion, file);
+        cachedContents.put("dataVersionCounter", currentVersion);
     }
 }

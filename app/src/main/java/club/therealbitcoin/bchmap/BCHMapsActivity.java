@@ -321,8 +321,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         if (mMap != null)
             mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
     }
-//TODO SAVE LAST POSITION IN SHARED PREFERENCES,
-// TODO CALC DISTANCE AND SORT LIST BY DISTANCE
 
     @Override
     public void switchTabZoomCamera() {
@@ -345,6 +343,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             String s = FileCache.getCachedContentTriggerInit(getBaseContext(),"places");
             if (s == null || s.isEmpty())
                 s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
+            else
+                Toast.makeText(getBaseContext(), "App updated succesfully! Please restart!", Toast.LENGTH_LONG).show();
 
             List<Venue> venues = JsonParser.parseVenues(s);
             VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this, latLng);
