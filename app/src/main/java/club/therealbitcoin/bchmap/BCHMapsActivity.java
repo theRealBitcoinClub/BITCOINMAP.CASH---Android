@@ -103,9 +103,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     protected void onDestroy() {
-        FileCache.close();
+       /* FileCache.close();
         JsonParser.close();
-        VenueFacade.close();
+        VenueFacade.close();*/
         super.onDestroy();
     }
 

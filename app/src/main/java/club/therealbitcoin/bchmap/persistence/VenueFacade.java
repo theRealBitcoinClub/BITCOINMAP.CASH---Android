@@ -16,7 +16,7 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 
 public class VenueFacade {
     private static final String THEME = "THEME";
-    private static VenueFacade ourInstance = new VenueFacade();
+    private static VenueFacade ourInstance;
     private static String SHARED_PREF = "SDfdsfds";
     private boolean hasChangedList = true;
     private boolean hasChangedFavoList = true;
