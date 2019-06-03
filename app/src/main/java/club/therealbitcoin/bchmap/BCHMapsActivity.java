@@ -343,7 +343,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         try {
             //this call goes to github.com/therealbitcoinclub/flutter_coinector/asset directory
             String s = FileCache.getCachedContentTriggerInit(getBaseContext(),"places");
-            if (s == null)
+            if (s == null || s.isEmpty())
                 s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
 
             List<Venue> venues = JsonParser.parseVenues(s);

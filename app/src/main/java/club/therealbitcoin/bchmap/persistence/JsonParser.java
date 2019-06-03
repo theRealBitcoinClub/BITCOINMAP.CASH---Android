@@ -26,7 +26,7 @@ public class JsonParser {
 
     public static String getPlacesId(Context ctx, String paramId) throws JSONException, IOException {
         String placesIdContent = FileCache.getCachedContentTriggerInit(ctx, "placesId");
-        if (jsonArrayPlaces == null && placesIdContent != null) {
+        if (jsonArrayPlaces == null && placesIdContent != null && !placesIdContent.isEmpty()) {
             jsonArrayPlaces = new JSONArray(placesIdContent);
         }
 
