@@ -214,14 +214,16 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
         private TextView title;
         private TextView location;
         private TextView distance;
+        private TextView rating;
         private View clickArea;
         private View icon;
         private View button;
 
-        private ViewHolder(TextView title, TextView location, TextView distance, View clickArea, View button, View icon) {
+        private ViewHolder(TextView title, TextView location, TextView distance, TextView rating, View clickArea, View button, View icon) {
             this.title = title;
             this.location = location;
             this.distance = distance;
+            this.rating = rating;
             this.clickArea = clickArea;
             this.button = button;
             this.icon = icon;
@@ -239,7 +241,7 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
             ViewHolder holder;
             View view = super.getView(position, convertView, container);
             if (convertView == null) {
-                holder = new ViewHolder(view.findViewById(android.R.id.text1), view.findViewById(R.id.location), view.findViewById(R.id.distance), view.findViewById(R.id.list_item_click_area), view.findViewById(R.id.list_item_button), view.findViewById(R.id.list_item_icon));
+                holder = new ViewHolder(view.findViewById(android.R.id.text1), view.findViewById(R.id.location), view.findViewById(R.id.distance), view.findViewById(R.id.rating), view.findViewById(R.id.list_item_click_area), view.findViewById(R.id.list_item_button), view.findViewById(R.id.list_item_icon));
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -256,6 +258,9 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
             String distanceText = getDistanceText(venue.getCoordinates());
             holder.distance.setText(distanceText);
+            String satisfaction = getSatisfactionIndex(venue.reviews, venue.stars);
+            holder.rating.setText(satisfaction);
+
             venue.listItem = view;
             optimizeTouchArea(holder);
             //int iconResource = VenueType.getIconResource(venue.type);
@@ -276,6 +281,26 @@ public class VenuesListFragment extends android.support.v4.app.ListFragment impl
 
             holder.button.setOnClickListener(VenuesListFragment.this);
             return view;
+        }
+
+        private String getSatisfactionIndex(int total, double stars) {
+            double maximum = total * 5.0;
+            Double index = Double.valueOf(maximum / (total * stars));
+            int percentage = Double.valueOf(index * 100.0).intValue();
+
+            StringBuilder result = new StringBuilder();
+            if (percentage > 90) {
+                result.append("\uD83D\uDE0D ");
+            } else if (percentage > 80) {
+                result.append("\uD83D\uDE01 ");
+            } else if (percentage > 70) {
+                result.append("\uD83D\uDE10 ");
+            } else {
+                result.append("☹️ ");
+            }
+            result.append(percentage);
+
+            return result.toString();
         }
 
         @NonNull
