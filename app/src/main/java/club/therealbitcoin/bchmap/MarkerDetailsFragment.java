@@ -31,6 +31,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
+import org.acra.ACRA;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -115,6 +116,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             loadImage(img, imgUri, new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    ACRA.log.e("TRBC", "onLoadFailed image: " + imgUri);
                     showToast(R.string.toast_image_unavailable);
                     return false;
                 }
