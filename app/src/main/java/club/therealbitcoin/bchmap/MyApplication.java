@@ -3,6 +3,7 @@ package club.therealbitcoin.bchmap;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.google.firebase.FirebaseApp;
 import com.onesignal.OneSignal;
 
 import org.acra.ACRA;
@@ -26,6 +27,7 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        FirebaseApp.initializeApp(this);
 
         //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG, OneSignal.LOG_LEVEL.DEBUG);
         OneSignal.setLocationShared(true);

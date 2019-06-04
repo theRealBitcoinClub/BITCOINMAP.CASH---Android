@@ -166,7 +166,10 @@ public class FileCache {
 
     private static int getAndPersistUpdatedVersionNumber(Context context, String currentVersion) {
         File file = getFile(context, "dataVersionCounter");
-        String versionNumber = readFileFromCache(file);
+        String versionNumber = null;
+        if (file.exists()) {
+            versionNumber = readFileFromCache(file);
+        }
 
         if (versionNumber == null || versionNumber.isEmpty()) {
             return persistNumberAndParseToInt(file, currentVersion);
