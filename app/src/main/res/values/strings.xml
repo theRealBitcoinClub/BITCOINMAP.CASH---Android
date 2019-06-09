@@ -48,9 +48,9 @@
     <string name="toast_removed_favorite">Removed from favorite list!</string>
     <string name="toast_added_favorite">Added to favorite list!</string>
     <string-array name="location_attributes">
-        <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Bitcoin</item>
-        <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Events</item>
-        <item>🎸🎧🎁🎸🎧🎁🎸🎧🎁-.,Trading</item>
+        ️<item>Spicy 🌶️️</item>
+        ️<item>Salty 🥨️</item>
+        ️<item>Sour 😜️</item>
         <item>Organic 🐵</item>
         <item>Vegetarian 🥕</item>
         <item>Vegan 🐮</item>
@@ -58,11 +58,10 @@
         <item>Burger 🍔</item>
         <item>Sandwich 🥪</item>
         <item>Muffin 🧁</item>
-        //The muffin icon is invisible
-        <item>Brownie 🥮</item>//Brownie is invisible too
+        <item>Brownie 🥮</item>
         <item>Cake 🎂</item>
         <item>Cookie 🍪</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,12Tiramisu</item>
+        ️<item>Arabic 🥙️</item>
         <item>Pizza 🍕</item>
         <item>Salad 🥗</item>
         <item>Smoothie 🥤</item>
@@ -83,8 +82,8 @@
         <item>Cocktails 🍹</item>
         <item>Beer 🍺</item>
         <item>Music 🎵</item>
-        <item>🎸🎧🎁-.,1xProjects</item>
-        <item>🎸🎧🎁-.,1xElectro</item>
+        ️<item>Chinese 🍜️</item>
+        ️<item>Duck 🍱️</item>
         <item>Rock 🎸</item>
         <item>LiveDJ 🎧</item>
         <item>Terrace ☀️</item>
@@ -93,72 +92,69 @@
         <item>Papers 🚬</item>
         <item>Advice 🌴</item>
         <item>Calzone 🥟</item>
-        <item>🎸🎧🎁-.,1Suppli</item>
-        <item>MakeUp 🤡</item>
-        <item>Gifts 🎁</item>
-        <item>Tapas 🍠</item>
-        <item>Copas 🍹</item>
-        <item>Piadina 🌮</item>
-        <item>🎸🎧🎁-.,1sHerbs 🌿</item>
-        <item>Grains 🌾</item>
-        <item>Fashion 👗</item>
-        <item>Fair 🤗</item>
-        <item>Women 👩</item>
-        <item>Drinks 🍹</item>
-        <item>TV 📺</item>
-        <item>Retro 🦄</item>
-        <item>🎸🎧🎁-.,1xColor</item>
-        <item>🎸🎧🎁-.,1xBW</item>
-        <item>BTC ₿</item>
-        <item>BCH ₿</item>
-        <item>🎸🎧🎁-.,1xOnline 🖥️</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,2xBooking</item>
-        <item>HotDog 🌭</item>
-        <item>Fast ⏩</item>
-        <item>Kosher 🦄</item>
-        <item>Sushi 🍣</item>
-        <item>Moto 🛵</item>
-        <item>Coche 🚘</item>
-        <item>🎸🎧🎁-.,1xTablet</item>
-        <item>Chicken 🐔</item>
-        <item>Rabbit 🐰</item>
-        <item>Potato 🥔</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,1xDASH</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,1xETH</item>
-        <item>ATM 🏦</item>
-        <item>🎸🎧🎁-.,1yDisco</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger2</item>
-        <item>ToGo 📦</item>
-        <item>Meditation 🧘</item>
-        <item>Wine 🍷</item>
-        <item>Champagne 🥂</item>
-        <item>Alcohol 🍾</item>
-        <item>Booze 🥃</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger</item>
-        //You cant remove because we use fixed indexes, but replace with another string that is
-        unlikely to be typed in by the user
-        <item>🎸🎧🎁🎸🎧🎁-.,dfxgr</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,kmvdf</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,1xParty</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger5</item>
-        <item>BnB 🛏️</item>
-        <item>Haircut ✂️</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,,12xNails 💅</item>
-        <item>Beauty 💅</item>
-        <item>Miso 🍱</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,ubfzger3</item>
-        <item>Rice 🍚</item>
-        <item>Seafood 🦀</item>
-        <item>Hostel 🛏️</item>
-        <item>Fries 🍟</item>
+        ️<item>Falafel 🥙️</item>
+        ️<item>MakeUp 🤡️</item>
+        ️<item>Gifts 🎁️</item>
+        ️<item>Tapas 🍠️</item>
+        ️<item>Copas 🍹️</item>
+        ️<item>Piadina 🌮️</item>
+        ️<item>Cheese 🧀️</item>
+        ️<item>Grains 🌾️</item>
+        ️<item>Fashion 👗️</item>
+        ️<item>Fair 🤗️</item>
+        ️<item>Women 👩️</item>
+        ️<item>Drinks 🍹️</item>
+        ️<item>TV 📺️</item>
+        ️<item>Retro 🦄️</item>
+        ️<item>Feta 🐐️</item>
+        ️<item>DASH ₿️</item>
+        ️<item>BTC ₿️</item>
+        ️<item>BCH ₿️</item>
+        ️<item>ANYPAY ₿️️</item>
+        ️<item>ETH ₿️</item>
+        ️<item>HotDog 🌭️</item>
+        ️<item>Fast ⏩️</item>
+        ️<item>Kosher 🦄️</item>
+        ️<item>Sushi 🍣️</item>
+        ️<item>Moto 🛵️</item>
+        ️<item>Coche 🚘️</item>
+        ️<item>ELIPAY ₿️</item>
+        ️<item>Chicken 🐔️</item>
+        ️<item>Rabbit 🐰️</item>
+        ️<item>Potato 🥔️</item>
+        ️<item>Kumpir 🥔️</item>
+        ️<item>Kebap 🐄️</item>
+        ️<item>ATM 🏦️</item>
+        ️<item>Gyros 🐖️</item>
+        ️<item>Coconut 🥥️</item>
+        ️<item>ToGo 📦️</item>
+        ️<item>Meditation 🧘️</item>
+        ️<item>Wine 🍷️</item>
+        ️<item>Champagne 🥂️</item>
+        ️<item>Alcohol 🍾️</item>
+        ️<item>Booze 🥃️</item>
+        ️<item>Pancakes 🥞️</item>
+        ️<item>Croissant 🥐️</item>
+        ️<item>Popcorn 🍿️</item>
+        ️<item>SoftIce 🍦️</item>
+        ️<item>Dango 🍡</item>
+        ️<item>BnB 🛏️️</item>
+        ️<item>Haircut ✂️️</item>
+        ️<item>Candy 🍭️</item>
+        ️<item>Beauty 💅️</item>
+        ️<item>Miso 🍱️</item>
+        ️<item>Chocolate 🍫️</item>
+        ️<item>Rice 🍚️</item>
+        ️<item>Seafood 🦀️</item>
+        ️<item>Hostel 🛏️️</item>
+        ️<item>Fries 🍟️</item>
         <item>Fish 🐟</item>
-        <item>🎸🎧🎁-.,12xChips</item>
-        <item>Italian 🇮🇹</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,123Karaoke 🎤</item>
-        <item> </item>
-        //This is number 114 the no tag text
-        <item>🎸🎧🎁🎸🎧🎁-.,123Battery</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,123Wheels</item>
+        ️<item>Chips 🍟️</item>
+        ️<item>Italian 🇮🇹️</item>
+        ️<item>Whiskey 🥃️</item>
+        <item> - - - </item>
+        ️<item>Bourbon 🥃️</item>
+        ️<item>Liquor 🥃️</item>
         <item>Men ♂️</item>
         <item>Pasta 🍝</item>
         <item>Dessert 🍬</item>
@@ -167,7 +163,6 @@
         <item>Noodle 🍜</item>
         <item>Korean 🥟</item>
         <item>Market 🧺</item>
-        //invisible item
         <item>Bread 🥖</item>
         <item>Bakery 🥨</item>
         <item>Cafe ☕</item>
@@ -180,7 +175,6 @@
         <item>Lunch 🥡</item>
         <item>Breakfast 🥐</item>
         <item>HappyHour 🥳</item>
-        //hidden item
         <item>LateNight 🌜</item>
         <item>Mexican 🇲🇽</item>
         <item>Burrito 🌯</item>
@@ -201,13 +195,12 @@
         <item>Omelette 🥚</item>
         <item>Gin 🍸</item>
         <item>Donut 🍩</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,12cDelivery 🚚</item>
+        <item>Delivery 🚚</item>
         <item>Cups ☕</item>
         <item>Filter</item>
         <item>Juice 🍊</item>
         <item>Vietnamese 🇻🇳</item>
         <item>Pie 🥮</item>
-        //invisible item
         <item>Unagi 🐡</item>
         <item>Greek 🇬🇷</item>
         <item>Japanese 🇯🇵</item>
@@ -216,7 +209,7 @@
         <item>Indian 🇮🇳</item>
         <item>Nan 🥪</item>
         <item>Club 🎶</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,1xLiquor</item>
+        <item>Honey 🍯</item>
         <item>Pool 🎱</item>
         <item>Hotel 🏨</item>
         <item>Pork 🥓</item>
@@ -225,7 +218,7 @@
         <item>Chai 🍵</item>
         <item>Izzy 🍵</item>
         <item>Matcha 🍵</item>
-        <item>🎸🎧🎁🎸🎧🎁-.,12xCBD</item>
+        <item>Oden 🍢</item>
         <item>Latte ☕</item>
     </string-array>
 
