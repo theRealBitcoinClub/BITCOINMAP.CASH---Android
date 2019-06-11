@@ -1,6 +1,7 @@
 package club.therealbitcoin.bchmap.persistence;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -15,6 +16,8 @@ import java.util.List;
 import club.therealbitcoin.bchmap.R;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
+
+import static android.content.ContentValues.TAG;
 
 public class JsonParser {
 
@@ -49,12 +52,26 @@ public class JsonParser {
         return new LatLng(lat, lon);
     }
 
-    public static List<Venue> parseVenues(String responseData) throws JSONException {
-        JSONArray jsonArray = new JSONArray(responseData);
+    public static List<Venue> parseVenues(String responseData) {
         List<Venue> venues = new ArrayList<>();
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(responseData);
+        } catch (JSONException e) {
+            Log.e("TRBC", "JSONException: JSONArray " + e);
+            e.printStackTrace();
+            return venues;
+        }
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonArray.getJSONObject(i);
+                venues.add(Venue.createInstance(jsonObject));
+            } catch (JSONException e) {
+                Log.e("TRBC", (jsonObject != null ? jsonObject.toString() : "")  + " counter: " + i + " JSONException: " + e);
+                e.printStackTrace();
+            }
         }
 
         return venues;

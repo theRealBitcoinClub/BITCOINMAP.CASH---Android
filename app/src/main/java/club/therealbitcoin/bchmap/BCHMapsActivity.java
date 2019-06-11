@@ -356,9 +356,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         } catch (IOException e) {
             Log.e(TAG, "IOException: " + e);
             e.printStackTrace();
-        } catch (JSONException e) {
-            Log.e(TAG, "JSONException: " + e);
-            e.printStackTrace();
         }
         /*new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
