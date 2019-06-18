@@ -108,16 +108,14 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
 
         if (!ConnectionChecker.hasInternetConnection(getContext())) {
-            showToast(R.string.toast_no_internet);
-            //img.setBackgroundResource(R.drawable.placeholder);
-            //return view; let it try to load from cache
+            showToast(R.string.toast_no_internet, Toast.LENGTH_SHORT);
             loadImage(img, imgUri, null);
         } else {
             loadImage(img, imgUri, new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                     ACRA.log.e("TRBC", "onLoadFailed image: " + imgUri);
-                    showToast(R.string.toast_image_unavailable);
+                    showToast(R.string.toast_image_unavailable, Toast.LENGTH_SHORT);
                     return false;
                 }
 
@@ -139,8 +137,8 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
                 .into(img).getView().setBackgroundResource(R.drawable.placeholder);
     }
 
-    private void showToast(int stringId) {
-        Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
+    private void showToast(int stringId, int duration) {
+        Toast.makeText(getActivity(), stringId, duration).show();
     }
 
     @Override
@@ -300,7 +298,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void clickedFavoButtonUnselected(Venue venue, View btn_favo_selected, View btn_favo_unselected, Context ctx) {
         btn_favo_unselected.setOnClickListener(v -> {
-            showToast(R.string.toast_added_favorite);
+            showToast(R.string.toast_added_favorite, Toast.LENGTH_SHORT);
             VenueFacade.getInstance().addFavoriteVenue(venue, getContext());
             isFavo = true;
             //FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);
@@ -313,7 +311,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void clickedFavoButtonSelected(Venue venue, View btn_favo_selected, View btn_favo_unselected, Context ctx) {
         btn_favo_selected.setOnClickListener(v -> {
-            showToast(R.string.toast_removed_favorite);
+            showToast(R.string.toast_removed_favorite, Toast.LENGTH_SHORT);
             VenueFacade.getInstance().removeFavoriteVenue(venue, getContext());
             isFavo = false;
             //FavoriteButtonAnimator.updateFavoriteSymbol(getContext(), btn_favo, venue, true);

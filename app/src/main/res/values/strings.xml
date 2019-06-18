@@ -42,7 +42,7 @@
     <string name="error_empty_list">Update available! Open Play Store!</string>
     <string name="browser">bitcoinmap.cash</string>
     <string name="toast_restart_app_for_permission_take_effect">The app was restarted for the permission to take effect.</string>
-    <string name="toast_missing_google_maps_information">Google Maps link missing! Please provide the information to: trbc@bitcoinmap.cash</string>
+    <string name="toast_missing_google_maps_information">Google Maps link missing!</string>
     <string name="toast_image_unavailable">The image is currently not available! Please try again later or report that issue to trbc@bitcoinmap.cash</string>
     <string name="toast_no_internet">No internet connection available! You can still use the app with cached images. Hurray!</string>
     <string name="toast_removed_favorite">Removed from favorite list!</string>
