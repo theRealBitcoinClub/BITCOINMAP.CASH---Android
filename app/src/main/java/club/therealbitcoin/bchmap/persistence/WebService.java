@@ -1,13 +1,6 @@
 package club.therealbitcoin.bchmap.persistence;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,11 +11,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
 
 public class WebService extends AsyncTask<String, Void, String> {
@@ -33,12 +21,6 @@ public class WebService extends AsyncTask<String, Void, String> {
     public WebService(String url, OnTaskDoneListener onTaskDoneListener) {
         this.urlStr = url;
         this.onTaskDoneListener = onTaskDoneListener;
-    }
-
-    public static LatLng parseLatLng(JSONObject venue) throws JSONException {
-        double lat = venue.getDouble(VenueJson.lat.toString());
-        double lon = venue.getDouble(VenueJson.lon.toString());
-        return new LatLng(lat,lon);
     }
 
     public static String convertStreamToString(InputStream is) throws IOException {
@@ -93,25 +75,16 @@ public class WebService extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
 
-        if (onTaskDoneListener != null && s != null) {
-            onTaskDoneListener.onTaskDone(s);
+        if(onTaskDoneListener == null) {
+            throw new IllegalStateException("you must provide a task listener");
+        }
+
+        if (result != null) {
+            onTaskDoneListener.onTaskDone(result);
         } else
             onTaskDoneListener.onError();
     }
-
-         public static List<Venue> parseVenues(String responseData) throws JSONException {
-             Log.d("TRBC","parseVenues");
-             JSONArray jsonArray = new JSONArray(responseData);
-             List<Venue> venues = new ArrayList<Venue>();
-
-             for (int i=0; i<jsonArray.length(); i++) {
-                 Log.d("TRBC","checka:"  +jsonArray.getJSONObject(i));
-                 venues.add(Venue.createInstance(jsonArray.getJSONObject(i)));
-             }
-
-             return venues;
-        }
 }

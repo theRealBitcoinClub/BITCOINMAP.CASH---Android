@@ -3,8 +3,8 @@ package club.therealbitcoin.bchmap;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -37,18 +37,15 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.acra.ACRA;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
-import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
+import club.therealbitcoin.bchmap.persistence.FileCache;
 import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 import club.therealbitcoin.bchmap.persistence.WebService;
@@ -56,18 +53,20 @@ import club.therealbitcoin.bchmap.persistence.WebService;
 public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener, UpdateActivityCallback, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
 
-    private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
     public static final String URI_CLICK_LOGO = "http://bitcoinmap.cash";
+    public static final int NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS = 0;
+    private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
-    private GoogleMap mMap;
     private static final String TAG = "TRBC";
-    private int[] mapStyles = {R.raw.map_style_classic,R.raw.map_style_dark};
+    private static final String SHARED_PREF_CAM_POSITION = "SHARED_PREF_CAM_POSITION";
+    private static final String KEY_CAM_POS = "KEY_CAM_POS";
+    long backPressLastClick;
+    private GoogleMap mMap;
+    private int[] mapStyles = {R.raw.map_style_classic, R.raw.map_style_dark};
     private FragmentManager fm;
-
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
     private int[] tabIcons = {
             R.drawable.ic_action_map,
             R.drawable.ic_action_list,
@@ -77,20 +76,19 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private Toolbar tb;
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
-    public static final int NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Log.d(TAG,"onCreate");
         setContentView(R.layout.activity_bchmaps);
         findViewsById();
 
         fm = getSupportFragmentManager();
 
         initActionBar();
+
+        initLastKnowLocation();
 
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.setRetainInstance(true);
@@ -101,7 +99,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         loadAssets();
         checkConnectionShowToast();
 
-        Log.d(TAG,"FINISH ON CREATE");
+    }
+
+    @Override
+    protected void onDestroy() {
+       /* FileCache.close();
+        JsonParser.close();
+        VenueFacade.close();*/
+        super.onDestroy();
     }
 
     private void checkConnectionShowToast() {
@@ -122,7 +127,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume isMapReady:" + mMap);
         if (mMap == null)
             mapFragment.getMapAsync(this);
     }
@@ -148,21 +152,16 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        Log.d(TAG,"VIEWPAGER");
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(mapFragment,"BLA");
-        Log.d(TAG,"FRAGMENT");
-        listFragment = VenuesListFragment.newInstance(false, this);
-        adapter.addFragment(listFragment,"BLUB");
-        Log.d(TAG,"FRAGMENT22");
-        favosFragment = VenuesListFragment.newInstance(true, this);
-        adapter.addFragment(favosFragment,"FAVOS");
-        Log.d(TAG,"ALL ADDED");
+        adapter.addFragment(mapFragment, "BLA");
+        listFragment = VenuesListFragment.newInstance(latLng, false, this);
+        adapter.addFragment(listFragment, "BLUB");
+        favosFragment = VenuesListFragment.newInstance(latLng, true, this);
+        adapter.addFragment(favosFragment, "FAVOS");
         viewPager.setAdapter(adapter);
     }
 
     private void setupTabIcons() {
-        Log.d(TAG,"setupTabIcons");
         tabLayout.getTabAt(0).setIcon(tabIcons[0]).setCustomView(R.layout.tabs_icon);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]).setCustomView(R.layout.tabs_icon);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]).setCustomView(R.layout.tabs_icon);
@@ -170,7 +169,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG,"onRequestPermissionsResult");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             showToast(R.string.toast_restart_app_for_permission_take_effect);
@@ -180,15 +178,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
     }
 
-
     @TargetApi(23)
     private void getPermissions() {
-        requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION},MY_LOCATION_REQUEST_CODE);
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady: ");
         initMap(googleMap);
         getPermissionAccessFineLocation();
         setMapStyle(mapStyles[VenueFacade.getInstance().getTheme(this)]);
@@ -201,7 +197,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void initListFragment(int index) {
-        Log.d(TAG,"initListFragment index" + index);
         if (index == 1 && listFragment != null) {
             listFragment.initAdapter(false);
         } else if (index == 2 && favosFragment != null) {
@@ -213,9 +208,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            Log.d(TAG, "setMyLocationEnabled: true ");
         } else {
-            Log.d(TAG, "setMyLocationEnabled false: ");
             getPermissions();
         }
     }
@@ -245,14 +238,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                         this, x));
     }
 
-    private void switchMapStyle(){
+    private void switchMapStyle() {
         VenueFacade facade = VenueFacade.getInstance();
         int theme = facade.getTheme(this);
         theme++;
-        if (theme >=mapStyles.length) {
-            theme=0;
+        if (theme >= mapStyles.length) {
+            theme = 0;
         }
-        Log.d(TAG,"switchMapStyle" + theme);
         facade.setTheme(theme, this);
         setMapStyle(mapStyles[theme]);
         initAllListViews();
@@ -263,13 +255,14 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             return;
 
         mMap.clear();
-        for (Venue v: VenueFacade.getInstance().getVenuesList()) {
-            Log.d(TAG, "venue: " + v);
+        for (Venue v : VenueFacade.getInstance().getVenuesList()) {
             addMarker(v);
         }
         if (moveCamera)
-           moveCameraToLastLocation();
+            moveCameraToLastLocation();
     }
+
+    LatLng latLng;
 
     private void moveCameraToLastLocation() {
         try {
@@ -277,25 +270,38 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             Location lastCoordinates = task.getResult();
-                            LatLng latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
-                            Log.d(TAG,latLng.latitude + "" + latLng.longitude);
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
+                            persistLastKnowLocation(lastCoordinates);
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED));
                             showToastMovingLocation();
                         } else {
                             showToast(R.string.toast_enable_location_enjoy_all_features);
-                            Log.d(TAG, "getLastLocation:exception", task.getException());
                         }
                     });
-        } catch (SecurityException e){
-            Log.d(TAG,"SECURITYEXCEPTION");
+        } catch (SecurityException e) {
         }
     }
 
+    private void initLastKnowLocation() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
+        String latestKnownPos = sharedPreferences.getString(KEY_CAM_POS, "");
+        if (latestKnownPos.equals(""))
+            return;
 
+        latLng = new LatLng(getPartialLatLng(latestKnownPos, 0), getPartialLatLng(latestKnownPos, 1));
+    }
+
+    private double getPartialLatLng(String latestKnownPos, int pos) {
+        return Double.parseDouble(latestKnownPos.split(";")[pos]);
+    }
+
+    private void persistLastKnowLocation(Location lastCoordinates) {
+        latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
+        sharedPreferences.edit().putString(KEY_CAM_POS, lastCoordinates.getLatitude() + ";" + lastCoordinates.getLongitude()).apply();
+    }
 
     @Override
     public void initAllListViews() {
-        Log.d(TAG,"updateListViews");
         initFavosList();
         initListView();
     }
@@ -333,37 +339,30 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     private void loadAssets() {
         try {
-            Log.d("TRBC","parseVenues");
-
-            String s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
+            //this call goes to github.com/therealbitcoinclub/flutter_coinector/asset directory
+            String s = FileCache.getCachedContentTriggerInit(getBaseContext(),"places");
+            if (s == null || s.isEmpty())
+                s = WebService.convertStreamToString(getResources().openRawResource(R.raw.places));
 
             List<Venue> venues = JsonParser.parseVenues(s);
-            VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
-
-            //Log.d(TAG, "responseData: " + s);
+            VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this, latLng);
 
             restoreFilters();
 
-            if(mMap != null)
+            if (mMap != null)
                 syncVenueMarkersDataWithMap(true);
 
             initAllListViews();
         } catch (IOException e) {
             Log.e(TAG, "IOException: " + e);
             e.printStackTrace();
-        } catch (JSONException e) {
-            Log.e(TAG, "JSONException: " + e);
-            e.printStackTrace();
         }
         /*new WebService(TRBC_VENUES_QUERY, new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String responseData) {
                 try {
-                    Log.d(TAG, "onTaskDone: ");
                     List<Venue> venues = JsonParser.parseVenues(responseData);
                     VenueFacade.getInstance().initVenues(venues, BCHMapsActivity.this);
-
-                    Log.d(TAG, "responseData: " + responseData);
 
                     restoreFilters();
 
@@ -386,9 +385,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void restoreFilters() {
-        for (VenueType t: VenueType.getFilterableTypes()
-                ) {
-            if (VenueFacade.getInstance().isTypeFiltered(t.getIndex(),BCHMapsActivity.this)) {
+        for (VenueType t : VenueType.getFilterableTypes()
+        ) {
+            if (VenueFacade.getInstance().isTypeFiltered(t.getIndex(), BCHMapsActivity.this)) {
                 VenueFacade.getInstance().filterListByType(t, BCHMapsActivity.this);
             }
         }
@@ -401,19 +400,24 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         //updateSwitchThemeIcon(menu.getItem(0));
 
         int size = menu.size();
-        Log.d(TAG,"menu size:" + size);
-        for (int i = NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS; i< size; i++) {
+        for (int i = NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS; i < size; i++) {
             int realIndex = i - NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS;
             MenuItem item = menu.getItem(i);
-            Log.d(TAG,"item:" + item.getTitle());
             boolean isChecked = !VenueFacade.getInstance().isTypeFiltered(realIndex, this);
 
-            Log.d(TAG,"onCreateOptionsMenu:" + i + ", isChecked:" + isChecked);
             item.setChecked(isChecked);
         }
 
         return true;
     }
+/*
+    private void updateSwitchThemeIcon(MenuItem item) {
+        if (VenueFacade.getInstance().getTheme(this) == 0) {
+            item.setIcon(R.drawable.ic_action_luna);
+        } else {
+            item.setIcon(R.drawable.ic_action_sun);
+        }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -432,22 +436,22 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 openWebsite();
                 return true;
             case R.id.menu_bar:
-                applyFilters(item,VenueType.Bar);
+                applyFilters(item, VenueType.Bar);
                 return true;
             case R.id.menu_shops:
-                applyFilters(item,VenueType.Super);
+                applyFilters(item, VenueType.Super);
                 return true;
             case R.id.menu_food:
-                applyFilters(item,VenueType.Food);
+                applyFilters(item, VenueType.Food);
                 return true;
             case R.id.menu_fashion:
-                applyFilters(item,VenueType.Fashion);
+                applyFilters(item, VenueType.Fashion);
                 return true;
             case R.id.menu_sweet:
-                applyFilters(item,VenueType.Sweet);
+                applyFilters(item, VenueType.Sweet);
                 return true;
             case R.id.menu_hotel:
-                applyFilters(item,VenueType.Hotel);
+                applyFilters(item, VenueType.Hotel);
                 return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);
@@ -461,14 +465,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         }
 
     }
-/*
-    private void updateSwitchThemeIcon(MenuItem item) {
-        if (VenueFacade.getInstance().getTheme(this) == 0) {
-            item.setIcon(R.drawable.ic_action_luna);
-        } else {
-            item.setIcon(R.drawable.ic_action_sun);
-        }
-    }*/
 
     private void applyFilters(MenuItem item, VenueType type) {
         if (item.isChecked()) {
@@ -484,8 +480,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private void openWebsite() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));
     }
-
-    long backPressLastClick;
 
     @Override
     public void onBackPressed() {
@@ -505,28 +499,24 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private void addMarker(Venue v) {
         BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
 
-        Log.d(TAG,"addMarker lat:" + v.getCoordinates().latitude + " lon:" + v.getCoordinates().longitude);
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.d(TAG,"markerclick:" + marker.getId());
 
         Venue v = (Venue) marker.getTag();
         if (v == null) {
-            Log.d(TAG,"venue:" + v);
             return false;
         }
 
-        MarkerDetailsFragment.newInstance(v, this, true).show(fm,"MARKERDIALOG");
+        MarkerDetailsFragment.newInstance(v, this, true).show(fm, "MARKERDIALOG");
         return false;
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Log.d(TAG,"onMyLocationButtonClick");
         try {
             LocationServices.getFusedLocationProviderClient(this).getLastLocation()
                     .addOnCompleteListener(this, task -> {
@@ -536,8 +526,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                             showToast(R.string.toast_enable_location);
                         }
                     });
-        } catch (SecurityException e){
-            Log.d(TAG,"SECURITYEXCEPTION onMyLocationButtonClick");
+        } catch (SecurityException e) {
         }
         return false;
     }

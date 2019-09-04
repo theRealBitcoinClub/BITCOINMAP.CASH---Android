@@ -8,8 +8,8 @@ android {
         applicationId "club.therealbitcoin.bchmap"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 30
-        versionName "bmap.cash"
+        versionCode 38
+        versionName "2.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -19,11 +19,11 @@ android {
         }
     }
     defaultConfig {
-            manifestPlaceholders = [
-                    onesignal_app_id: 'd4cfeb3e-d0ea-48bf-a08f-5da924a842b2',
-                    // Project number pulled from dashboard, local value is ignored.
-                    onesignal_google_project_number: 'REMOTE'
-            ]
+        manifestPlaceholders = [
+                onesignal_app_id               : 'd4cfeb3e-d0ea-48bf-a08f-5da924a842b2',
+                // Project number pulled from dashboard, local value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+        ]
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {
@@ -37,18 +37,18 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-        /*defaultConfig {
-            applicationId "io.trbc.bitcoin"
-        }
+    /*defaultConfig {
+        applicationId "io.trbc.bitcoin"
+    }
 
-        productFlavors {
-            free {
-                applicationIdSuffix ".btc"
-            }
-            pro {
-                applicationIdSuffix ".bch"
-            }
-        }*/
+    productFlavors {
+        free {
+            applicationIdSuffix ".btc"
+        }
+        pro {
+            applicationIdSuffix ".bch"
+        }
+    }*/
 }
 
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -12,32 +11,9 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import club.therealbitcoin.bchmap.persistence.WebService;
+import club.therealbitcoin.bchmap.persistence.JsonParser;
 
 public class Venue implements Parcelable {
-    private static final String SHARED_PREF_ID = "SHARED_PREF_ID";
-    public int favoListIndex =-1;
-    public String name;
-    public int iconRes;
-    public int type;
-    public String id;
-    private static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
-    public static String REDIRECT_URI = "https://goo.gl/maps/";
-    public static String IMG_FOLDER =  BASE_URI + "img/app/";
-    public int reviews;
-    public double stars;
-    public String location;
-    private Boolean isFavorite = null;
-    private LatLng coordinates;
-    public int listIndex = -1;
-    public View listItem;
-    private int discountLevel;
-    private String[] attributes;
-
-    public String[] getAttributes() {
-        return attributes;
-    }
-
     public static final Creator<Venue> CREATOR = new Creator<Venue>() {
         @Override
         public Venue createFromParcel(Parcel in) {
@@ -49,33 +25,38 @@ public class Venue implements Parcelable {
             return new Venue[size];
         }
     };
+    private static final String SHARED_PREF_ID = "SHARED_PREF_ID";
+    private static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
+    public static String IMG_FOLDER = BASE_URI + "img/app/";
+    public int favoListIndex = -1;
+    public String name;
+    public int iconRes;
+    public int type;
+    public String id;
+    public int reviews;
+    public double stars;
+    public String location;
+    public int listIndex = -1;
+    public View listItem;
+    private Boolean isFavorite = null;
+    private LatLng coordinates;
+    private int discountLevel;
+    private String[] attributes;
 
-    public void setFavorite(Boolean favorite, Context ctx) {
-        Log.d("TRBC","setFavorite");
-        isFavorite = favorite;
-
-        SharedPreferences sharedPref = ctx.getSharedPreferences(
-                SHARED_PREF_ID, Context.MODE_PRIVATE);
-        sharedPref.edit().putBoolean(id,favorite).apply();
+    public static Venue createInstance(JSONObject venue) throws JSONException {
+        String loc = venue.getString(VenueJson.location.toString());
+        String name = venue.getString(VenueJson.name.toString());
+        double stars = venue.getDouble(VenueJson.score.toString());
+        int rev = venue.getInt(VenueJson.reviews.toString());
+        LatLng latLng = JsonParser.parseLatLng(venue);
+        int type = venue.getInt(VenueJson.type.toString());
+        String id = venue.getString(VenueJson.id.toString());
+        int dscnt = venue.getInt(VenueJson.discount.toString());
+        String[] atribs = parseAttributes(venue);
+        return new Venue(name, VenueType.getIconResource(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
     }
 
-    public boolean isFavorite(Context ctx) {
-        Log.d("TRBC","isFavorite");
-        if (isFavorite == null && ctx != null) {
-            Log.d("TRBC","isFavorite null");
-            SharedPreferences sharedPref = ctx.getSharedPreferences(
-                    SHARED_PREF_ID, Context.MODE_PRIVATE);
-            isFavorite = sharedPref.getBoolean(id, false);
-            Log.d("TRBC","isFavorite null" + isFavorite);
-        }
-
-        return isFavorite != null ? isFavorite : false;
-    }
-
-    public LatLng getCoordinates() {
-        return coordinates;
-    }
-
+    //constructor is public for testing purpose only
     public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc) {
         this.location = loc;
         this.discountLevel = dscnt;
@@ -89,33 +70,60 @@ public class Venue implements Parcelable {
         this.attributes = attr;
     }
 
-    public static Venue createInstance(JSONObject venue) throws JSONException {
-        String loc = venue.getString(VenueJson.location.toString());
-        String name = venue.getString(VenueJson.name.toString());
-        double stars = venue.getDouble(VenueJson.score.toString());
-        int rev = venue.getInt(VenueJson.reviews.toString());
-        LatLng latLng = WebService.parseLatLng(venue);
-        int type = venue.getInt(VenueJson.type.toString());
-        String id = venue.getString(VenueJson.id.toString());
-        int dscnt = venue.getInt(VenueJson.discount.toString());
-        String[] atribs = parseAttributes(venue);
-        return new Venue(name, VenueType.getIconResource(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
+    protected Venue(Parcel in) {
+        location = in.readString();
+        in.readStringArray(attributes);
+        discountLevel = in.readInt();
+        favoListIndex = in.readInt();
+        listIndex = in.readInt();
+        name = in.readString();
+        iconRes = in.readInt();
+        type = in.readInt();
+        id = in.readString();
+        reviews = in.readInt();
+        stars = in.readDouble();
+        byte tmpIsFavorite = in.readByte();
+        isFavorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
+        coordinates = in.readParcelable(LatLng.class.getClassLoader());
     }
 
     private static String[] parseAttributes(JSONObject vJson) {
-        Log.d("TRBC","parseAttributes:" + vJson);
-        String attribs = null;
+        String attribs;
         try {
             attribs = vJson.getString(VenueJson.attributes.toString());
-            Log.d("TRBC","yyyy:" + attribs);
             if (attribs == null)
                 return null;
         } catch (JSONException e) {
-            Log.d("TRBC","jjjjjjjjj:" + attribs);
             return null;
         }
 
         return attribs.split(",");
+    }
+
+    public String[] getAttributes() {
+        return attributes;
+    }
+
+    public void setFavorite(Boolean favorite, Context ctx) {
+        isFavorite = favorite;
+
+        SharedPreferences sharedPref = ctx.getSharedPreferences(
+                SHARED_PREF_ID, Context.MODE_PRIVATE);
+        sharedPref.edit().putBoolean(id, favorite).apply();
+    }
+
+    public boolean isFavorite(Context ctx) {
+        if (isFavorite == null && ctx != null) {
+            SharedPreferences sharedPref = ctx.getSharedPreferences(
+                    SHARED_PREF_ID, Context.MODE_PRIVATE);
+            isFavorite = sharedPref.getBoolean(id, false);
+        }
+
+        return isFavorite != null ? isFavorite : false;
+    }
+
+    public LatLng getCoordinates() {
+        return coordinates;
     }
 
     @Override
@@ -139,8 +147,8 @@ public class Venue implements Parcelable {
         return sb.toString();
     }
 
-    private void appendData (StringBuilder builder, String param, Object value) {
-        appendData(builder,param,value,false);
+    private void appendData(StringBuilder builder, String param, Object value) {
+        appendData(builder, param, value, false);
     }
 
     private void appendData(StringBuilder sb, String param, Object value, boolean isLastValue) {
@@ -153,7 +161,6 @@ public class Venue implements Parcelable {
         else
             sb.append("\",\"");
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -184,23 +191,6 @@ public class Venue implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    protected Venue(Parcel in) {
-        location = in.readString();
-        in.readStringArray(attributes);
-        discountLevel = in.readInt();
-        favoListIndex = in.readInt();
-        listIndex = in.readInt();
-        name = in.readString();
-        iconRes = in.readInt();
-        type = in.readInt();
-        id = in.readString();
-        reviews = in.readInt();
-        stars = in.readDouble();
-        byte tmpIsFavorite = in.readByte();
-        isFavorite = tmpIsFavorite == 0 ? null : tmpIsFavorite == 1;
-        coordinates = in.readParcelable(LatLng.class.getClassLoader());
     }
 
     @Override

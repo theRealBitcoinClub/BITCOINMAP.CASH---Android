@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_margin="20dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:orientation="vertical">
 
     <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimaryDark"
         android:id="@+id/close_details_dialog"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal">
+
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="0dp"
             android:id="@+id/dialog_button_back"
-            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimaryDark"
-            android:layout_height="match_parent" android:src="@drawable/ic_action_back"/>
+            android:src="@drawable/ic_action_back" />
 
         <TextView
             android:id="@+id/dialog_header"
@@ -32,10 +34,10 @@
             android:focusableInTouchMode="true"
             android:gravity="center"
             android:marqueeRepeatLimit="marquee_forever"
-            android:paddingBottom="12dp"
             android:paddingLeft="0dp"
-            android:paddingRight="0dp"
             android:paddingTop="12dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="12dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -43,35 +45,36 @@
             android:textStyle="bold" />
 
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
             android:id="@+id/dialog_button_close"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimaryDark"
-            android:layout_height="match_parent" android:src="@drawable/ic_action_close"/>
+            android:src="@drawable/ic_action_close" />
 
     </android.support.v7.widget.LinearLayoutCompat>
 
     <ImageView
-            android:id="@+id/horizontal_rule"
-            android:layout_height="1dp"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/colorPrimary"/>
+        android:id="@+id/horizontal_rule"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary" />
 
     <ImageView
-        android:scaleType="centerCrop"
         android:id="@+id/img"
         style="@style/ImageStyle"
         android:layout_gravity="center_horizontal"
-        android:foregroundGravity="center_horizontal"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
+        android:background="@color/colorAccent"
+        android:foregroundGravity="center_horizontal"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:background="@color/colorAccent" />
+        android:scaleType="centerCrop" />
 
     <!--ImageView
         android:id="@+id/horizontal_rule2"
@@ -81,31 +84,32 @@
         android:layout_marginTop="0dp"
         android:background="@color/colorPrimaryDark"/-->
 
-        <TextView
-            android:id="@+id/dialog_type"
-            android:layout_width="match_parent"
-            android:background="@color/colorBackGroundDark"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorTextDarkTheme" />
-        <TextView
-            android:background="@color/colorBackGroundDark"
-            android:id="@+id/dialog_reviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingBottom="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorTextDarkTheme" />
+    <TextView
+        android:id="@+id/dialog_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackGroundDark"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorTextDarkTheme" />
+
+    <TextView
+        android:id="@+id/dialog_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackGroundDark"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorTextDarkTheme" />
     <!--TextView
         android:id="@+id/dialog_discount"
         android:layout_width="match_parent"
@@ -122,38 +126,42 @@
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="4dp"
         android:background="@color/colorBackGroundDark"
-        android:orientation="horizontal">
-    <TextView
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:id="@+id/tag0"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        style="@style/TagStyle" />
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp">
+
+        <TextView
+            android:id="@+id/tag0"
+            style="@style/TagStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/tag1"
+            style="@style/TagStyle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            style="@style/TagStyle" />
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/tag2"
+            style="@style/TagStyle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            style="@style/TagStyle" />
+            android:layout_weight="1" />
+
         <TextView
+            android:id="@+id/tag3"
+            style="@style/TagStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:id="@+id/tag3"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            style="@style/TagStyle" />
+            android:layout_weight="1" />
     </android.support.v7.widget.LinearLayoutCompat>
 
 
@@ -161,60 +169,66 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:orientation="horizontal"
         android:paddingLeft="1dp"
-        android:paddingBottom="1dp"
         android:paddingRight="1dp"
-        android:orientation="horizontal">
+        android:paddingBottom="1dp">
+
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:padding="2dp"
-            android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/dialog_button_route"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/details_fragment_icon_size"
-            android:padding="16dp"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
-            android:src="@drawable/ic_action_move" />
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <ImageButton
+                android:id="@+id/dialog_button_route"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/details_fragment_icon_size"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:padding="16dp"
+                android:src="@drawable/ic_action_move" />
+
             <ImageButton
                 android:id="@+id/dialog_button_map"
                 android:layout_width="0dp"
-                android:visibility="gone"
                 android:layout_height="@dimen/details_fragment_icon_size"
-                android:padding="16dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryDark"
-                android:src="@drawable/ic_action_map"/>
+                android:padding="16dp"
+                android:src="@drawable/ic_action_map"
+                android:visibility="gone" />
+
             <ImageButton
                 android:id="@+id/dialog_button_review"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
-                android:padding="16dp"
-                android:visibility="gone"
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryDark"
-                android:src="@drawable/ic_action_review"/>
+                android:padding="16dp"
+                android:src="@drawable/ic_action_review"
+                android:visibility="gone" />
+
             <ImageButton
                 android:id="@+id/dialog_button_favo_selected"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
-                android:padding="16dp"
                 android:layout_weight="1"
-                android:visibility="gone"
                 android:background="@color/colorPrimaryDark"
-                android:src="@drawable/ic_action_favorite_white_selected"/>
+                android:padding="16dp"
+                android:src="@drawable/ic_action_favorite_white_selected"
+                android:visibility="gone" />
+
             <ImageButton
-                android:visibility="gone"
                 android:id="@+id/dialog_button_favo_unselected"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
-                android:padding="16dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryDark"
-                android:src="@drawable/ic_action_favorite_white"/>
+                android:padding="16dp"
+                android:src="@drawable/ic_action_favorite_white"
+                android:visibility="gone" />
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>
 

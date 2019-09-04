@@ -21,13 +21,13 @@ public class VenueTest {
     String testName = "name";
     int testIconRes = R.drawable.ic_action_bitcoin;
     int type = 0;
-    LatLng cord = new LatLng(3.4,5.6);
+    LatLng cord = new LatLng(3.4, 5.6);
     String placesId = "4543tdfg34";
     int rev = 234;
     double stras = 4.8;
 
     @Before
-    public void setUp () {
+    public void setUp() {
         VenueFacade.getInstance().clearCache(RuntimeEnvironment.application);
     }
 

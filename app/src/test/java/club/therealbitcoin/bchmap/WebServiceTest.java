@@ -16,6 +16,7 @@ import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueJson;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
+import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.WebService;
 
 @RunWith(RobolectricTestRunner.class)
@@ -27,12 +28,12 @@ public class WebServiceTest {
 
     @Test
     public void testParseLatLng() throws JSONException {
-            double lat = 42.341234;
-            double lon = 2.235432;
+        double lat = 42.341234;
+        double lon = 2.235432;
 
-            LatLng bla = WebService.parseLatLng(new JSONObject("{\""+ VenueJson.lat+"\":" + lat + ",\""+VenueJson.lon+"\":" + lon +"}"));
-            Assert.assertEquals(bla.latitude,lat);
-            Assert.assertEquals(bla.longitude,lon);
+        LatLng bla = JsonParser.parseLatLng(new JSONObject("{\"" + VenueJson.lat + "\":" + lat + ",\"" + VenueJson.lon + "\":" + lon + "}"));
+        Assert.assertEquals(bla.latitude, lat);
+        Assert.assertEquals(bla.longitude, lon);
     }
 
     @Test
@@ -51,12 +52,12 @@ public class WebServiceTest {
         List<Venue> venues = JsonParser.parseVenues(venueJson);
 
         Assert.assertEquals(5, venues.size());
-        Assert.assertEquals(venues.get(0).name,testName);
-        Assert.assertNotSame(venues.get(1).name,testName);
-        Assert.assertEquals(venues.get(1).id,testId);
-        Assert.assertEquals(venues.get(2).getCoordinates().latitude,Double.valueOf(testLat));
-        Assert.assertEquals(venues.get(3).reviews,(int)Integer.valueOf(testReviews));
-        Assert.assertEquals(venues.get(4).stars,Double.valueOf(testStars));
+        Assert.assertEquals(venues.get(0).name, testName);
+        Assert.assertNotSame(venues.get(1).name, testName);
+        Assert.assertEquals(venues.get(1).id, testId);
+        Assert.assertEquals(venues.get(2).getCoordinates().latitude, Double.valueOf(testLat));
+        Assert.assertEquals(venues.get(3).reviews, (int) Integer.valueOf(testReviews));
+        Assert.assertEquals(venues.get(4).stars, Double.valueOf(testStars));
     }
 
     @Test
