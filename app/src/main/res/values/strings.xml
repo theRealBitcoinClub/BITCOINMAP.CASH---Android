@@ -16,7 +16,7 @@
     <string name="type_sweet">Take-Away-Food</string>
     <string name="type_tattoo">Tattoo-Piercing</string>
     <string name="type_place">Place</string>
-    <string name="recommendation">Visit: http://bitcoinmap.cash or download the Android App: https://play.google.com/store/apps/details?id=club.therealbitcoin.bchmap</string>
+    <string name="recommendation">Visit: http://bitcoinmap.cash or download the Android App: https://bitcoinmap.cash/localbitcoinmap</string>
     <string name="thank_you">Tell your friends!</string>
     <string name="toolbar">bitcoinmap.cash</string>
     <string name="preference_file_key">favoriiiiits</string>
@@ -25,7 +25,7 @@
     <string name="toast_enable_location_enjoy_all_features">Give permission to access your location to enjoy all the features of this app!</string>
     <string name="toast_enable_location">Please enable your location in the device settings.</string>
     <string name="toast_moving_location">Moving to last known location.</string>
-    <string name="switch_style">Switch Color Theme</string>
+    <string name="switch_style">Switch Dark Mode</string>
     <string name="filter">Map Filter</string>
     <string name="toast_sharing_venue">Thank you, for your support!</string>
     <string name="toast_route_button">You will be forwarded to Google Maps now.</string>
@@ -40,7 +40,7 @@
     <string name="found_places_id">Thanks for supporting the merchant with a review!</string>
     <string name="missing_places_id">Not found on Google Maps! Review impossible!</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
-    <string name="browser">bitcoinmap.cash</string>
+    <string name="browser">Add New Place</string>
     <string name="toast_restart_app_for_permission_take_effect">The app was restarted for the permission to take effect.</string>
     <string name="toast_missing_google_maps_information">Google Maps link missing!</string>
     <string name="toast_image_unavailable">The image is currently not available! Please try again later or report that issue to trbc@bitcoinmap.cash</string>
@@ -220,215 +220,11 @@
         <item>Matcha 🍵</item>
         <item>Oden 🍢</item>
         <item>Latte ☕</item>
-    </string-array>
-
-
-    <string-array name="location_attributes_old">
-        <item>Bitcoin</item>
-        <item>Events</item>
-        <item>Trading</item>
-        <item>Organic</item>
-        <!--4-->
-        <item>Veggie</item>
-        <item>Vegan</item>
-        <item>Healthy</item>
-        <item>Burger</item>
-        <item>Sandwich 🥪</item>
-        <!--9-->
-        <item>Muffin</item>
-        <item>Brownie</item>
-        <item>Cake</item>
-        <item>Cookie</item>
-        <item>Tiramisu</item>
-        <!--14-->
-        <item>Pizza</item>
-        <item>Salad</item>
-        <item>Smoothie</item>
-        <item>Fruit</item>
-        <item>Gelato</item>
-        <!--19-->
-        <item>Raw</item>
-        <item>Handbag</item>
-        <item>Cosmetic</item>
-        <item>Tattoo</item>
-        <item>Piercing</item>
-        <!--24-->
-        <item>Souvenir</item>
-        <item>Hatha</item>
-        <item>Vinyasa</item>
-        <item>Massage</item>
-        <item>Upcycled</item>
-        <!--29-->
-        <item>Coffee</item>
-        <item>NoGluten</item>
-        <item>Cocktail</item>
-        <item>Beer</item>
-        <item>Music</item>
-        <!--34-->
-        <item>Projects</item>
-        <item>Electro</item>
-        <item>Rock</item>
-        <item>LiveDJ</item>
-        <item>Terrace</item>
-        <!--39-->
-        <item>Seeds</item>
-        <item>Grinder</item>
-        <item>Papers</item>
-        <item>Advice</item>
-        <item>Calzone</item>
-        <!--44-->
-        <item>Suppli</item>
-        <item>MakeUp</item>
-        <item>Gifts</item>
-        <item>Tapas</item>
-        <item>Copas</item>
-        <!--49-->
-        <item>Piadina</item>
-        <item>Hierba</item>
-        <item>Cereales</item>
-        <item>Fashion</item>
-        <item>Fair</item>
-        <!--54-->
-        <item>Women</item>
-        <item>Drinks</item>
-        <item>TV</item>
-        <item>Retro</item>
-        <item>Color</item>
-        <!--59-->
-        <item>B/W</item>
-        <item>BTC</item>
-        <item>BCH</item>
-        <item>Online</item>
-        <item>Booking</item>
-        <!--64-->
-        <item>HotDog</item>
-        <item>Fast</item>
-        <item>Kosher</item>
-        <item>Sushi</item>
-        <item>Moto</item>
-        <!--69-->
-        <item>Coche</item>
-        <item>Tablet</item>
-        <item>Chicken</item>
-        <item>Rabbit</item>
-        <item>Potatoe</item>
-        <!--74-->
-        <item>DASH</item>
-        <item>ETH</item>
-        <item>ATM</item>
-        <item>Club</item>
-        <item>Dance</item>
-        <!--79-->
-        <item>TakeAway</item>
-        <item>Meditation</item>
-        <item>Wine</item>
-        <item>Champagne</item>
-        <item>Alcohol</item>
-        <!--84-->
-        <item>Booze</item>
-        <item>Hookers</item>
-        <item>Girls</item>
-        <item>Gay</item>
-        <item>Party</item>
-        <!--89-->
-        <item>English</item>
-        <item>B&amp;B</item>
-        <item>Haircut</item>
-        <item>Nails</item>
-        <item>Beauty</item>
-        <!--94-->
-        <item>Miso</item>
-        <item>Teriyaki</item>
-        <item>Rice</item>
-        <item>Seafood</item>
-        <item>Hostel</item>
-        <!--99-->
-        <item>Fries</item>
-        <item>Fish</item>
-        <item>Chips</item>
-        <item>Italian</item>
-        <item>Karaoke</item>
-        <!--104-->
-        <item> x x x </item>
-        <item>Battery</item>
-        <item>Wheels</item>
-        <item>Men</item>
-        <item>Pasta</item>
-        <!--109-->
-        <item>Dessert</item>
-        <item>Starter</item>
-        <item>BBQ</item>
-        <item>Noodle</item>
-        <item>Korean</item>
-        <!--114-->
-        <item>Market</item>
-        <item>Bread</item>
-        <item>Bakery</item>
-        <item>Cafe</item>
-        <item>Games</item>
-        <!--119-->
-        <item>Snacks</item>
-        <item>Elegant</item>
-        <item>Piano</item>
-        <item>Brunch</item>
-        <item>Nachos</item>
-        <!--124-->
-        <item>Lunch</item>
-        <item>Breakfast</item>
-        <item>HappyHour</item>
-        <item>LateNight</item>
-        <item>Mexican</item>
-        <!--129-->
-        <item>Burrito</item>
-        <item>Tortilla</item>
-        <item>Indonesian</item>
-        <item>Sports</item>
-        <item>Pastry</item>
-        <!--134-->
-        <item>Bistro</item>
-        <item>Soup</item>
-        <item>Tea</item>
-        <item>Onion</item>
-        <item>Steak</item>
-        <!--139-->
-        <item>Shakes</item>
-        <item>Empanadas</item>
-        <item>Dinner</item>
-        <item>Sweet</item>
-        <item>Fried</item>
-        <!--144-->
-        <item>Omelette</item>
-        <item>Gin</item>
-        <item>Donut</item>
-        <item>Delivery</item>
-        <item>Cups</item>
-        <!--149-->
-        <item>Filter</item>
-        <item>Juice</item>
-        <item>Vietnamese</item>
-        <item>Pie</item>
-        <item>Unagi</item>
-        <!--154-->
-        <item>Greek</item>
-        <item>Japanese</item>
-        <item>Tacos</item>
-        <item>Kombucha</item>
-        <item>Indian</item>
-        <!--159-->
-        <item>Nan</item>
-        <item>Club</item>
-        <item>Liquor</item>
-        <item>Pool</item>
-        <item>Hotel</item>
-        <!--164-->
-        <item>Pork</item>
-        <item>Ribs</item>
-        <item>Kava</item>
-        <item>Chai</item>
-        <item>Izzy</item>
-        <!--164-->
-        <item>Matcha</item>
-        <item>CBD</item>
-        <item>Latte</item>
+        <item>DashText ₿</item>
+        <item>CoinTigo ₿</item>
+        <item>CoinText ₿</item>
+        <item>Salamantex ₿</item>
+        <item>CryptoBuyer ₿</item>
+        <item>XPay ₿</item>
     </string-array>
 </resources>

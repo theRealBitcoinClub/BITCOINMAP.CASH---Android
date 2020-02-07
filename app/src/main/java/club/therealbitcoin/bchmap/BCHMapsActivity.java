@@ -37,8 +37,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -54,7 +52,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
-    public static final String URI_CLICK_LOGO = "http://bitcoinmap.cash";
+    public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
+    public static final String URI_ADD_PLACE = "https://bitcoinmap.cash/submit";
     public static final int NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS = 0;
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
@@ -233,7 +232,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void setMapStyle(int x) {
-        mMap.setMapStyle(
+        if(mMap != null)
+            mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         this, x));
     }
@@ -430,10 +430,10 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         switch (item.getItemId()) {
             case R.id.menu_browser:
-                openWebsite();
+                openWebsite(URI_ADD_PLACE);
                 return true;
             case android.R.id.home:
-                openWebsite();
+                openWebsite(URI_CLICK_LOGO);
                 return true;
             case R.id.menu_bar:
                 applyFilters(item, VenueType.Bar);
@@ -477,8 +477,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         initAllListViews();
     }
 
-    private void openWebsite() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(URI_CLICK_LOGO)));
+    private void openWebsite(String uri) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
     }
 
     @Override

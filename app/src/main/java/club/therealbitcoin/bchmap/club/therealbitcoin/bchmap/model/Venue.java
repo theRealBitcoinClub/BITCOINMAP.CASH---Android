@@ -26,7 +26,7 @@ public class Venue implements Parcelable {
         }
     };
     private static final String SHARED_PREF_ID = "SHARED_PREF_ID";
-    private static String BASE_URI = "https://realbitcoinclub.firebaseapp.com/";
+    private static String BASE_URI = "https://bitcoinmap.cash/";
     public static String IMG_FOLDER = BASE_URI + "img/app/";
     public int favoListIndex = -1;
     public String name;

@@ -114,8 +114,8 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             loadImage(img, imgUri, new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    ACRA.log.e("TRBC", "onLoadFailed image: " + imgUri);
-                    showToast(R.string.toast_image_unavailable, Toast.LENGTH_SHORT);
+                    //ACRA.log.e("TRBC", "onLoadFailed image: " + imgUri);
+                    //showToast(R.string.toast_image_unavailable, Toast.LENGTH_SHORT);
                     return false;
                 }
 
@@ -130,6 +130,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
     }
 
     private void loadImage(ImageView img, String imgUri, RequestListener<Drawable> listener) {
+        //Log.d("FKDMVDSFV",imgUri);
         Glide.with(this)
                 .load(imgUri)
                 .addListener(listener)
