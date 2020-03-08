@@ -8,8 +8,8 @@ android {
         applicationId "club.therealbitcoin.bchmap"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 41
-        versionName "2.2.8"
+        versionCode 1003
+        versionName "BMAP 3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
