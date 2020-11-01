@@ -2,14 +2,14 @@ apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 29
     defaultConfig {
         multiDexEnabled true
         applicationId "club.therealbitcoin.bchmap"
         minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1003
-        versionName "BMAP 3.0"
+        targetSdkVersion 29
+        versionCode 345623
+        versionName "BMAP 3.9.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

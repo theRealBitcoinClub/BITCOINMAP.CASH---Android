@@ -9,7 +9,7 @@
         android:id="@+id/close_details_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/actionBarGradientTopAndBottom"
         android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatImageView
@@ -19,7 +19,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/actionBarGradientTopAndBottom"
             android:src="@drawable/ic_action_back" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="8"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/actionBarGradientTopAndBottom"
             android:ellipsize="marquee"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -51,7 +51,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/actionBarGradientTopAndBottom"
             android:src="@drawable/ic_action_close" />
 
     </android.support.v7.widget.LinearLayoutCompat>
@@ -177,7 +177,7 @@
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimaryDark"
             android:orientation="horizontal"
             android:padding="2dp">
 
@@ -186,7 +186,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/actionBarGradientTopAndBottom"
                 android:padding="16dp"
                 android:src="@drawable/ic_action_move" />
 
@@ -195,7 +195,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/actionBarGradientTopAndBottom"
                 android:padding="16dp"
                 android:src="@drawable/ic_action_map"
                 android:visibility="gone" />
@@ -205,9 +205,9 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:padding="16dp"
-                android:src="@drawable/ic_action_review"
+                android:background="@color/actionBarGradientTopAndBottom"
+                android:padding="24dp"
+                android:src="@drawable/ic_action_share"
                 android:visibility="gone" />
 
             <ImageButton
@@ -215,7 +215,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/actionBarGradientTopAndBottom"
                 android:padding="16dp"
                 android:src="@drawable/ic_action_favorite_white_selected"
                 android:visibility="gone" />
@@ -225,7 +225,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/details_fragment_icon_size"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/actionBarGradientTopAndBottom"
                 android:padding="16dp"
                 android:src="@drawable/ic_action_favorite_white"
                 android:visibility="gone" />

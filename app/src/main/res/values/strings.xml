@@ -41,6 +41,7 @@
     <string name="missing_places_id">Not found on Google Maps! Review impossible!</string>
     <string name="error_empty_list">Update available! Open Play Store!</string>
     <string name="browser">Add New Place</string>
+    <string name="coinector">coinector.app</string>
     <string name="toast_restart_app_for_permission_take_effect">The app was restarted for the permission to take effect.</string>
     <string name="toast_missing_google_maps_information">Google Maps link missing!</string>
     <string name="toast_image_unavailable">The image is currently not available! Please try again later or report that issue to trbc@bitcoinmap.cash</string>

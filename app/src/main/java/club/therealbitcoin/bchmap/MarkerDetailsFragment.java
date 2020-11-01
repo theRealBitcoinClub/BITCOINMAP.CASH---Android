@@ -35,6 +35,7 @@ import org.acra.ACRA;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
@@ -232,6 +233,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         });
     }
 
+    //CHANGED TO SHARE BUTTON IN 4.1.0
     private void initReviewButton(View dialog) {
         final View btn_review = dialog.findViewById(R.id.dialog_button_review);
         btn_review.setVisibility(View.VISIBLE);
@@ -239,9 +241,9 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             @Override
             public void onClick(View v) {
                 try {
-                    String placesId = getPlacesId(venue);
-                    String targetURL = "http://search.google.com/local/writereview?placeid=" + placesId;
-                    if (placesId == null) {
+                    //String placesId = getPlacesId(venue);
+                    String targetURL = "http://coinector.app/#/" + venue.name;
+                    /*if (placesId == null) {
                         Toast.makeText(getContext(), R.string.missing_places_id, Toast.LENGTH_LONG).show();
                         //btn_review.setEnabled(false);
                         switchColor(btn_review, true, new AnimatorEndAbstract() {
@@ -252,17 +254,19 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
                         });
                         btn_review.setAlpha(0.5f);
                         return;
-                    }
+                    }*/
 
-                    Toast.makeText(getContext(), R.string.found_places_id, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), R.string.found_places_id, Toast.LENGTH_LONG).show();
                     Intent i = new Intent(Intent.ACTION_VIEW,
                             Uri.parse(targetURL));
                     switchColor(btn_review, true, null);
                     startActivity(i);
                     resetColorWithDelay(btn_review);
-                } catch (JSONException e) {
+                } /*catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }*/ catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -371,8 +375,8 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void switchColor(View btn, boolean onOff, Animator.AnimatorListener afterAnim) {
         if (accent == null) {
-            accentColor = getResources().getColor(R.color.colorAccent);
-            primaryColor = getResources().getColor(R.color.colorPrimaryDark);
+            accentColor = getResources().getColor(R.color.colorPrimaryDark);
+            primaryColor = getResources().getColor(R.color.actionBarGradientTopAndBottom);
             accent = "#" + Integer.toHexString(accentColor).substring(2);
             primary = "#" + Integer.toHexString(primaryColor).substring(2);
 

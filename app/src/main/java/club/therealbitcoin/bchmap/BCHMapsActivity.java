@@ -53,7 +53,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     public static final float MIN_ZOOM_WHEN_LOCATION_SERVICES_ARE_ENABLED = 8f;
     public static final String URI_CLICK_LOGO = "https://bitcoinmap.cash";
-    public static final String URI_ADD_PLACE = "https://bitcoinmap.cash/submit";
+    public static final String URI_ADD_PLACE = "https://coinector.app/add";
+    public static final String URI_COINECTOR = "https://coinector.app";
     public static final int NON_CHECKABLE_MENU_ITEMS_BEFORE_FILTER_ITEMS = 0;
     private static final int MY_LOCATION_REQUEST_CODE = 233421353;
     private static final float ZOOM_LEVEL_DETAIL_CLICK = 17f;
@@ -429,6 +430,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
         switchCheck(item);
 
         switch (item.getItemId()) {
+            case R.id.menu_coinector:
+                openWebsite(URI_COINECTOR);
+                return true;
             case R.id.menu_browser:
                 openWebsite(URI_ADD_PLACE);
                 return true;
