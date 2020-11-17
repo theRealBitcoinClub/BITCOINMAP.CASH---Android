@@ -49,5 +49,8 @@
         <item
             android:id="@+id/menu_coinector"
             android:title="@string/coinector" />
+        <item
+            android:id="@+id/menu_bmap"
+            android:title="@string/bmap" />
     </item>
 </menu>

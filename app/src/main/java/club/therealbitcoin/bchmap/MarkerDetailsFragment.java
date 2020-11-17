@@ -60,15 +60,6 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
     private Venue venue;
     private boolean isFavo = false;
 
-    /*
-        //TODO share detailed address information with a link to google maps for that place
-        private void shareDeepLink() {
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_TEXT, getString(R.string.recommendation));
-            startActivity(Intent.createChooser(share, getString(R.string.thank_you)));
-        }
-    */
     public static MarkerDetailsFragment newInstance(Venue v, UpdateActivityCallback cb, boolean isOnMapView) {
         MarkerDetailsFragment myFragment = new MarkerDetailsFragment();
         myFragment.updateActivityCallback = cb;
@@ -233,7 +224,21 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         });
     }
 
-    //CHANGED TO SHARE BUTTON IN 4.1.0
+    private void shareTextUrl(String title, String url, String callToAction) {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        // Add data to the intent, the receiving app will decide
+        // what to do with it.
+        share.putExtra(Intent.EXTRA_SUBJECT, title);
+        share.putExtra(Intent.EXTRA_TEXT, url);
+
+        startActivity(Intent.createChooser(share, callToAction));
+    }
+
+
+    //CHANGED TO SHARE BUTTON IN 3.9.8
     private void initReviewButton(View dialog) {
         final View btn_review = dialog.findViewById(R.id.dialog_button_review);
         btn_review.setVisibility(View.VISIBLE);
@@ -242,7 +247,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
             public void onClick(View v) {
                 try {
                     //String placesId = getPlacesId(venue);
-                    String targetURL = "http://coinector.app/#/" + venue.name;
+                    String targetURL = "https://coinector.app/#/" + venue.name;
                     /*if (placesId == null) {
                         Toast.makeText(getContext(), R.string.missing_places_id, Toast.LENGTH_LONG).show();
                         //btn_review.setEnabled(false);
@@ -257,10 +262,10 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
                     }*/
 
                     //Toast.makeText(getContext(), R.string.found_places_id, Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(targetURL));
+
                     switchColor(btn_review, true, null);
-                    startActivity(i);
+                    shareTextUrl(venue.name,Uri.parse(targetURL).toString(), "Share this place! You are Satoshi Nakamoto!");
+                    //startActivity(i);
                     resetColorWithDelay(btn_review);
                 } /*catch (JSONException e) {
                     e.printStackTrace();
@@ -391,7 +396,7 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         try {
             String placesId = getPlacesId(v);
             String targetURL;
-            targetURL = "http://www.google.com/maps/search/?api=1&query=" +
+            targetURL = "https://www.google.com/maps/search/?api=1&query=" +
                     v.getCoordinates().latitude +
                     "," +
                     v.getCoordinates().longitude;
