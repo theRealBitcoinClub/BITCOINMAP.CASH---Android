@@ -16,6 +16,7 @@
     <uses-permission android:name="club.therealbitcoin.bchmap.gcm.permission.C2D_MESSAGE" />
 
     <application
+        android:exported="true"
         android:name="club.therealbitcoin.bchmap.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -38,9 +39,11 @@
             android:value="AIzaSyAVDl8Ng3iT4xfX2r6Fj1SvJJvndz73JOI" />
 
         <activity
+            android:exported="true"
             android:name=".BCHMapsActivity"
             android:launchMode="singleTop">
-            <intent-filter>
+            <intent-filter
+                android:exported="true">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

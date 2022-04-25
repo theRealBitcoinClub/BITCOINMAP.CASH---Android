@@ -6,32 +6,10 @@ https://play.google.com/store/apps/details?id=club.therealbitcoin.bchmap
 
 Feel free to participate! Check the issues to have something to get into the app!
 
-The places are being hosted on:
-https://realbitcoinclub.firebaseapp.com/places8.json
-
-If you want to add more places, just make a pull request on the other repository:
-https://github.com/theRealBitcoinClub/realbitcoinclub-website/blob/master/places8.json
-
-And you would have to add a .gif and .webp in the dimensions 640x480 here with (p:) being the filename:
-https://github.com/theRealBitcoinClub/realbitcoinclub-website/tree/master/img/app
-
 You can use the https://ezgif.com/webp-maker and the settings are explained in the following pictures:
 We use fading for the WEBP images and we use the exact same settings which create a fading effect while keeping the file size as small as possible.
 
 https://bitcoinmap.cash/images/webpmakersettings.JPG
-
-Do not use fading for the GIFs
-https://bitcoinmap.cash/images/gifmakersettings.JPG
-
-Always compress the GIF with a lossy algorithm of 30%
-https://bitcoinmap.cash/images/gifmakersettings2.JPG
-https://bitcoinmap.cash/images/gifmakersettings3.JPG
-
-Each WEBP/GIF has 3 images of the shop and one promo image as the last frame:
-https://bitcoinmap.cash/bitcoincashmaplogo640x480.jpg
-
-To make everything super nice, you can use this template to add some additional promo inside each frame of the WEBP/GIF:
-https://bitcoinmap.cash/template640x480bitcoinmap.psd
 
 The JSON file can be read like this:
 ```
@@ -45,10 +23,6 @@ https://github.com/theRealBitcoinClub/realbitcoinclub-website/tree/master/img/ap
 See below to find a reference for the tags/attributes (a:) and discount texts (d:) which are stored as numbers in the json file.
 
 ACRA Crash reports are hosted on tracepot.
-
-Test coverage is low as I was working alone on that app! This should be improved!
-
-All Pull requests are welcome! I will be travelling for a long time, I hope someone takes over this project!
 
 ```
 DISCOUNT TEXT

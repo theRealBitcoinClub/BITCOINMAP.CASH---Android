@@ -50,9 +50,9 @@
     <string name="toast_removed_favorite">Removed from favorite list!</string>
     <string name="toast_added_favorite">Added to favorite list!</string>
     <string-array name="location_attributes">
-        ️<item>Spicy 🌶️️</item>
-        ️<item>Salty 🥨️</item>
-        ️<item>Sour 😜️</item>
+        <item>Spicy 🌶️</item>
+        <item>Salty 🥨</item>
+        <item>Sour 😜</item>
         <item>Organic 🐵</item>
         <item>Vegetarian 🥕</item>
         <item>Vegan 🐮</item>
@@ -63,7 +63,7 @@
         <item>Brownie 🥮</item>
         <item>Cake 🎂</item>
         <item>Cookie 🍪</item>
-        ️<item>Arabic 🥙️</item>
+        <item>Arabic 🥙</item>
         <item>Pizza 🍕</item>
         <item>Salad 🥗</item>
         <item>Smoothie 🥤</item>
@@ -84,80 +84,80 @@
         <item>Cocktails 🍹</item>
         <item>Beer 🍺</item>
         <item>Music 🎵</item>
-        ️<item>Chinese 🍜️</item>
-        ️<item>Duck 🍱️</item>
+        <item>Chinese 🍜</item>
+        <item>Duck 🍱</item>
         <item>Rock 🎸</item>
         <item>LiveDJ 🎧</item>
-        <item>Terrace ☀️</item>
+        <item>Terrace ☀</item>
         <item>Seeds 🌱</item>
         <item>Grinder 🍌</item>
         <item>Papers 🚬</item>
         <item>Advice 🌴</item>
         <item>Calzone 🥟</item>
-        ️<item>Falafel 🥙️</item>
-        ️<item>MakeUp 🤡️</item>
-        ️<item>Gifts 🎁️</item>
-        ️<item>Tapas 🍠️</item>
-        ️<item>Copas 🍹️</item>
-        ️<item>Piadina 🌮️</item>
-        ️<item>Cheese 🧀️</item>
-        ️<item>Grains 🌾️</item>
-        ️<item>Fashion 👗️</item>
-        ️<item>Fair 🤗️</item>
-        ️<item>Women 👩️</item>
-        ️<item>Drinks 🍹️</item>
-        ️<item>TV 📺️</item>
-        ️<item>Retro 🦄️</item>
-        ️<item>Feta 🐐️</item>
-        ️<item>DASH Ð️</item>
-        ️<item>BTC ₿️</item>
-        ️<item>BCH ₿️</item>
-        ️<item>ANYPAY ₿️️</item>
-        ️<item>ETH ₿️</item>
-        ️<item>HotDog 🌭️</item>
-        ️<item>Fast ⏩️</item>
-        ️<item>Kosher 🦄️</item>
-        ️<item>Sushi 🍣️</item>
-        ️<item>Moto 🛵️</item>
-        ️<item>Coche 🚘️</item>
-        ️<item>GoCrypto ₿️</item>
-        ️<item>Chicken 🐔️</item>
-        ️<item>Rabbit 🐰️</item>
-        ️<item>Potato 🥔️</item>
-        ️<item>Kumpir 🥔️</item>
-        ️<item>Kebap 🐄️</item>
-        ️<item>ATM 🏦️</item>
-        ️<item>Gyros 🐖️</item>
-        ️<item>Coconut 🥥️</item>
-        ️<item>ToGo 📦️</item>
-        ️<item>Meditation 🧘️</item>
-        ️<item>Wine 🍷️</item>
-        ️<item>Champagne 🥂️</item>
-        ️<item>Alcohol 🍾️</item>
-        ️<item>Booze 🥃️</item>
-        ️<item>Pancakes 🥞️</item>
-        ️<item>Croissant 🥐️</item>
-        ️<item>Popcorn 🍿️</item>
-        ️<item>SoftIce 🍦️</item>
-        ️<item>Dango 🍡</item>
-        ️<item>BnB 🛏️️</item>
-        ️<item>Haircut ✂️️</item>
-        ️<item>Candy 🍭️</item>
-        ️<item>Beauty 💅️</item>
-        ️<item>Miso 🍱️</item>
-        ️<item>Chocolate 🍫️</item>
-        ️<item>Rice 🍚️</item>
-        ️<item>Seafood 🦀️</item>
-        ️<item>Hostel 🛏️️</item>
-        ️<item>Fries 🍟️</item>
+        <item>Falafel 🥙</item>
+        <item>MakeUp 🤡</item>
+        <item>Gifts 🎁</item>
+        <item>Tapas 🍠</item>
+        <item>Copas 🍹</item>
+        <item>Piadina 🌮</item>
+        <item>Cheese 🧀</item>
+        <item>Grains 🌾</item>
+        <item>Fashion 👗</item>
+        <item>Fair 🤗</item>
+        <item>Women 👩</item>
+        <item>Drinks 🍹</item>
+        <item>TV 📺</item>
+        <item>Retro 🦄</item>
+        <item>Feta 🐐</item>
+        <item>WiFi 🌐</item>
+        <item>Shopping Center 🛍️</item>
+        <item>Department Store 🏬</item>
+        <item>Cigarette 🚬</item>
+        <item>Recharge 📱</item>
+        <item>HotDog 🌭</item>
+        <item>Fast ⏩</item>
+        <item>Kosher 🕍</item>
+        <item>Sushi 🍣</item>
+        <item>Motorbike 🛵</item>
+        <item>Car 🚘</item>
+        <item>Bicycle 🚴</item>
+        <item>Chicken 🐔</item>
+        <item>Rabbit 🐰</item>
+        <item>Potato 🥔</item>
+        <item>Kumpir 🥔</item>
+        <item>Kebap 🐄</item>
+        <item>ATM 🏦</item>
+        <item>Gyros 🐖</item>
+        <item>Coconut 🥥</item>
+        <item>ToGo 📦</item>
+        <item>Meditation 🧘</item>
+        <item>Wine 🍷</item>
+        <item>Champagne 🥂</item>
+        <item>Alcohol 🍾</item>
+        <item>Booze 🥃</item>
+        <item>Pancakes 🥞</item>
+        <item>Croissant 🥐</item>
+        <item>Popcorn 🍿</item>
+        <item>SoftIce 🍦</item>
+        <item>Dango 🍡</item>
+        <item>BnB 🛏️</item>
+        <item>Haircut ✂</item>
+        <item>Candy 🍭</item>
+        <item>Beauty 💅</item>
+        <item>Miso 🍱</item>
+        <item>Chocolate 🍫</item>
+        <item>Rice 🍚</item>
+        <item>Seafood 🦀</item>
+        <item>Hostel 🛏️</item>
+        <item>Fries 🍟</item>
         <item>Fish 🐟</item>
-        ️<item>Chips 🍟️</item>
-        ️<item>Italian 🇮🇹️</item>
-        ️<item>Whiskey 🥃️</item>
+        <item>Chips 🍟</item>
+        <item>Italian 🇮🇹</item>
+        <item>Whiskey 🥃</item>
         <item> - - - </item>
-        ️<item>Bourbon 🥃️</item>
-        ️<item>Liquor 🥃️</item>
-        <item>Men ♂️</item>
+        <item>Bourbon 🥃</item>
+        <item>Liquor 🥃</item>
+        <item>Men ♂</item>
         <item>Pasta 🍝</item>
         <item>Dessert 🍬</item>
         <item>Starter 🥠</item>
@@ -187,7 +187,7 @@
         <item>Bistro 🍲</item>
         <item>Soup 🥣</item>
         <item>Tea 🍵</item>
-        <item>Onion</item>
+        <item>Onion 🧅</item>
         <item>Steak 🥩</item>
         <item>Shakes 🥤</item>
         <item>Empanadas 🥟</item>
@@ -222,11 +222,150 @@
         <item>Matcha 🍵</item>
         <item>Oden 🍢</item>
         <item>Latte ☕</item>
-        <item>DASHText Ð</item>
-        <item>CoinTigo ₿</item>
-        <item>CoinText ₿</item>
-        <item>Salamantex ₿</item>
-        <item>CryptoBuyer ₿</item>
-        <item>XPay ₿</item>
+        <item>Pool 🏊</item>
+        <item>Air Cond. ❄</item>
+        <item>Powerplant 🔌</item>
+        <item>Rental 🏠</item>
+        <item>Supply 🧺</item>
+        <item>Kiosk 🏪</item>
+        <item>Electronic 💻</item>
+        <item>Cellphone 📱</item>
+        <item>Parking 🅿️</item>
+        <item>Accessories 💠</item>
+        <item>Shoes 👞</item>
+        <item>Beach 🏖️</item>
+        <item>River 🏞️</item>
+        <item>Natural 🌲</item>
+        <item>Imported 🌎</item>
+        <item>Tools 🔨</item>
+        <item>Flour 🥖</item>
+        <item>Cleaning 🧹</item>
+        <item>Soap 🧼</item>
+        <item>Detergent ☢</item>
+        <item>Pharmacy 🏥</item>
+        <item>Sugar 😍</item>
+        <item>Simcard 📶</item>
+        <item>Microsd 💾</item>
+        <item>Battery 🔋</item>
+        <item>Water 🚰</item>
+        <item>Clock ⌚</item>
+        <item>Key 🔑</item>
+        <item>Padlock 🔒</item>
+        <item>Pet 🐶</item>
+        <item>Kids 🚸</item>
+        <item>Movie 🎥</item>
+        <item>Photo 📸</item>
+        <item>Camera 📷</item>
+        <item>Security 👮</item>
+        <item>Mattress 🛏️</item>
+        <item>Maintenance 🔧</item>
+        <item>Washingmachine 🚿</item>
+        <item>Sausage 🌭</item>
+        <item>Egg 🥚</item>
+        <item>Milk 🥛</item>
+        <item>Surf 🏄</item>
+        <item>Skate ⛸</item>
+        <item>Tabacco 🔥</item>
+        <item>Art 🎨</item>
+        <item>Museum 🖼️</item>
+        <item>Gallery 🖼️</item>
+        <item>Ski ⛷</item>
+        <item>Board 🏂</item>
+        <item>Jewelry 💠</item>
+        <item>Diamond 💎</item>
+        <item>Gold 🥇</item>
+        <item>Bracelet ❤</item>
+        <item>Ring 💍</item>
+        <item>Necklace 📿</item>
+        <item>Watch ⌚</item>
+        <item>Taxi 🚕</item>
+        <item>Spirit ✨</item>
+        <item>Church ⛪</item>
+        <item>Synagoge 🕍</item>
+        <item>Temple 🛕</item>
+        <item>Transport 🚌</item>
+        <item>Global 🚚</item>
+        <item>Worldwide 📦</item>
+        <item>Lebanese 🇱🇧</item>
+        <item>African 🌍</item>
+        <item>French 🇫🇷</item>
+        <item>Criole 😊</item>
+        <item>Spanish 🇪🇸</item>
+        <item>Adult 💃</item>
+        <item>Free 😁</item>
+        <item>Dance 🕺🏽</item>
+        <item>Meal 🍽️</item>
+        <item>After-Hour 🎶</item>
+        <item>Sightseeing 📰</item>
+        <item>Marketing 🖥️</item>
+        <item>Advertisement 🖥️</item>
+        <item>Agency 🖥️</item>
+        <item>Service 🖥️</item>
+        <item>Doctor 👨‍⚕</item>
+        <item>Veterinarian 👨‍⚕</item>
+        <item>Hospital 🏥</item>
+        <item>Nails 💅</item>
+        <item>Halal حلال</item>
+        <item>Promotion 🐰</item>
+        <item>Phone 📱</item>
+        <item>Mobile 📱</item>
+        <item>Communication 📡</item>
+        <item>Internet 📡</item>
+        <item>Mechanic 🔧</item>
+        <item>Repair 🔧</item>
+        <item>Relax 🤗</item>
+        <item>Chill 😏</item>
+        <item>Moon 🌝</item>
+        <item>Sunshine ☀</item>
+        <item>Bets 🎰</item>
+        <item>Poker 🎰</item>
+        <item>Airport ✈</item>
+        <item>Autobus 🚌</item>
+        <item>Travel 🗺️</item>
+        <item>Show 🤡</item>
+        <item>Theatre 🤡</item>
+        <item>Lawyer ⚖</item>
+        <item>Accounting 🔒</item>
+        <item>Tourist ℹ</item>
+        <item>Shawarma 🍗</item>
+        <item>Camping ⛺</item>
+        <item>Fire 🔥</item>
+        <item>Resort ⛵</item>
+        <item>Lounge 🛋️</item>
+        <item>Lodging 🛏️</item>
+        <item>Thai 🇹🇭</item>
+        <item>Construction 🪛</item>
+        <item>Hardware 🔨</item>
+        <item>Gasoline ⛽</item>
+        <item>Convenience 🏪</item>
+        <item>Grocery 🥫</item>
+        <item>Fitness ❤</item>
+        <item>Gym ❤</item>
+        <item>Household 🏪</item>
+        <item>Book 📗</item>
+        <item>Boutique 🏪</item>
+        <item>Digital 📀</item>
+        <item>Glasses 👓</item>
+        <item>Optic 👓</item>
+        <item>Parfume ✨</item>
+        <item>Flower 🌻</item>
+        <item>Garden 🏡</item>
+        <item>Copies 💾</item>
+        <item>Talks 😃</item>
+        <item>Meeting 🤝</item>
+        <item>Office 🏢</item>
+        <item>Software ⚙</item>
+        <item>Crypto 🛡️</item>
+        <item>Wellness 🥰</item>
+        <item>Asian 🌏</item>
+        <item>Nuts 🥜</item>
+        <item>Storage 🏠</item>
+        <item>Exposition 🏟️</item>
+        <item>Gourmet ✨</item>
+        <item>Yoga ✨</item>
+        <item>Furniture 🛋️</item>
+        <item>Design 🎭</item>
+        <item>Paint 🎨</item>
+        <item>Kitchen ⏲</item>
     </string-array>
 </resources>

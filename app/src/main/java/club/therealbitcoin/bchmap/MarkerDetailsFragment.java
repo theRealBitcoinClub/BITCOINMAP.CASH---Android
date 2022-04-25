@@ -174,8 +174,12 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
                 if (a == null || a.trim().length() == 0)
                     break;
 
-                String[] array = getResources().getStringArray(R.array.location_attributes);
-                tags[i++].setText(array[Integer.valueOf(a)]);
+                try {
+                    String[] array = getResources().getStringArray(R.array.location_attributes);
+                    tags[i++].setText(array[Integer.valueOf(a)]);
+                }catch (ArrayIndexOutOfBoundsException e) {
+                    tags[i++].setText("");
+                }
             }
         }
     }
@@ -394,7 +398,12 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void openMapsRoute(Venue v) {
         try {
-            String placesId = getPlacesId(v);
+            String placesId;
+            if (v.id.startsWith("ChI"))
+                placesId = v.id;
+            else
+                placesId = getPlacesId(v);
+
             String targetURL;
             targetURL = "https://www.google.com/maps/search/?api=1&query=" +
                     v.getCoordinates().latitude +
