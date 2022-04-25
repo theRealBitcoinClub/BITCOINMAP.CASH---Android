@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
@@ -430,6 +431,21 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         switchCheck(item);
 
+
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        item.setActionView(new View(this));
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return false;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                return false;
+            }
+        });
+
         switch (item.getItemId()) {
             case R.id.menu_coinector:
                 openWebsite(URI_COINECTOR);
@@ -445,25 +461,25 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                 return true;
             case R.id.menu_bar:
                 applyFilters(item, VenueType.Bar);
-                return true;
+                return false;
             case R.id.menu_shops:
                 applyFilters(item, VenueType.Super);
-                return true;
+                return false;
             case R.id.menu_food:
                 applyFilters(item, VenueType.Food);
-                return true;
+                return false;
             case R.id.menu_fashion:
                 applyFilters(item, VenueType.Fashion);
-                return true;
+                return false;
             case R.id.menu_sweet:
                 applyFilters(item, VenueType.Sweet);
-                return true;
+                return false;
             case R.id.menu_hotel:
                 applyFilters(item, VenueType.Hotel);
-                return true;
+                return false;
             case R.id.menu_others:
                 applyFilters(item, VenueType.Spa);
-                return true;
+                return false;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);
                 switchMapStyle();

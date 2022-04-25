@@ -257,6 +257,13 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
                 holder.rating.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
                 if (holder.location != null) //can be null on favo view
                     holder.location.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
+            } else {
+                view.setBackgroundColor(getResources().getColor(R.color.colorTextDarkTheme));
+                holder.title.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
+                holder.distance.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
+                holder.rating.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
+                if (holder.location != null) //can be null on favo view
+                    holder.location.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
             }
 
             String distanceText = getDistanceText(venue.getCoordinates());
