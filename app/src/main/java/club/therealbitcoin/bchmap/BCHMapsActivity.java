@@ -461,6 +461,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
             case R.id.menu_hotel:
                 applyFilters(item, VenueType.Hotel);
                 return true;
+            case R.id.menu_others:
+                applyFilters(item, VenueType.Spa);
+                return true;
             case R.id.menu_switch:
                 //viewPager.setCurrentItem(0);
                 switchMapStyle();
