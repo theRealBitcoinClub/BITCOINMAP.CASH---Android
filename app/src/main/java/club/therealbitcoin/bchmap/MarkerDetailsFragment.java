@@ -6,15 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,17 +29,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
-import org.acra.ACRA;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
 import club.therealbitcoin.bchmap.interfaces.AnimatorEndAbstract;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
-import club.therealbitcoin.bchmap.persistence.FileCache;
 import club.therealbitcoin.bchmap.persistence.JsonParser;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 

@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <ImageView
+        app:tint="@android:color/white"
         android:id="@android:id/icon"
         android:layout_width="@dimen/details_fragment_icon_size"
         android:layout_height="@dimen/details_fragment_icon_size"

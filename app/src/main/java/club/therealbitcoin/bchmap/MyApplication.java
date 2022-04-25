@@ -1,7 +1,7 @@
 package club.therealbitcoin.bchmap;
 
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.FirebaseApp;
 import com.onesignal.OneSignal;

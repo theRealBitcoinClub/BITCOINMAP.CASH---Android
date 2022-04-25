@@ -5,14 +5,14 @@
     android:layout_margin="20dp"
     android:orientation="vertical">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/close_details_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/actionBarGradientTopAndBottom"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/dialog_button_back"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -44,7 +44,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/dialog_button_close"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -54,7 +54,7 @@
             android:background="@color/actionBarGradientTopAndBottom"
             android:src="@drawable/ic_action_close" />
 
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ImageView
         android:id="@+id/horizontal_rule"
@@ -123,7 +123,7 @@
         android:textColor="@color/colorDiscount" /-->
 
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackGroundDark"
@@ -162,10 +162,10 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1" />
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -174,7 +174,7 @@
         android:paddingRight="1dp"
         android:paddingBottom="1dp">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
@@ -229,7 +229,7 @@
                 android:padding="16dp"
                 android:src="@drawable/ic_action_favorite_white"
                 android:visibility="gone" />
-        </android.support.v7.widget.LinearLayoutCompat>
-    </android.support.v7.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </LinearLayout>

@@ -5,8 +5,8 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.fragment.app.ListFragment;
+
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +27,7 @@ import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.VenueFacade;
 
-public class VenuesListFragment extends android.support.v4.app.ListFragment implements View.OnClickListener {
+public class VenuesListFragment extends ListFragment implements View.OnClickListener {
 
     private static final String BUNDLE = "bvdsfedss";
     private static String
