@@ -272,7 +272,7 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
             venue.listItem = view;
             optimizeTouchArea(holder);
             //int iconResource = VenueType.getIconResource(venue.type);
-            holder.icon.setBackgroundResource(venue.iconRes);
+            holder.icon.setBackgroundResource(venue.iconResListItemView);
             if (holder.location != null) //can be null on favo view
                 holder.location.setText(venue.location);
 

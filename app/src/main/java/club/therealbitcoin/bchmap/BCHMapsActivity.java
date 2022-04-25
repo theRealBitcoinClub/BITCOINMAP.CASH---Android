@@ -505,7 +505,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void addMarker(Venue v) {
-        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconRes);
+        BitmapDescriptor ic = BitmapDescriptorFactory.fromResource(v.iconResMapMarker);
 
         Marker marker = mMap.addMarker(new MarkerOptions().position(v.getCoordinates()).alpha(1f).icon(ic).draggable(false));
         marker.setTag(v);

@@ -33,7 +33,7 @@ public class VenueTest {
 
     @Test
     public void testIsFavorite() {
-        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
+        Venue v = new Venue(testName, testIconRes, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
         VenueFacade.getInstance().addFavoriteVenue(v, RuntimeEnvironment.application);
         List<Venue> favoriteVenues = VenueFacade.getInstance().getFavoriteVenues();
         Assert.assertEquals(1, favoriteVenues.size());
@@ -44,8 +44,8 @@ public class VenueTest {
 
     @Test
     public void testEquals() {
-        Venue v = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
-        Venue v2 = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
+        Venue v = new Venue(testName, testIconRes,testIconRes,  type, placesId, rev, stras, cord, 0, null, null);
+        Venue v2 = new Venue(testName, testIconRes,testIconRes,  type, placesId, rev, stras, cord, 0, null, null);
         Assert.assertTrue(v.equals(v2));
         v.id = "dfdsfds";
         Assert.assertFalse(v.equals(v2));
@@ -53,10 +53,10 @@ public class VenueTest {
 
     @Test
     public void createVenue() {
-        Venue venue = new Venue(testName, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
+        Venue venue = new Venue(testName, testIconRes, testIconRes, type, placesId, rev, stras, cord, 0, null, null);
         Assert.assertEquals(testName, venue.name);
         Assert.assertNotSame(testName + "fdsfds", venue.name);
-        Assert.assertEquals(testIconRes, venue.iconRes);
+        Assert.assertEquals(testIconRes, venue.iconResMapMarker);
         Assert.assertEquals(type, venue.type);
         Assert.assertEquals(placesId, venue.id);
         Assert.assertEquals(rev, venue.reviews);

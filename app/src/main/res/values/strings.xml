@@ -10,7 +10,7 @@
     <string name="type_food">Restaurant</string>
     <string name="type_super">Supermarket</string>
     <string name="type_bar">Cafe-Bar</string>
-    <string name="type_spa">Spa-Wellness</string>
+    <string name="type_spa">Other</string>
     <string name="type_fashion">Shop</string>
     <string name="type_hotel">Hotel-BnB</string>
     <string name="type_sweet">Take-Away-Food</string>

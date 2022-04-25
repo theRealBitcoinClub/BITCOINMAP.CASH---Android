@@ -12,33 +12,38 @@
             <item
                 android:id="@+id/menu_food"
                 android:checkable="true"
-                android:icon="@drawable/ic_map_food"
+                android:icon="@drawable/ic_map_food_old"
                 android:title="@string/type_food" />
             <item
                 android:id="@+id/menu_sweet"
                 android:checkable="true"
-                android:icon="@drawable/ic_map_sweet"
+                android:icon="@drawable/ic_map_sweet_old"
                 android:title="@string/type_sweet" />
             <item
                 android:id="@+id/menu_bar"
                 android:checkable="true"
-                android:icon="@drawable/ic_map_bar"
+                android:icon="@drawable/ic_map_bar_old"
                 android:title="@string/type_bar" />
             <item
                 android:id="@+id/menu_shops"
                 android:checkable="true"
-                android:icon="@drawable/ic_map_shop"
+                android:icon="@drawable/ic_map_shop_old"
                 android:title="@string/type_super" />
             <item
                 android:id="@+id/menu_fashion"
                 android:checkable="true"
-                android:icon="@drawable/ic_map_basket"
+                android:icon="@drawable/ic_map_basket_old"
                 android:title="@string/type_fashion" />
             <item
                 android:id="@+id/menu_hotel"
                 android:checkable="true"
-                android:icon="@drawable/ic_map_hotel"
+                android:icon="@drawable/ic_map_hotel_old"
                 android:title="@string/type_hotel" />
+            <item
+                android:id="@+id/menu_others"
+                android:checkable="true"
+                android:icon="@drawable/ic_map_spa_old"
+                android:title="@string/type_spa" />
         </group>
         <item
             android:id="@+id/menu_switch"

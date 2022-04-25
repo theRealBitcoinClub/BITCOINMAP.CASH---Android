@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import club.therealbitcoin.bchmap.R;
 
 public enum VenueType {
-    ATM(99), Food(0), Sweet(1), Bar(2), Super(3), Spa(999), Fashion(4), Hotel(5), Tattoo(9999), Place(1337), Cafe(123);
+    Food(0), Sweet(1), Bar(2), Super(3), Spa(999), Fashion(4), Hotel(5);
 
     private int index;
 
@@ -27,6 +27,8 @@ public enum VenueType {
                 return Fashion;
             case 5:
                 return Hotel;
+            case 999:
+                return Spa;
         }
         throw new RuntimeException("VenueType with that index is not mapped yet");
     }
@@ -40,13 +42,30 @@ public enum VenueType {
         list.add(Super);
         list.add(Fashion);
         list.add(Hotel);
+        list.add(Spa);
 
         return list;
     }
+    public static int getIconResourceOld(int type) {
+        if (type == VenueType.Food.getIndex())
+            return R.drawable.ic_map_food_old;
+        if (type == VenueType.Super.getIndex())
+            return R.drawable.ic_map_shop_old;
+        if (type == VenueType.Bar.getIndex())
+            return R.drawable.ic_map_bar_old;
+        if (type == VenueType.Spa.getIndex())
+            return R.drawable.ic_map_spa_old;
+        if (type == VenueType.Fashion.getIndex())
+            return R.drawable.ic_map_basket_old;
+        if (type == VenueType.Sweet.getIndex())
+            return R.drawable.ic_map_sweet_old;
+        if (type == VenueType.Hotel.getIndex())
+            return R.drawable.ic_map_hotel_old;
+
+        return -1;
+    }
 
     public static int getIconResource(int type) {
-        if (type == VenueType.ATM.getIndex())
-            return R.drawable.ic_map_bitcoin;
         if (type == VenueType.Food.getIndex())
             return R.drawable.ic_map_food;
         if (type == VenueType.Super.getIndex())
@@ -61,12 +80,6 @@ public enum VenueType {
             return R.drawable.ic_map_sweet;
         if (type == VenueType.Hotel.getIndex())
             return R.drawable.ic_map_hotel;
-        if (type == VenueType.Tattoo.getIndex())
-            return R.drawable.ic_map_tattoo;
-        if (type == VenueType.Place.getIndex())
-            return R.drawable.ic_map_place;
-        if (type == VenueType.Cafe.getIndex())
-            return R.drawable.ic_map_sun;
 
         return -1;
     }
@@ -76,16 +89,13 @@ public enum VenueType {
     }
 
     public static int getTranslatedType(int type) {
-        if (VenueType.ATM.getIndex() == type)
-            return R.string.type_atm;
-
         if (VenueType.Food.getIndex() == type)
             return R.string.type_food;
 
         if (VenueType.Super.getIndex() == type)
             return R.string.type_super;
 
-        if (VenueType.Bar.getIndex() == type || VenueType.Cafe.getIndex() == type)
+        if (VenueType.Bar.getIndex() == type)
             return R.string.type_bar;
 
         if (VenueType.Spa.getIndex() == type)
@@ -99,12 +109,6 @@ public enum VenueType {
 
         if (VenueType.Hotel.getIndex() == type)
             return R.string.type_hotel;
-
-        if (VenueType.Tattoo.getIndex() == type)
-            return R.string.type_tattoo;
-
-        if (VenueType.Place.getIndex() == type)
-            return R.string.type_place;
 
         return -1;
     }

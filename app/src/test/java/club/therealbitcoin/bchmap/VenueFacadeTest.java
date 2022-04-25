@@ -22,7 +22,7 @@ public class VenueFacadeTest {
 
     @Before
     public void setUp() {
-        v = new Venue("name", 1, 2, "jkdhuifew", 0, 4.7, new LatLng(3.4, 4.5), 0, null, null);
+        v = new Venue("name", 1,1, 2, "jkdhuifew", 0, 4.7, new LatLng(3.4, 4.5), 0, null, null);
     }
 
     @Test
@@ -42,12 +42,12 @@ public class VenueFacadeTest {
 
     @Test
     public void testGetVenueTitles() {
-        List<String> venueTitles = VenueFacade.getInstance().getVenueTitles(null);
+        List<String> venueTitles = VenueFacade.getInstance().getVenueTitles();
         Assert.assertEquals(0, venueTitles.size());
         ArrayList<Venue> venues = new ArrayList<Venue>();
         venues.add(v);
-        VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application, coords);
-        venueTitles = VenueFacade.getInstance().getVenueTitles(null);
+        VenueFacade.getInstance().initVenues(venues, RuntimeEnvironment.application, new LatLng(0.0,0.0));
+        venueTitles = VenueFacade.getInstance().getVenueTitles();
         Assert.assertEquals(1, venueTitles.size());
     }
 }

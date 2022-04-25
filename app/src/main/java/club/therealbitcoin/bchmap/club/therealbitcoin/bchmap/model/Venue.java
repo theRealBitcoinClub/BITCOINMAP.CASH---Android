@@ -30,7 +30,8 @@ public class Venue implements Parcelable {
     public static String IMG_FOLDER = BASE_URI + "img/app/";
     public int favoListIndex = -1;
     public String name;
-    public int iconRes;
+    public int iconResMapMarker;
+    public int iconResListItemView;
     public int type;
     public String id;
     public int reviews;
@@ -53,15 +54,16 @@ public class Venue implements Parcelable {
         String id = venue.getString(VenueJson.id.toString());
         int dscnt = venue.getInt(VenueJson.discount.toString());
         String[] atribs = parseAttributes(venue);
-        return new Venue(name, VenueType.getIconResource(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
+        return new Venue(name, VenueType.getIconResource(type),VenueType.getIconResourceOld(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
     }
 
     //constructor is public for testing purpose only
-    public Venue(String name, int iconRes, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc) {
+    public Venue(String name, int iconRes, int iconResOld, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc) {
         this.location = loc;
         this.discountLevel = dscnt;
         this.name = name;
-        this.iconRes = iconRes;
+        this.iconResMapMarker = iconRes;
+        this.iconResListItemView = iconResOld;
         this.type = type;
         this.id = placesId;
         this.stars = stras;
@@ -77,7 +79,7 @@ public class Venue implements Parcelable {
         favoListIndex = in.readInt();
         listIndex = in.readInt();
         name = in.readString();
-        iconRes = in.readInt();
+        iconResMapMarker = in.readInt();
         type = in.readInt();
         id = in.readString();
         reviews = in.readInt();
@@ -177,7 +179,7 @@ public class Venue implements Parcelable {
         int result;
         long temp;
         result = name != null ? name.hashCode() : 0;
-        result = 31 * result + iconRes;
+        result = 31 * result + iconResMapMarker;
         result = 31 * result + type;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + reviews;
@@ -201,7 +203,7 @@ public class Venue implements Parcelable {
         dest.writeInt(favoListIndex);
         dest.writeInt(listIndex);
         dest.writeString(name);
-        dest.writeInt(iconRes);
+        dest.writeInt(iconResMapMarker);
         dest.writeInt(type);
         dest.writeString(id);
         dest.writeInt(reviews);
