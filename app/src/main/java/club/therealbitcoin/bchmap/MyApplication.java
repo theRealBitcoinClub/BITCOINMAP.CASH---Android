@@ -30,10 +30,10 @@ public class MyApplication extends MultiDexApplication {
         FirebaseApp.initializeApp(this);
 
         //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG, OneSignal.LOG_LEVEL.DEBUG);
-        OneSignal.setLocationShared(true);
+       /* OneSignal.setLocationShared(true);
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
-                .init();
+                .init();*/
     }
 }
