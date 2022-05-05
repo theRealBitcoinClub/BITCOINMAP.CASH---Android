@@ -92,7 +92,12 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
         ImageView img = view.findViewById(R.id.img);
         img.setOnClickListener(this);
-        String imgUri = venue.IMG_FOLDER + venue.id + ".gif";
+        String imgUri = "https://raw.githubusercontent.com/theRealBitcoinClub/bmap_gif/main/" + venue.id + ".gif";
+
+        if (venue.id.startsWith("ChI"))
+            imgUri = "https://raw.githubusercontent.com/theRealBitcoinClub/bmap_webp/main/jpg/" +
+                            venue.id +
+                            ".jpg";
 
         if (!ConnectionChecker.hasInternetConnection(getContext())) {
             showToast(R.string.toast_no_internet, Toast.LENGTH_SHORT);
