@@ -88,7 +88,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     private void loadCoarseLocationFromIP() {
-        new WebService("http://bmap.app/geolocation", new OnTaskDoneListener() {
+        new WebService("https://geolocation-db.com/json/", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentData) {
                 if (currentData == null || currentData.isEmpty()) {
@@ -101,8 +101,8 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                     double latitude = json.getDouble("latitude");
                     double longitude = json.getDouble("longitude");
 
-                    latLng = new LatLng(latitude,longitude);
-//                    persistCoordinates(latitude,longitude);
+//                    latLng = new LatLng(latitude,longitude);
+                    persistCoordinates(latitude,longitude);
                     restartActivity();
                 } catch (JSONException e) {
                     Log.e("TRBC", "JSONException: currentData " + currentData);
