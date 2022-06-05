@@ -3,6 +3,7 @@ package club.therealbitcoin.bchmap;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -38,11 +39,17 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.acra.ACRA;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
 
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.Venue;
 import club.therealbitcoin.bchmap.club.therealbitcoin.bchmap.model.VenueType;
+import club.therealbitcoin.bchmap.interfaces.OnTaskDoneListener;
 import club.therealbitcoin.bchmap.interfaces.UpdateActivityCallback;
 import club.therealbitcoin.bchmap.persistence.FileCache;
 import club.therealbitcoin.bchmap.persistence.JsonParser;
@@ -79,6 +86,40 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     private VenuesListFragment listFragment;
     private VenuesListFragment favosFragment;
 
+
+    private void loadCoarseLocationFromIP() {
+        new WebService("https://bmap.app/geolocation", new OnTaskDoneListener() {
+            @Override
+            public void onTaskDone(String currentData) {
+                if (currentData == null || currentData.isEmpty()) {
+                    ACRA.log.e("TRBC", "error loadCoarseLocationFromIP");
+                    return;
+                }
+
+                try {
+                    JSONObject json = new JSONObject(currentData);
+                    double latitude = json.getDouble("latitude");
+                    double longitude = json.getDouble("longitude");
+
+                    latLng = new LatLng(latitude,longitude);
+                    persistCoordinates(latitude,longitude);
+                    restartActivity();
+                } catch (JSONException e) {
+                    Log.e("TRBC", "JSONException: currentData " + currentData);
+                    Log.e("TRBC", "JSONException: " + e);
+                    e.printStackTrace();
+                }
+
+                ACRA.log.d("TRBC", "success loadCoarseLocationFromIP");
+            }
+
+            @Override
+            public void onError() {
+                ACRA.log.e("TRBC", "error loadCoarseLocationFromIP ");
+            }
+        }).execute();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +133,9 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         initLastKnowLocation();
 
+        if (latLng == null)
+            loadCoarseLocationFromIP();
+
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.setRetainInstance(true);
 
@@ -100,7 +144,6 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         loadAssets();
         checkConnectionShowToast();
-
     }
 
     @Override
@@ -171,13 +214,18 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            showToast(R.string.toast_restart_app_for_permission_take_effect);
-            finish();
-            Intent intent = new Intent(this, BCHMapsActivity.class);
-            startActivity(intent);
+            restartActivity();
         }
+    }
+
+    private void restartActivity() {
+        showToast(R.string.toast_restart_app_for_permission_take_effect);
+        finish();
+        Intent intent = new Intent(this, BCHMapsActivity.class);
+        startActivity(intent);
     }
 
     @TargetApi(23)
@@ -298,9 +346,13 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
     }
 
     private void persistLastKnowLocation(Location lastCoordinates) {
-        latLng = new LatLng(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+        persistCoordinates(lastCoordinates.getLatitude(), lastCoordinates.getLongitude());
+    }
+
+    private void persistCoordinates(double latitude, double longitude) {
+        latLng = new LatLng(latitude, longitude);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_CAM_POSITION, MODE_PRIVATE);
-        sharedPreferences.edit().putString(KEY_CAM_POS, lastCoordinates.getLatitude() + ";" + lastCoordinates.getLongitude()).apply();
+        sharedPreferences.edit().putString(KEY_CAM_POS, latitude + ";" + longitude).apply();
     }
 
     @Override
