@@ -88,7 +88,7 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
 
     private void loadCoarseLocationFromIP() {
-        new WebService("https://bmap.app/geolocation", new OnTaskDoneListener() {
+        new WebService("http://bmap.app/geolocation", new OnTaskDoneListener() {
             @Override
             public void onTaskDone(String currentData) {
                 if (currentData == null || currentData.isEmpty()) {
@@ -102,12 +102,17 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
                     double longitude = json.getDouble("longitude");
 
                     latLng = new LatLng(latitude,longitude);
-                    persistCoordinates(latitude,longitude);
+//                    persistCoordinates(latitude,longitude);
                     restartActivity();
                 } catch (JSONException e) {
                     Log.e("TRBC", "JSONException: currentData " + currentData);
                     Log.e("TRBC", "JSONException: " + e);
                     e.printStackTrace();
+                    ACRA.log.d("TRBC", "JSONException currentData" + currentData);
+                    ACRA.log.d("TRBC", "JSONException: " + e);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ACRA.log.d("TRBC", "errorerrorerror loadCoarseLocationFromIP" + e.toString());
                 }
 
                 ACRA.log.d("TRBC", "success loadCoarseLocationFromIP");
@@ -133,8 +138,11 @@ public class BCHMapsActivity extends AppCompatActivity implements GoogleMap.OnMy
 
         initLastKnowLocation();
 
-        if (latLng == null)
-            loadCoarseLocationFromIP();
+        if (latLng == null) {
+            try {
+                loadCoarseLocationFromIP();
+            } catch (Error e) {}
+        }
 
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.setRetainInstance(true);
