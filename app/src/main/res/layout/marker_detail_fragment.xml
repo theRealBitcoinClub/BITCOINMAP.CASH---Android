@@ -84,32 +84,52 @@
         android:layout_marginTop="0dp"
         android:background="@color/colorPrimaryDark"/-->
 
-    <TextView
-        android:id="@+id/dialog_type"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/asdfhufherf378h789h"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBackGroundDark"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingLeft="8dp"
         android:paddingTop="8dp"
-        android:paddingRight="8dp"
         android:paddingBottom="4dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorTextDarkTheme" />
-
-    <TextView
-        android:id="@+id/dialog_reviews"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:background="@color/colorBackGroundDark"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="4dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorTextDarkTheme" />
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/dialog_type"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackGroundDark"
+            android:gravity="left"
+            android:textStyle="italic"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorTextDarkTheme" />
+        <TextView
+            android:layout_gravity="start"
+            android:id="@+id/dialog_reviews"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackGroundDark"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorTextDarkTheme" />
+        <TextView
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_gravity="end"
+            android:id="@+id/dialog_coinz"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackGroundDark"
+            android:gravity="right"
+            android:maxLines="1"
+            android:paddingRight="16dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorTextDarkTheme" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <!--TextView
         android:id="@+id/dialog_discount"
         android:layout_width="match_parent"

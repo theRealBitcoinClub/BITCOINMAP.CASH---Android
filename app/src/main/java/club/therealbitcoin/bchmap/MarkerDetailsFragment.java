@@ -78,6 +78,8 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
         initButtons(venue, view);
 
         initReviewText(view, venue);
+        initCoinText(view, venue);
+
         ((TextView) view.findViewById(R.id.dialog_type)).setText(VenueType.getTranslatedType(venue.type));
 
         TextView header = view.findViewById(R.id.dialog_header);
@@ -141,18 +143,87 @@ public class MarkerDetailsFragment extends DialogFragment implements View.OnClic
 
     private void initReviewText(View view, Venue venue) {
         StringBuilder builder = new StringBuilder();
-        if (venue.reviews == 0) {
-            builder.append(getString(R.string.reviewsNotAvailable));
-        } else {
-            builder.append(getString(R.string.reviews));
-            builder.append(" ");
-            builder.append(venue.stars);
-            builder.append(" (");
-            builder.append(venue.reviews);
-            builder.append(")");
-        }
+        appendReviews(venue, builder);
 
         ((TextView) view.findViewById(R.id.dialog_reviews)).setText(builder.toString());
+    }
+    private void initCoinText(View view, Venue venue) {
+        StringBuilder builder = new StringBuilder();
+        appendCoins(venue, builder);
+        ((TextView) view.findViewById(R.id.dialog_coinz)).setText(builder.toString());
+    }
+
+    private void appendCoins(Venue venue, StringBuilder builder) {
+        builder.append(" ");
+        if (venue.coins == null) {
+            builder.append("");
+        } else {
+            String[] splitCoins = venue.coins.split(",");
+
+            int i=0;
+            for (String coin : splitCoins) {
+                if (i++ != 0)
+                    builder.append(", ");
+
+                builder.append(parseCoinToText(coin));
+            }
+        }
+    }
+
+    private String parseCoinToText(String coin) {
+        int c = Integer.parseInt(coin);
+        switch (c) {
+            case 0: return "BCH";
+            case 1: return "DASH";
+            case 2: return "BTC";
+            case 3: return "USDT";
+            case 4: return "BUSD";
+            case 5: return "FlexUSD";
+            case 6: return "DAI";
+            case 7: return "RUSD";
+            case 8: return "ZEC";
+            default: return null;
+        }
+    }
+
+    private String parseBrandToText(String coin) {
+        int c = Integer.parseInt(coin);
+        switch (c) {
+            case 0: return "TRBC";
+            case 1: return "";
+            case 2: return "";
+            case 3: return "";
+            case 4: return "";
+            case 5: return "";
+            case 6: return "";
+            case 7: return "";
+            case 8: return "";
+            case 9: return "";
+            case 10: return "";
+            case 11: return "";
+            case 12: return "";
+            case 13: return "";
+            case 14: return "";
+            case 15: return "";
+            case 16: return "";
+            case 17: return "";
+            case 18: return "";
+            case 19: return "";
+            case 20: return "";
+            case 21: return "";
+            case 22: return "Other";
+            default: return null;
+        }
+    }
+
+    private void appendReviews(Venue venue, StringBuilder builder) {
+        String satisfaction = VenuesListFragment.getSatisfactionIndex(venue.reviews, venue.stars);
+        if (satisfaction == null)
+            return;
+
+        builder.append(" ");
+        builder.append(satisfaction);
+        builder.append(" ");
     }
 
     private void initDiscountText(View view, Venue venue) {

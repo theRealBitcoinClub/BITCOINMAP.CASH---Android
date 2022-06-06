@@ -1,4 +1,4 @@
-package club.therealbitcoin.bchmap;
+/*package club.therealbitcoin.bchmap;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -67,3 +67,4 @@ public class WebServiceTest {
         Assert.assertEquals(233, venues.size());
     }
 }
+*/

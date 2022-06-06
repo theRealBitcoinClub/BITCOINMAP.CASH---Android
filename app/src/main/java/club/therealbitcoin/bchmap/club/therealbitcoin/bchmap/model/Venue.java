@@ -40,6 +40,7 @@ public class Venue implements Parcelable {
     private Boolean isFavorite = null;
     private LatLng coordinates;
     private int discountLevel;
+    public String coins;
     private String[] attributes;
 
     public static Venue createInstance(JSONObject venue) throws JSONException {
@@ -51,12 +52,15 @@ public class Venue implements Parcelable {
         int type = venue.getInt(VenueJson.type.toString());
         String id = venue.getString(VenueJson.id.toString());
         int dscnt = venue.getInt(VenueJson.discount.toString());
+        String coins = venue.getString(VenueJson.coins.toString());
+        if (coins.equals("null") || coins.isEmpty())
+            coins = null;
         String[] atribs = parseAttributes(venue);
-        return new Venue(name, VenueType.getIconResource(type),VenueType.getIconResourceOld(type), type, id, rev, stars, latLng, dscnt, atribs, loc);
+        return new Venue(name, VenueType.getIconResource(type),VenueType.getIconResourceOld(type), type, id, rev, stars, latLng, dscnt, atribs, loc, coins);
     }
 
     //constructor is public for testing purpose only
-    public Venue(String name, int iconRes, int iconResOld, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc) {
+    public Venue(String name, int iconRes, int iconResOld, int type, String placesId, int rev, double stras, LatLng cord, int dscnt, String[] attr, String loc, String coins) {
         this.location = loc;
         this.discountLevel = dscnt;
         this.name = name;
@@ -68,6 +72,7 @@ public class Venue implements Parcelable {
         this.reviews = rev;
         this.coordinates = cord;
         this.attributes = attr;
+        this.coins = coins;
     }
 
     protected Venue(Parcel in) {

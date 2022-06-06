@@ -298,30 +298,6 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
             return view;
         }
 
-        private String getSatisfactionIndex(int total, double stars) {
-            if(total < 1)
-                return null;
-
-            double maximum = total * 5.0;
-            Double index = (total * stars) / maximum;
-            int percentage = Double.valueOf(index * 100.0).intValue();
-
-            StringBuilder result = new StringBuilder();
-            if (percentage > 90) {
-                result.append("\uD83D\uDE0D ");
-            } else if (percentage > 80) {
-                result.append("\uD83D\uDE01 ");
-            } else if (percentage > 70) {
-                result.append("\uD83D\uDE10 ");
-            } else {
-                result.append("☹️ ");
-            }
-            result.append(percentage);
-            result.append("%");
-
-            return result.toString();
-        }
-
         @NonNull
         private String getDistanceText(LatLng coordinates) {
             if (latitude == -1 || longitude == -1 || coordinates == null) {
@@ -334,6 +310,30 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
             }
             return (String.format(Locale.ENGLISH, "%.2f", distanceInFloat / 1000.0)) + " km";
         }
+    }
+
+    public static String getSatisfactionIndex(int total, double stars) {
+        if(total < 1)
+            return null;
+
+        double maximum = total * 5.0;
+        Double index = (total * stars) / maximum;
+        int percentage = Double.valueOf(index * 100.0).intValue();
+
+        StringBuilder result = new StringBuilder();
+        if (percentage > 90) {
+            result.append("\uD83D\uDE0D ");
+        } else if (percentage > 80) {
+            result.append("\uD83D\uDE01 ");
+        } else if (percentage > 70) {
+            result.append("\uD83D\uDE10 ");
+        } else {
+            result.append("☹️ ");
+        }
+        result.append(percentage);
+        result.append("%");
+
+        return result.toString();
     }
 
 }
