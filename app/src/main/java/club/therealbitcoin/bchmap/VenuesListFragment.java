@@ -212,15 +212,16 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
     }
 
     private static class ViewHolder {
-        private TextView title;
-        private TextView location;
-        private TextView distance;
-        private TextView rating;
-        private View clickArea;
-        private View icon;
-        private View button;
+        private final TextView title;
+        private final TextView location;
+        private final TextView distance;
+        private final TextView rating;
+        private final TextView coinz;
+        private final View clickArea;
+        private final View icon;
+        private final View button;
 
-        private ViewHolder(TextView title, TextView location, TextView distance, TextView rating, View clickArea, View button, View icon) {
+        private ViewHolder(TextView title, TextView location, TextView distance, TextView rating, View clickArea, View button, View icon, TextView coinz) {
             this.title = title;
             this.location = location;
             this.distance = distance;
@@ -228,6 +229,7 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
             this.clickArea = clickArea;
             this.button = button;
             this.icon = icon;
+            this.coinz = coinz;
         }
     }
 
@@ -242,7 +244,7 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
             ViewHolder holder;
             View view = super.getView(position, convertView, container);
             if (convertView == null) {
-                holder = new ViewHolder(view.findViewById(android.R.id.text1), view.findViewById(R.id.location), view.findViewById(R.id.distance), view.findViewById(R.id.rating), view.findViewById(R.id.list_item_click_area), view.findViewById(R.id.list_item_button), view.findViewById(R.id.list_item_icon));
+                holder = new ViewHolder(view.findViewById(android.R.id.text1), view.findViewById(R.id.location), view.findViewById(R.id.distance), view.findViewById(R.id.rating), view.findViewById(R.id.list_item_click_area), view.findViewById(R.id.list_item_button), view.findViewById(R.id.list_item_icon),view.findViewById(R.id.coinz));
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -254,6 +256,7 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
                 view.setBackgroundColor(getResources().getColor(R.color.colorListItemDark));
                 holder.title.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
                 holder.distance.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
+                holder.coinz.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
                 holder.rating.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
                 if (holder.location != null) //can be null on favo view
                     holder.location.setTextColor(getResources().getColor(R.color.colorTextDarkTheme));
@@ -261,6 +264,7 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
                 view.setBackgroundColor(getResources().getColor(R.color.colorTextDarkTheme));
                 holder.title.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
                 holder.distance.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
+                holder.coinz.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
                 holder.rating.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
                 if (holder.location != null) //can be null on favo view
                     holder.location.setTextColor(getResources().getColor(R.color.colorBackGroundDark));
@@ -268,13 +272,16 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
 
             String distanceText = getDistanceText(venue.getCoordinates());
             holder.distance.setText(distanceText);
+
+            StringBuilder builder = new StringBuilder();
+            VenuesListFragment.appendCoins(venue, builder);
+            holder.coinz.setText(builder.toString());
+
             String satisfaction = getSatisfactionIndex(venue.reviews, venue.stars);
-            if (satisfaction == null) {
-                holder.rating.setVisibility(View.GONE);
-            } else {
-                holder.rating.setVisibility(View.VISIBLE);
+            if (satisfaction != null)
                 holder.rating.setText(satisfaction);
-            }
+            else
+                holder.rating.setText("");
 
             venue.listItem = view;
             optimizeTouchArea(holder);
@@ -334,6 +341,78 @@ public class VenuesListFragment extends ListFragment implements View.OnClickList
         result.append("%");
 
         return result.toString();
+    }
+    public static void appendCoins(Venue venue, StringBuilder builder) {
+        builder.append(" ");
+        if (venue.coins == null) {
+            builder.append("");
+        } else {
+            String[] splitCoins = venue.coins.split(",");
+
+            int i=0;
+            for (String coin : splitCoins) {
+                if (i++ != 0)
+                    builder.append(", ");
+
+                builder.append(parseCoinToText(coin));
+            }
+        }
+    }
+
+    public static String parseCoinToText(String coin) {
+        int c = Integer.parseInt(coin);
+        switch (c) {
+            case 0: return "BCH";
+            case 1: return "DASH";
+            case 2: return "BTC";
+            case 3: return "USDT";
+            case 4: return "BUSD";
+            case 5: return "FlexUSD";
+            case 6: return "DAI";
+            case 7: return "RUSD";
+            case 8: return "ZEC";
+            default: return null;
+        }
+    }
+
+    private String parseBrandToText(String coin) {
+        int c = Integer.parseInt(coin);
+        switch (c) {
+            case 0: return "TRBC";
+            case 1: return "";
+            case 2: return "";
+            case 3: return "";
+            case 4: return "";
+            case 5: return "";
+            case 6: return "";
+            case 7: return "";
+            case 8: return "";
+            case 9: return "";
+            case 10: return "";
+            case 11: return "";
+            case 12: return "";
+            case 13: return "";
+            case 14: return "";
+            case 15: return "";
+            case 16: return "";
+            case 17: return "";
+            case 18: return "";
+            case 19: return "";
+            case 20: return "";
+            case 21: return "";
+            case 22: return "Other";
+            default: return null;
+        }
+    }
+
+    public static void appendReviews(Venue venue, StringBuilder builder) {
+        String satisfaction = VenuesListFragment.getSatisfactionIndex(venue.reviews, venue.stars);
+        if (satisfaction == null)
+            return;
+
+        builder.append(" ");
+        builder.append(satisfaction);
+        builder.append(" ");
     }
 
 }

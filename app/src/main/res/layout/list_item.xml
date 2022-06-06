@@ -54,21 +54,31 @@
             <TextView
                 android:id="@+id/rating"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:alpha="0.65"
                 android:ellipsize="end"
-                android:gravity="top"
+                android:gravity="top|start"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+            <TextView
+                android:id="@+id/coinz"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:alpha="0.65"
+                android:ellipsize="end"
+                android:gravity="top|center"
                 android:maxLines="1"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
                 android:alpha="0.65"
                 android:ellipsize="end"
-                android:gravity="top"
+                android:gravity="top|end"
                 android:maxLines="1"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>

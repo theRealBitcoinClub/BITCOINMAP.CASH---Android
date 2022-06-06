@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/list_item.xml" value="0.1984375" />
+        <entry key="app/src/main/res/layout/list_item_favos.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/marker_detail_fragment.xml" value="0.1984375" />
         <entry key="app/src/main/res/layout/tabs_icon.xml" value="0.1984375" />
       </map>
